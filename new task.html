@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>QPED O4 - Create Task</title>
+		<link rel="stylesheet" href="style.css">	
+		<script language="javascript" type="text/javascript" src="javascript/features.js"></script>
+		<script language="javascript" type="text/javascript" src="javascript/general.js"></script>	
+		<script language="javascript" type="text/javascript" src="javascript/new_task.js"></script>	
+	</head>
+	<body>
+		<div class="minipageLeft">
+			<div class="minipageTaskLeft">
+				<h2>Institute</h2>
+				<input type="text" id='institute_text'/>
+			</div>
+			<div class="minipageTaskLeft">
+				<h2>Name of the task</h2>
+				<input type="text" id='task_name_text'/>
+			</div>
+			<div class="minipageTaskRight">
+				<h2>Max Points</h2>
+				<input type="number" id='task_points_text'/>
+			</div>
+			<div style="float:left; clear:both;">
+				<h2>Additional Comments</h2>
+				<textarea id="additional_comments" cols="80" rows="20" style="width:100%"></textarea>
+			</div>
+		</div>
+		<div class="minipageRight">
+			<h2>Include Features</h2>
+			<table style="table-layout: auto; width:1px;">
+				<thead>
+					<tr>
+						<th scope="col">Include</th>
+						<th scope="col">Feature</th>
+					</tr>
+				</thead>
+				<tbody id='rubrics_table'>
+    
+				</tbody>
+			</table>
+		</div>
+		<div  style=" clear:both;"><br></div>
+		<div style="cursor:pointer;" onClick="handleGenerationClick();" class="buttons">Generate task</div>
+		<div id="snackbar"> </div>
+	</body>
+</html>

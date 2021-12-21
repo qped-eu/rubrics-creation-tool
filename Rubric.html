@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>QPED O4 - Rubric</title>
+		<link rel="stylesheet" href="style.css">	
+		<script language="javascript" type="text/javascript" src="javascript/features.js"></script>	
+		<script language="javascript" type="text/javascript" src="javascript/general.js"></script>	
+		<script language="javascript" type="text/javascript" src="javascript/main.js"></script>	
+
+	</head>
+	<body >
+		<div class="minipageLeft">
+			<h2>Select Task</h2>
+			<div id="task_select" class="buttons" style="width:90%">
+				<div id="selected_task">No tasks added</div>
+				<ul id="task_list"></ul>
+			</div>
+		</div>
+		<div class="minipageRight">
+			<h2>Upload new Task</h2>
+			<div class="buttons" style="width:90%">
+				Create a new task by uploading corresponding file.
+				<div id="fileDragOverField">
+					<input type="file" id="input_file" onchange="handleFiles(this.files)">
+						<label for="input_file">
+							<strong style="cursor: pointer;">Choose a file</strong> or drag it here
+						</label>
+				</div>
+			</div>
+		</div>
+		<h2>Show Tooltipps</h2>
+		<label>
+			<input type="checkbox" onchange="handleToolTippToggle(this);"/>
+			Toggle Tooltipps
+		</label>
+		<form>
+			<div class="toggle-buttons together">
+				<table width="100%" >
+					<thead>
+						<tr>
+							<th scope="col">Feature</th>
+							<th scope="col">Negative Examples</th>
+							<th scope="col">
+								1 - Fully<br>
+								Failed
+							</th>
+							<th scope="col">
+								2 - Partly<br>
+								Failed
+							</th>
+							<th scope="col">
+								3 - Partly<br>
+								Satisfied
+							</th>
+							<th scope="col">
+								4 - Fully<br>
+								Satisfied
+							</th>
+							<th scope="col">Positive Examples</th>
+						</tr>
+					</thead>
+					<tbody id='rubrics_table' class="showToolTipps">
+		
+					</tbody>
+				</table>
+				<div class="minipageTaskLeft">
+					<h2>Achieved Points</h2>
+					<input type="number" id='task_points'/>
+				</div>
+				<div class="minipageTaskLeft">
+					<h2>Calculated Points</h2>
+					<input type="text" id='task_calc_points' readonly/>
+				</div>
+				<div class="minipageTaskRight">
+					<h2>Maximum Points</h2>
+					<input type="text" id='task_max_points' readonly/>
+				</div>
+				<div style="cursor:pointer; clear:both;" onclick="handleFeedbackButtonClick()" class="buttons">
+					Generate Feedback
+				</div>
+
+				<div class="minipageLeft">
+					<div style="cursor:pointer" onclick="handleNextStudentButtonClick()" class="buttons">
+						Next Student
+					</div>
+				</div>
+				<div class="minipageRight">
+					<div style="cursor:pointer" onclick="handleExportButtonClick()" class="buttons">
+						Export all feedback for chosen task
+					</div>
+				</div>
+				<div class="minipageLeft">
+					<h2>Feedback</h2>
+					<textarea id='feedback_text' cols="80" rows="10" onclick="handleTextAreaClick(this, 'feedback')" readonly></textarea>
+				</div>
+				<div class="minipageRight">
+					<h2>Data</h2>
+					<textarea id='data_text' cols="80" rows="10" onclick="handleTextAreaClick(this, 'data')" readonly></textarea>
+				</div>
+			</div>
+		</form>
+	
+		<div id="snackbar"> </div>
+	</body>
+</html>

@@ -1,0 +1,239 @@
+body { 
+  font-family: 'Open Sans', sans-serif;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+th, td {
+  text-align: left;
+  padding: 16px;
+}
+
+tr:nth-child(odd) {
+  background-color: #f2f2f2;
+}
+
+th {
+  background-color: #d2d2d2;
+  position: sticky;
+  top: 0; /* Don't forget this, required for the stickiness */
+}
+
+td.first_col {
+  font-weight: bold;
+}
+
+#rubrics_table ul {
+  list-style-type: none; /* Remove bullets */
+  padding: 0; /* Remove padding */
+  margin: 0; /* Remove margins */
+}
+
+.hideToolTipps ul li ul{
+  visibility:hidden;
+  opacity:0;
+  position: absolute;
+}
+
+.showToolTipps ul li ul{
+  visibility:hidden;
+  opacity:0;
+  position: absolute;
+}
+
+.showToolTipps ul li:hover > ul{
+    visibility:visible;
+    opacity:1;
+	display:inline;
+	margin-left: 10px;
+	-webkit-animation: fadeinHint 0.5s, fadeoutHint 0.5s 2.5s;
+    animation: fadeinHint 0.5s, fadeoutHint 0.5s 2.5s;
+}
+
+/* Animations to fade the hint-div in and out */
+@-webkit-keyframes fadeinHint {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@keyframes fadeinHint {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@-webkit-keyframes fadeoutHint {
+  from {opacity: 1;}
+  to {opacity: 0;}
+}
+
+@keyframes fadeoutHint {
+  from {opacity: 1;}
+  to {opacity: 0;}
+} 
+
+textarea{
+	resize: none;
+}
+
+#input_file{
+	visibility:hidden;
+	opacity:0;
+    position: absolute;
+}
+
+#fileDragOverField {
+  border: 2px dashed #fff;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  padding: 25px;
+  text-align: center;
+  margin-bottom:10px;
+  margin-top: 10px;
+}
+
+.highlight{
+	background-color: #aaa;
+}
+
+.buttons{
+	margin:0 auto;
+	margin-top: 10px;
+	margin-bottom: 10px;
+    display:block;
+	padding: 16px;
+	background-color: #333;
+	border-color: #aaa;
+	color: #fff;
+	text-align: center;
+	border-radius: 8px;
+	padding: 16px;
+	position:relative;
+}
+
+.descLongDiv{
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	background-color: #333;
+	color: #fff;
+	text-align: center;
+	border-radius: 2px;
+	padding: 16px;
+}
+
+ /* The snackbar - position it at the bottom and in the middle of the screen */
+#snackbar {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #333;
+  color: #fff; 
+  text-align: center; 
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%; 
+  bottom: 30px;
+}
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+#snackbar.show {
+  visibility: visible;
+  -webkit-animation: fadeinSnackbar 0.5s, fadeoutSnackbar 0.5s 2.5s;
+  animation: fadeinSnackbar 0.5s, fadeoutSnackbar 0.5s 2.5s;
+}
+
+/* Animations to fade the snackbar in and out */
+@-webkit-keyframes fadeinSnackbar {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadeinSnackbar {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeoutSnackbar {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeoutSnackbar {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+
+.minipageLeft{
+	float:left;
+	width:45%;
+	margin-bottom: 30px;
+} 
+
+.minipageRight{
+	float:left;
+	width:45%;
+	margin-left: 10%;
+	margin-bottom: 30px;
+}
+
+.minipageTaskLeft{
+	float:left;
+	width: 32%;
+	margin-right: 5%;
+	margin-bottom: 30px;
+} 
+
+.minipageTaskRight{
+	float:left;
+	margin-bottom: 30px;
+}
+
+textarea{
+	width:95%;
+	margin-bottom: 5%;
+}
+
+#task_list{
+	list-style: none;
+	box-sizing: border-box;
+	width: 100%;
+	text-align: center;
+	margin: 0;
+	margin-top:10px;
+	margin-left:-16px;
+	padding: 0;
+	visibility: hidden;
+	opacity: 0;
+	position: absolute;
+	cursor:pointer;
+	z-index: 99999;
+	
+	background-color: #333;
+	color: #fff;
+	text-align: center;
+	border-radius: 8px;
+}
+
+#task_list li{
+	position:relative;
+	clear: both;
+	margin-top:5px;
+	margin-bottom:5px;
+}
+
+#task_select:hover > ul{
+    visibility:visible;
+    opacity:1;
+	display:block;
+	-webkit-animation: fadeinHint 0.5s, fadeoutHint 0.5s 2.5s;
+    animation: fadeinHint 0.5s, fadeoutHint 0.5s 2.5s;
+}
