@@ -326,7 +326,7 @@ const FEATURES = JSON.parse(
    {
       "name":"PG - Extern - Analysis",
       "key":"pg_external_analysis",
-      "faiexamples":[
+      "fail_examples":[
          
       ],
       "pass_examples":[
@@ -350,7 +350,7 @@ const FEATURES = JSON.parse(
    {
       "name":"PG - Extern - Design",
       "key":"pg_external_design",
-      "faiexamples":[
+      "fail_examples":[
          
       ],
       "pass_examples":[
@@ -364,7 +364,7 @@ const FEATURES = JSON.parse(
    {
       "name":"PG - Extern - Specification",
       "key":"pg_external_specification",
-      "faiexamples":[
+      "fail_examples":[
          
       ],
       "pass_examples":[
@@ -393,7 +393,7 @@ const FEATURES = JSON.parse(
    {
       "name":"PG - Extern - Tests",
       "key":"pg_external_tests",
-      "faiexamples":[
+      "fail_examples":[
          
       ],
       "pass_examples":[
@@ -407,7 +407,7 @@ const FEATURES = JSON.parse(
    {
       "name":"PG - Intern - Analaysis",
       "key":"pg_internatl_analysis",
-      "faiexamples":[
+      "fail_examples":[
          
       ],
       "pass_examples":[
@@ -426,7 +426,7 @@ const FEATURES = JSON.parse(
    {
       "name":"PG - Intern - Design",
       "key":"pg_internal_analysis",
-      "faiexamples":[
+      "fail_examples":[
          
       ],
       "pass_examples":[
@@ -450,7 +450,7 @@ const FEATURES = JSON.parse(
    {
       "name":"PG - Intern - Specification",
       "key":"pg_internal_specification",
-      "faiexamples":[
+      "fail_examples":[
          
       ],
       "pass_examples":[
@@ -474,7 +474,7 @@ const FEATURES = JSON.parse(
    {
       "name":"PG - Intern - Tests",
       "key":"pg_internal_tests",
-      "faiexamples":[
+      "fail_examples":[
          
       ],
       "pass_examples":[
@@ -493,7 +493,7 @@ const FEATURES = JSON.parse(
    {
       "name":"PG - Impl - Analysis",
       "key":"pg_implementation_analysis",
-      "faiexamples":[
+      "fail_examples":[
          
       ],
       "pass_examples":[
@@ -507,7 +507,7 @@ const FEATURES = JSON.parse(
    {
       "name":"PG - Impl - Design",
       "key":"pg_implementation_design",
-      "faiexamples":[
+      "fail_examples":[
          
       ],
       "pass_examples":[
@@ -526,7 +526,7 @@ const FEATURES = JSON.parse(
    {
       "name":"PG - Impl - Coding",
       "key":"pg_implementation_coding",
-      "faiexamples":[
+      "fail_examples":[
          
       ],
       "pass_examples":[
@@ -540,7 +540,7 @@ const FEATURES = JSON.parse(
    {
       "name":"PG - Impl - Tests",
       "key":"pg_implementation_tests",
-      "faiexamples":[
+      "fail_examples":[
          
       ],
       "pass_examples":[
