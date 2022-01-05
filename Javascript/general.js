@@ -3,13 +3,22 @@ window.addEventListener('load', (event) => {
 });
 
 
-function Task(name, maxPoints, institute, rubricSet, additionalComments){
+function Task(name, maxPoints, course, week, differentiation, deliverables, rubricSet, additionalComments){
+
 	this.name = name;
 	this.maxPoints = maxPoints;
-	this.institute = institute;
+	this.course = course;
+    this.week = week;
+    this.differentiation = differentiation;
+    this.deliverables = deliverables;
 	this.rubricSet = rubricSet;
 	this.additionalComments = additionalComments;
 	this.feedbackSet=[];
+}
+
+function Deliverable(name,selected){
+    this.name = name;
+    this.selected = selected;
 }
 
 /* HTML to Element(s) copied from

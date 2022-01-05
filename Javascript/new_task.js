@@ -26,12 +26,16 @@ function setTable(){
 	});
 }
 
+
 function handleGenerationClick(){
-	var instituteBox = document.getElementById('institute_text');
 	var nameBox = document.getElementById('task_name_text');
 	var pointBox = document.getElementById('task_points_text');
+	var courseBox = document.getElementById('course_text');
+	var weekBox = document.getElementById('week_of_task_text');
+	var differentiationBox = document.getElementById('differentiation_of_background_text');
+	var deliverablesBox = document.getElementById('deliverables_text');
 	var commentBox = document.getElementById('additional_comments');
-	
+
 	var enabledFeatures = [];
 	checkboxes.forEach(
 		checkbox => {
@@ -40,8 +44,14 @@ function handleGenerationClick(){
 			}
 		}
 	);
+	var deliverables = [];
+	Array.from(deliverablesBox.options).forEach(
+		option => {
+			deliverables.push(new Deliverable(option.value, option.selected));
+		}
+	);
 	if(enabledFeatures.length!=0){
-		var task = new Task(nameBox.value, pointBox.value, instituteBox.value, enabledFeatures, commentBox.value);
+		var task = new Task(nameBox.value, pointBox.value, courseBox.value, weekBox.value, differentiationBox.value, deliverables, enabledFeatures, commentBox.value);
 		console.log(task);
 		var json_task = JSON.stringify(task);
 		download(nameBox.value+'.json', json_task);
