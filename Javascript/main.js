@@ -70,6 +70,7 @@ function load() {
 	setTask(tasks.length - 1);	
 	updateTaskList();
   }
+  computePoints();
 }
 
 function setTask(index){
@@ -279,6 +280,7 @@ function setTable(enabledFeatures, filter){
 
 function scoreSet(feature) {
   notEnteredInputs.get(feature).value = false;
+  computePoints();
 }
 
 function computePointsPerFeature(feature){
@@ -316,7 +318,7 @@ function computePoints(){
 		let score = 0;
 		let totalWeight = 0;
 		for(let feature of task.rubricSet){
-			unweightedFeatureScore = computePointsPerFeature(feature.name)+1;
+			unweightedFeatureScore = getScoreFromRadioButton(feature.name);
 			score+=unweightedFeatureScore * feature.weight;
 			totalWeight += feature.weight;
 		}
@@ -325,4 +327,12 @@ function computePoints(){
 		let pointbox = document.getElementById("task_calc_points");
 		pointbox.value=task.maxPoints * percentile;
 	}
+}
+
+function getScoreFromRadioButton(feature) {
+	for (let i = 0; i < 4; i++) {
+		if(scoreInputs.get(feature)[i].checked)
+			return i;
+	}
+	return 0;
 }
