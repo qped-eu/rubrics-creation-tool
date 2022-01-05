@@ -323,9 +323,9 @@ function computePoints(){
 			totalWeight += feature.weight;
 		}
 		score/=totalWeight;
-		let percentile = score / 4;
+		let percentile = score / 3;
 		let pointbox = document.getElementById("task_calc_points");
-		pointbox.value=task.maxPoints * percentile;
+		pointbox.value=Math.round(task.maxPoints * percentile * 2) / 2;
 	}
 }
 
