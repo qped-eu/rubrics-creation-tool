@@ -74,7 +74,14 @@ function load() {
 
 function setTask(index){
 	task = tasks[index];
-	setTable(task.rubricSet,true);
+
+	var enabledFeatureNames = [];
+	task.rubricSet.forEach( enabledFeature => {
+			enabledFeatureNames.push(enabledFeature.name);
+		}
+	);
+
+	setTable(enabledFeatureNames,true);
 	let selectedTask = document.getElementById("selected_task");
 	selectedTask.innerHTML = task.name;
 	let taskPoints = document.getElementById("task_points");
@@ -307,10 +314,13 @@ function examplesChange(feature) {
 function computePoints(){
 	if(task!=undefined){
 		let score = 0;
+		let totalWeight = 0;
 		for(let feature of task.rubricSet){
-			score+=computePointsPerFeature(feature)+1;
+			unweightedFeatureScore = computePointsPerFeature(feature.name)+1;
+			score+=unweightedFeatureScore * feature.weight;
+			totalWeight += feature.weight;
 		}
-		score/=task.rubricSet.length;
+		score/=totalWeight;
 		let percentile = score / 4;
 		let pointbox = document.getElementById("task_calc_points");
 		pointbox.value=task.maxPoints * percentile;

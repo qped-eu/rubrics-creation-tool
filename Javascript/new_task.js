@@ -21,8 +21,14 @@ function setTable(){
 	  
 	  var inputTh = htmlToElement('<td></td>');
 	  inputTh.appendChild(input);
+
+	  var weightInput = htmlToElement(`<input type="number" value="1" class="${element.key}_weight" id="${element.key}_weight" id="${element.key}_weight"/>`);
+	  var weightTd = htmlToElement('<td></td>');
+	  weightTd.appendChild(weightInput);
+
 	  tr.appendChild(inputTh);
 	  tr.appendChild(th);
+	  tr.appendChild(weightTd);
 	});
 }
 
@@ -40,7 +46,8 @@ function handleGenerationClick(){
 	checkboxes.forEach(
 		checkbox => {
 			if(checkbox.checked){
-				enabledFeatures.push(checkbox.id);
+				var weightBox = document.getElementById(checkbox.id+'_weight')
+				enabledFeatures.push(new EnabledFeature(checkbox.id, weightBox.valueAsNumber));
 			}
 		}
 	);
