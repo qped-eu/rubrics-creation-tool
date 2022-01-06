@@ -28,7 +28,7 @@ function appendExamples(tr, category, featureKey, examples, examplesMap) {
     li.appendChild(label);
 	li.appendChild(ulEx);
 
-    input = htmlToElement(`<input type="checkbox" class="${category}_example" id="${featureKey}_${category}_${example.Key}" name=id="${featureKey}_${category}_${example.key}" onChange="examplesChange('${featureKey}')"/>`);
+    input = htmlToElement(`<input type="checkbox" class="${category}_example" id="${featureKey}_${category}_${example.key}" name="${featureKey}_${category}_${example.key}" data-feature-key="${featureKey}" data-category="${category}" data-example-key="${example.key}" onChange="examplesChange('${featureKey}')"/>`);
     label.appendChild(input);
     label.appendChild(htmlToElement(example.desc));
 	
@@ -139,7 +139,75 @@ function reset() {
 
 function handleFeedbackButtonClick(){
 	var feedbackField = document.getElementById('feedback_text');
-	feedbackField.value = 'Kryptonite!';
+
+	if(task!=undefined){
+		var feedback = 'This feedback is an auto-generated summary of the rating of your assignmnet according to the rubric. ' +
+										'The assignment may have additional grading criteria, which is why your grade may diverge from the computed score. ' +
+										'If the grader provides additional feedback, you find this at the bottom.\n\n';
+
+		var enabledFeatureNames = [];
+		var totalWeight = 0;
+		var weights = new Map();
+		task.rubricSet.forEach( enabledFeature => {
+			enabledFeatureNames.push(enabledFeature.name);
+			totalWeight += enabledFeature.weight;
+			weights.set(enabledFeature.name, enabledFeature.weight);
+		});
+
+		FEATURES.forEach(
+    	element => {
+	  		if(enabledFeatureNames.includes(element.key)){
+	  			feedback += element.name + '\n';
+	  			feedback += '='.repeat(element.name.length) + '\n';
+
+	  			feedback += 'Score        : ' + (getScoreFromRadioButton(element.key) + 1) + ' [1 (fully failed) - 4 (fully passed)]\n';
+
+	  			feedback += 'Score weight : ' + (Math.round((weights.get(element.key) / totalWeight) * 1000) / 10) + '%\n\n';
+
+	  			feedback += 'Points for improvement\n';
+	  			feedback += '----------------------\n';
+
+					failExInputs.get(element.key).forEach( domElement => {
+						if (domElement.checked) {
+							feedback += '- ';
+							element.fail_examples.forEach(example => {
+								if (example.key === domElement.dataset.exampleKey) {
+									feedback += example.desc_long + '\n';
+								}
+							});
+						}
+				  });
+				  feedback += '\n';
+
+
+	  			feedback += 'Good points\n';
+	  			feedback += '-----------\n';
+
+					passExInputs.get(element.key).forEach( domElement => {
+						if (domElement.checked) {
+							feedback += '+ ';
+							element.pass_examples.forEach(example => {
+								if (example.key === domElement.dataset.exampleKey) {
+									feedback += example.desc_long + '\n';
+								}
+							});
+						}
+				  });
+				  feedback += '\n';
+
+     		 }});
+
+		feedback += "Grading\n";
+		feedback += "=======\n";
+		feedback += "Weighted average score   : " + computeWeightedScore() + ' [1 (fully failed) - 4 (fully passed)]\n';
+		feedback += "Points for this solution : " + document.getElementById("task_points").value + " [of " + task.maxPoints + ']';
+
+
+		feedbackField.value = feedback;
+	} else {
+		feedbackField.value = '';
+	}
+
 }
 
 function handleExportButtonClick(){
@@ -315,18 +383,23 @@ function examplesChange(feature) {
 
 function computePoints(){
 	if(task!=undefined){
-		let score = 0;
-		let totalWeight = 0;
-		for(let feature of task.rubricSet){
-			unweightedFeatureScore = getScoreFromRadioButton(feature.name);
-			score+=unweightedFeatureScore * feature.weight;
-			totalWeight += feature.weight;
-		}
-		score/=totalWeight;
+		let score = computeWeightedScore();
 		let percentile = score / 3;
 		let pointbox = document.getElementById("task_calc_points");
-		pointbox.value=Math.round(task.maxPoints * percentile * 2) / 2;
+		pointbox.value=(Math.round(task.maxPoints * percentile * 2) / 2) + ' (avg. wght. score: ' + score + ')';
 	}
+}
+
+function computeWeightedScore() {
+	let score = 0;
+	let totalWeight = 0;
+	for(let feature of task.rubricSet){
+		unweightedFeatureScore = getScoreFromRadioButton(feature.name);
+		score+=unweightedFeatureScore * feature.weight;
+		totalWeight += feature.weight;
+	}
+	score/=totalWeight;
+	return score;
 }
 
 function getScoreFromRadioButton(feature) {
