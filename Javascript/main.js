@@ -384,10 +384,16 @@ function examplesChange(feature) {
 function computePoints(){
 	if(task!=undefined){
 		let score = computeWeightedScore();
-		let percentile = score / 3;
+		let extrapolatedPoints = computeExtrapolatedPoints(score);
+		
 		let pointbox = document.getElementById("task_calc_points");
-		pointbox.value=(Math.round(task.maxPoints * percentile * 2) / 2) + ' (avg. wght. score: ' + score + ')';
+		pointbox.value= extrapolatedPoints + ' (avg. wght. score: ' + score + ')';
 	}
+}
+
+function computeExtrapolatedPoints(score) {
+		let percentile = score / 3;
+		return (Math.round(task.maxPoints * percentile * 2) / 2);
 }
 
 function computeWeightedScore() {
@@ -408,4 +414,11 @@ function getScoreFromRadioButton(feature) {
 			return i;
 	}
 	return 0;
+}
+
+function handleApplyComputedPoints() {
+	let score = computeWeightedScore();
+	let extrapolatedPoints = computeExtrapolatedPoints(score);
+
+	document.getElementById('task_points').value = extrapolatedPoints;
 }
