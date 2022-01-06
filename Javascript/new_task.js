@@ -16,7 +16,7 @@ function setTable(){
         '<td class="first_col">' +
           element.name +
         '</td>');
-	  input = htmlToElement(`<input type="checkbox" class="${element.key}" id="${element.key}" name=id="${element.key}"/>`);
+	  input = htmlToElement(`<input type="checkbox" class="${element.key}" id="${element.key}" name="${element.key}"/>`);
 	  checkboxes.push(input);
 	  
 	  var inputTh = htmlToElement('<td></td>');
@@ -66,4 +66,56 @@ function handleGenerationClick(){
 	else{
 		makeToast("Please select at least one feature for your task");
 	}
+}
+
+
+function handleToggleAll() {
+	toggle(checkboxes);
+}
+
+function handleToggleBasic() {
+	toggle([document.getElementById("data_types"),
+		document.getElementById("readability"),
+		document.getElementById("dry_principle"),
+		document.getElementById("correctness")]);
+}
+
+function handleToggleAdvanced() {
+	toggle([document.getElementById("modularity"),
+		document.getElementById("programme_flow"),
+		document.getElementById("api_documentation"),
+		document.getElementById("robustness"),
+		document.getElementById("traceability"),
+		document.getElementById("test_completeness")]);
+}
+
+function handleTogglePG() {
+	toggle([document.getElementById("pg_external_analysis"),
+		document.getElementById("pg_external_design"),
+		document.getElementById("pg_external_specification"),
+		document.getElementById("pg_external_tests"),
+		document.getElementById("pg_internal_analysis"),
+		document.getElementById("pg_internal_design"),
+		document.getElementById("pg_internal_specification"),
+		document.getElementById("pg_internal_tests"),
+		document.getElementById("pg_implementation_analysis"),
+		document.getElementById("pg_implementation_design"),
+		document.getElementById("pg_implementation_coding"),
+		document.getElementById("pg_implementation_tests")]);
+}
+
+function toggle(checkboxes) {
+	var allEnabled = true;
+	checkboxes.forEach(
+		checkbox => {
+			allEnabled &= checkbox.checked;
+		}
+	);
+
+	checkboxes.forEach(
+		checkbox => {
+			checkbox.checked = !allEnabled;
+		}
+	);
+
 }
