@@ -381,7 +381,7 @@ function computePointsPerFeature(feature){
 
 	passRatio = passExamplesSelected / passExampleCount;
 
-	return Math.round(((passRatio - failRatio) + 1) * 1.5);
+	return Math.round(((passRatio - failRatio) + 1) * 2);
 }
 
 function examplesChange(feature) {
