@@ -71,7 +71,16 @@ function load() {
 	updateTaskList();
   }
   computePoints();
+
+  if(localStorage.grader) {
+  	document.getElementById("grader_text").value = localStorage.grader;
+  }
 }
+
+function handleGraderChange() {
+	localStorage.grader = document.getElementById("grader_text").value;
+}
+
 
 function setTask(index){
 	task = tasks[index];
