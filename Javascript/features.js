@@ -406,7 +406,7 @@ const FEATURES = JSON.parse(
    },
    {
       "name":"PG - Intern - Analaysis",
-      "key":"pg_internatl_analysis",
+      "key":"pg_internal_analysis",
       "fail_examples":[
          
       ],
@@ -425,7 +425,7 @@ const FEATURES = JSON.parse(
    },
    {
       "name":"PG - Intern - Design",
-      "key":"pg_internal_analysis",
+      "key":"pg_internal_design",
       "fail_examples":[
          
       ],
