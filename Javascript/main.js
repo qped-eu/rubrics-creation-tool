@@ -260,7 +260,6 @@ function handleFeedbackButtonClick(){
 		else{
 			task.feedbackSet.push(data);
 		}
-		console.log(task);
 	} else {
 		feedbackField.value = '';
 		makeToast("Please select a task before trying to generate feedback.");
@@ -294,7 +293,6 @@ function handleNextStudentButtonClick(){
 			reset();
 			task.feedbackSet.push(undefined);
 			localStorage.setItem('all_tasks', JSON.stringify(tasks));
-			console.log(tasks);
 		}
 	}
 	else{
