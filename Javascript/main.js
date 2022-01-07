@@ -150,9 +150,24 @@ function reset() {
 
 }
 
+function FeedbackPerTask(weightedAverageScore, pointsForSolution, feedbackFeature, additionalComment, grader){
+	this.weightedAverageScore = weightedAverageScore;
+	this.pointsForSolution = pointsForSolution;
+	this.feedbackFeature = feedbackFeature;
+	this.additionalComment = additionalComment;
+	this.grader = grader;
+}
+
+function FeedbackPerFeature(score, scoreWeight, improvementPoints, goodPoints){
+	this.score = score;
+	this.scoreWeight = scoreWeight;
+	this.improvementPoints = improvementPoints;
+	this.goodPoints = goodPoints;
+}
+
 function handleFeedbackButtonClick(){
 	var feedbackField = document.getElementById('feedback_text');
-
+	var data = [];
 	if(task!=undefined){
 		var feedback = 'This feedback is an auto-generated summary of the rating of your assignmnet according to the rubric. ' +
 										'The assignment may have additional grading criteria, which is why your grade may diverge from the computed score. ' +
@@ -166,26 +181,32 @@ function handleFeedbackButtonClick(){
 			totalWeight += enabledFeature.weight;
 			weights.set(enabledFeature.name, enabledFeature.weight);
 		});
+		
+		var feedbackFeature = [];
 
 		FEATURES.forEach(
     	element => {
 	  		if(enabledFeatureNames.includes(element.key)){
 	  			feedback += element.name + '\n';
 	  			feedback += '='.repeat(element.name.length) + '\n';
+				let score = (getScoreFromRadioButton(element.key) + 1);
+				let scoreWeighted = (Math.round((weights.get(element.key) / totalWeight) * 1000) / 10);
+	  			feedback += 'Score        : ' + score + ' [1 (fully failed) - 4 (fully passed)]\n';
 
-	  			feedback += 'Score        : ' + (getScoreFromRadioButton(element.key) + 1) + ' [1 (fully failed) - 4 (fully passed)]\n';
-
-	  			feedback += 'Score weight : ' + (Math.round((weights.get(element.key) / totalWeight) * 1000) / 10) + '%\n\n';
+	  			feedback += 'Score weight : ' + scoreWeighted + '%\n\n';
 
 	  			feedback += 'Points for improvement\n';
 	  			feedback += '----------------------\n';
-
+				
+				let improvementPoints = [];
+				
 					failExInputs.get(element.key).forEach( domElement => {
 						if (domElement.checked) {
 							feedback += '- ';
 							element.fail_examples.forEach(example => {
 								if (example.key === domElement.dataset.exampleKey) {
 									feedback += example.desc_long + '\n';
+									improvementPoints.push(example.key);
 								}
 							});
 						}
@@ -195,6 +216,8 @@ function handleFeedbackButtonClick(){
 
 	  			feedback += 'Good points\n';
 	  			feedback += '-----------\n';
+				
+				let goodPoints = [];
 
 					passExInputs.get(element.key).forEach( domElement => {
 						if (domElement.checked) {
@@ -202,23 +225,45 @@ function handleFeedbackButtonClick(){
 							element.pass_examples.forEach(example => {
 								if (example.key === domElement.dataset.exampleKey) {
 									feedback += example.desc_long + '\n';
+									goodPoints.push(example.key);
 								}
 							});
 						}
 				  });
 				  feedback += '\n';
+				  
+				feedbackFeature.push(new FeedbackPerFeature(score, scoreWeighted, improvementPoints, goodPoints));
 
      		 }});
+			 
+		var weightedAverageScore = computeWeightedScore();
+		var pointsForSolution = document.getElementById("task_points").value;
 
 		feedback += "Grading\n";
 		feedback += "=======\n";
-		feedback += "Weighted average score   : " + computeWeightedScore() + ' [1 (fully failed) - 4 (fully passed)]\n';
-		feedback += "Points for this solution : " + document.getElementById("task_points").value + " [of " + task.maxPoints + ']';
-
+		feedback += "Weighted average score   : " + weightedAverageScore + ' [1 (fully failed) - 4 (fully passed)]\n';
+		feedback += "Points for this solution : " + pointsForSolution + " [of " + task.maxPoints + ']\n\n';
+		
+		feedback += "Additional Comment\n";
+		feedback += "==================\n";		
+		let additionalComment = document.getElementById("comment_text").value;
+		feedback += additionalComment;
+		
+		let grader = document.getElementById("grader_text").value;
+		
+		var data = new FeedbackPerTask(weightedAverageScore, pointsForSolution, feedbackFeature, additionalComment, grader);
 
 		feedbackField.value = feedback;
+		if(task.feedbackSet.length!=0){
+			task.feedbackSet[task.feedbackSet.length-1] = data;
+		}
+		else{
+			task.feedbackSet.push(data);
+		}
+		console.log(task);
 	} else {
 		feedbackField.value = '';
+		makeToast("Please select a task before trying to generate feedback.");
 	}
 
 }
@@ -228,15 +273,33 @@ function handleExportButtonClick(){
 		makeToast("Please select a task before trying to export one.");
 	}
 	else{
-		var dataField = document.getElementById('data_text');
-		dataField.value = JSON.stringify(task);
+		var exportFormat = document.getElementById('export_format').value;
+		if(exportFormat=="json"){
+			download(task.name+'_feedback.json', JSON.stringify(task));
+		}
+		if(exportFormat=="csv"){
+			makeToast("CSV is not yet implemented");
+		}
 	}
 }
 
 function handleNextStudentButtonClick(){
-	var feedbackField = document.getElementById('feedback_text');
-	feedbackField.value = '';
-	reset();
+	if(task!=undefined){
+		if(task.feedbackSet.length==0||task.feedbackSet[task.feedbackSet.length-1]==undefined){
+			makeToast('Hit the "Generate Feedback"-button at least once before grading the next student.');
+		}
+		else{
+			var feedbackField = document.getElementById('feedback_text');
+			feedbackField.value = '';
+			reset();
+			task.feedbackSet.push(undefined);
+			localStorage.setItem('all_tasks', JSON.stringify(tasks));
+			console.log(tasks);
+		}
+	}
+	else{
+		makeToast("You can not grade the next student if no task is selected.");
+	}
 }
 
 function handleTextAreaClick(textarea, text){
@@ -334,7 +397,6 @@ function setTable(enabledFeatures, filter){
 
       // scores
       scoreDomElements = [];
-      scoreInputs.set(element.key, scoreDomElements);
       [1, 2, 3, 4].forEach( score => {
         const td = htmlToElement('<td/>');
         tr.appendChild(td);
@@ -352,7 +414,8 @@ function setTable(enabledFeatures, filter){
 
         scoreDomElements.push(input);
       });
-      scoreInputs.first
+	  scoreInputs.set(element.key, scoreDomElements);
+      scoreInputs.first;
 
       // positive examples
       appendExamples(tr, 'pass', element.key, element.pass_examples, passExInputs);

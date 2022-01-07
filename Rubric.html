@@ -94,14 +94,19 @@
 					<div style="cursor:pointer" onclick="handleExportButtonClick()" class="buttons">
 						Export all feedback for chosen task
 					</div>
+					Choose a format for exporting (default is JSON):<br>
+					<select id="export_format">
+						<option value="json">JSON-Format</option>
+						<option value="csv">CSV-Format</option>
+					</select>
 				</div>
 				<div class="minipageLeft">
-					<h2>Feedback</h2>
-					<textarea id='feedback_text' cols="80" rows="10" onclick="handleTextAreaClick(this, 'feedback')" readonly></textarea>
+					<h2>Additional Comment</h2>
+					<textarea id='comment_text' cols="80" rows="10"></textarea>
 				</div>
 				<div class="minipageRight">
-					<h2>Data</h2>
-					<textarea id='data_text' cols="80" rows="10" onclick="handleTextAreaClick(this, 'data')" readonly></textarea>
+					<h2>Generated Feedback</h2>
+					<textarea id='feedback_text' cols="80" rows="10" onclick="handleTextAreaClick(this, 'feedback')" readonly></textarea>
 				</div>
 			</div>
 		</form>
