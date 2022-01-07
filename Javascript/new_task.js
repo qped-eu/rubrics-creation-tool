@@ -74,34 +74,26 @@ function handleToggleAll() {
 }
 
 function handleToggleBasic() {
-	toggle([document.getElementById("data_types"),
-		document.getElementById("readability"),
-		document.getElementById("dry_principle"),
-		document.getElementById("correctness")]);
+	toggle(getFilteredCheckboxes('basic'));
+}
+
+function getFilteredCheckboxes(level) {
+	var filteredCheckboxes = [];
+	FEATURES.forEach(feature => {
+		if (feature.level === level) {
+			filteredCheckboxes.push(document.getElementById(feature.key));
+		}
+	})
+	return filteredCheckboxes;
 }
 
 function handleToggleAdvanced() {
-	toggle([document.getElementById("modularity"),
-		document.getElementById("programme_flow"),
-		document.getElementById("api_documentation"),
-		document.getElementById("robustness"),
-		document.getElementById("traceability"),
-		document.getElementById("test_completeness")]);
+	toggle(getFilteredCheckboxes('advanced'));
 }
 
 function handleTogglePG() {
-	toggle([document.getElementById("pg_external_analysis"),
-		document.getElementById("pg_external_design"),
-		document.getElementById("pg_external_specification"),
-		document.getElementById("pg_external_tests"),
-		document.getElementById("pg_internal_analysis"),
-		document.getElementById("pg_internal_design"),
-		document.getElementById("pg_internal_specification"),
-		document.getElementById("pg_internal_tests"),
-		document.getElementById("pg_implementation_analysis"),
-		document.getElementById("pg_implementation_design"),
-		document.getElementById("pg_implementation_coding"),
-		document.getElementById("pg_implementation_tests")]);
+	toggle(getFilteredCheckboxes('procedural_guidance'));
+
 }
 
 function toggle(checkboxes) {

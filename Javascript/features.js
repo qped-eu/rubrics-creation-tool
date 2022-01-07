@@ -1,67 +1,38 @@
 const FEATURES = JSON.parse(
 `[
    {
-      "name":"Modularity",
-      "key":"modularity",
+      "name":"Correctness",
+      "key":"correctness",
+      "level":"basic",
       "fail_examples":[
          {
             "key":"1",
-            "desc":"Spaghetti code",
-            "desc_long":"The project contains spaghetti code, e.g. it lacks a clear organization."
+            "desc":"Not compiling",
+            "desc_long":"The code does not compile and run cleanly."
          },
          {
             "key":"2",
-            "desc":"Unrelated tasks in functions",
-            "desc_long":"Most of the classes and functions perform many unrelated tasks and/or their bodies are large."
-         },
-         {
-            "key":"3",
-            "desc":"High degree of coupling",
-            "desc_long":"The degree of coupling is high, e.g. one object depends on each of the other objects."
-         }],"pass_examples":[
-         {
-            "key":"1",
-            "desc":"Clear structure",
-            "desc_long":"Project structure is clear since the code is organized in coherent packages, folders, files, etc."
-         },
-         {
-            "key":"2",
-            "desc":"Limited scope of classes and functions",
-            "desc_long":"Most of the classes and functions perform a limited set of tasks and their bodies are limited in length."
-         }
-      ]
-   },
-   {
-      "name":"Data Types",
-      "key":"data_types",
-      "fail_examples":[
-         {
-            "key":"1",
-            "desc":"Wrong Datatypes",
-            "desc_long":"The choice of some data types is wrong, e.g. an integer is used when a boolean is enough."
-         },
-         {
-            "key":"2",
-            "desc":"Too complex data structures",
-            "desc_long":"Complex data structures are used when are not needed, e.g. primitive-data array vs Object-data array."
+            "desc":"Specifications not met",
+            "desc_long":"The program does not meet some of the specifications."
          }
       ],
       "pass_examples":[
          {
             "key":"1",
-            "desc":"Variables and attributes",
-            "desc_long":"Appropriate data type selection for variables and attributes."
+            "desc":"Functions properly",
+            "desc_long":"Program conforms to the specifications provided by the assignment."
          },
          {
             "key":"2",
-            "desc":"Function/Method return",
-            "desc_long":"Appropriate data type selection for function/method return."
+            "desc":"Correct results",
+            "desc_long":"It produces correct results for correct inputs."
          }
       ]
    },
    {
       "name":"Readability",
       "key":"readability",
+      "level":"basic",
       "fail_examples":[
          {
             "key":"1",
@@ -108,8 +79,38 @@ const FEATURES = JSON.parse(
       ]
    },
    {
+      "name":"Data Types",
+      "key":"data_types",
+      "level":"basic",
+      "fail_examples":[
+         {
+            "key":"1",
+            "desc":"Wrong Datatypes",
+            "desc_long":"The choice of some data types is wrong, e.g. an integer is used when a boolean is enough."
+         },
+         {
+            "key":"2",
+            "desc":"Too complex data structures",
+            "desc_long":"Complex data structures are used when are not needed, e.g. primitive-data array vs Object-data array."
+         }
+      ],
+      "pass_examples":[
+         {
+            "key":"1",
+            "desc":"Variables and attributes",
+            "desc_long":"Appropriate data type selection for variables and attributes."
+         },
+         {
+            "key":"2",
+            "desc":"Function/Method return",
+            "desc_long":"Appropriate data type selection for function/method return."
+         }
+      ]
+   },
+   {
       "name":"DRY principle",
       "key":"dry_principle",
+      "level":"basic",
       "fail_examples":[
          {
             "key":"1",
@@ -136,8 +137,28 @@ const FEATURES = JSON.parse(
       ]
    },
    {
+      "name":"Test Completeness",
+      "key":"test_completeness",
+      "level":"advanced",
+      "fail_examples":[
+         {
+            "key":"1",
+            "desc":"Not thoroughly tested",
+            "desc_long":"Some specification/requirement is not thoroughly tested, e.g. a test case checks correct input but it does not check the behavior of the program with anomalous/exceptional inputs."
+         }
+      ],
+      "pass_examples":[
+         {
+            "key":"1",
+            "desc":"Enough tests",
+            "desc_long":"For each specification/requirement that a test suite covers, there are enough tests cases to validate it."
+         }
+      ]
+   },
+   {
       "name":"Flow",
       "key":"programme_flow",
+      "level":"advanced",
       "fail_examples":[
          {
             "key":"1",
@@ -171,6 +192,7 @@ const FEATURES = JSON.parse(
    {
       "name":"API Documentation",
       "key":"api_documentation",
+      "level":"advanced",
       "fail_examples":[
          {
             "key":"1",
@@ -237,36 +259,41 @@ const FEATURES = JSON.parse(
       ]
    },
    {
-      "name":"Correctness",
-      "key":"correctness",
+      "name":"Modularity",
+      "key":"modularity",
+      "level":"advanced",
       "fail_examples":[
          {
             "key":"1",
-            "desc":"Not compiling",
-            "desc_long":"The code does not compile and run cleanly."
+            "desc":"Spaghetti code",
+            "desc_long":"The project contains spaghetti code, e.g. it lacks a clear organization."
          },
          {
             "key":"2",
-            "desc":"Specifications not met",
-            "desc_long":"The program does not meet some of the specifications."
-         }
-      ],
-      "pass_examples":[
+            "desc":"Unrelated tasks in functions",
+            "desc_long":"Most of the classes and functions perform many unrelated tasks and/or their bodies are large."
+         },
+         {
+            "key":"3",
+            "desc":"High degree of coupling",
+            "desc_long":"The degree of coupling is high, e.g. one object depends on each of the other objects."
+         }],"pass_examples":[
          {
             "key":"1",
-            "desc":"Functions properly",
-            "desc_long":"Program conforms to the specifications provided by the assignment."
+            "desc":"Clear structure",
+            "desc_long":"Project structure is clear since the code is organized in coherent packages, folders, files, etc."
          },
          {
             "key":"2",
-            "desc":"Correct results",
-            "desc_long":"It produces correct results for correct inputs."
+            "desc":"Limited scope of classes and functions",
+            "desc_long":"Most of the classes and functions perform a limited set of tasks and their bodies are limited in length."
          }
       ]
    },
    {
       "name":"Robustness",
       "key":"robustness",
+      "level":"advanced",
       "fail_examples":[
          {
             "key":"1",
@@ -285,6 +312,7 @@ const FEATURES = JSON.parse(
    {
       "name":"Traceability",
       "key":"traceability",
+      "level":"advanced",
       "fail_examples":[
          {
             "key":"1",
@@ -306,26 +334,9 @@ const FEATURES = JSON.parse(
       ]
    },
    {
-      "name":"Test Completeness",
-      "key":"test_completeness",
-      "fail_examples":[
-         {
-            "key":"1",
-            "desc":"Not thoroughly tested",
-            "desc_long":"Some specification/requirement is not thoroughly tested, e.g. a test case checks correct input but it does not check the behavior of the program with anomalous/exceptional inputs."
-         }
-      ],
-      "pass_examples":[
-         {
-            "key":"1",
-            "desc":"Enough tests",
-            "desc_long":"For each specification/requirement that a test suite covers, there are enough tests cases to validate it."
-         }
-      ]
-   },
-   {
       "name":"PG - Extern - Analysis",
       "key":"pg_external_analysis",
+      "level":"procedural_guidance",
       "fail_examples":[
          
       ],
@@ -350,6 +361,7 @@ const FEATURES = JSON.parse(
    {
       "name":"PG - Extern - Design",
       "key":"pg_external_design",
+      "level":"procedural_guidance",
       "fail_examples":[
          
       ],
@@ -364,6 +376,7 @@ const FEATURES = JSON.parse(
    {
       "name":"PG - Extern - Specification",
       "key":"pg_external_specification",
+      "level":"procedural_guidance",
       "fail_examples":[
          
       ],
@@ -393,6 +406,7 @@ const FEATURES = JSON.parse(
    {
       "name":"PG - Extern - Tests",
       "key":"pg_external_tests",
+      "level":"procedural_guidance",
       "fail_examples":[
          
       ],
@@ -407,6 +421,7 @@ const FEATURES = JSON.parse(
    {
       "name":"PG - Intern - Analaysis",
       "key":"pg_internal_analysis",
+      "level":"procedural_guidance",
       "fail_examples":[
          
       ],
@@ -426,6 +441,7 @@ const FEATURES = JSON.parse(
    {
       "name":"PG - Intern - Design",
       "key":"pg_internal_design",
+      "level":"procedural_guidance",
       "fail_examples":[
          
       ],
@@ -450,6 +466,7 @@ const FEATURES = JSON.parse(
    {
       "name":"PG - Intern - Specification",
       "key":"pg_internal_specification",
+      "level":"procedural_guidance",
       "fail_examples":[
          
       ],
@@ -474,6 +491,7 @@ const FEATURES = JSON.parse(
    {
       "name":"PG - Intern - Tests",
       "key":"pg_internal_tests",
+      "level":"procedural_guidance",
       "fail_examples":[
          
       ],
@@ -493,6 +511,7 @@ const FEATURES = JSON.parse(
    {
       "name":"PG - Impl - Analysis",
       "key":"pg_implementation_analysis",
+      "level":"procedural_guidance",
       "fail_examples":[
          
       ],
@@ -507,6 +526,7 @@ const FEATURES = JSON.parse(
    {
       "name":"PG - Impl - Design",
       "key":"pg_implementation_design",
+      "level":"procedural_guidance",
       "fail_examples":[
          
       ],
@@ -526,6 +546,7 @@ const FEATURES = JSON.parse(
    {
       "name":"PG - Impl - Coding",
       "key":"pg_implementation_coding",
+      "level":"procedural_guidance",
       "fail_examples":[
          
       ],
@@ -540,6 +561,7 @@ const FEATURES = JSON.parse(
    {
       "name":"PG - Impl - Tests",
       "key":"pg_implementation_tests",
+      "level":"procedural_guidance",
       "fail_examples":[
          
       ],
