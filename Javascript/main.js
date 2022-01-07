@@ -7,6 +7,10 @@ const disabledInputs = new Map();
 var tasks;
 var task;
 
+window.addEventListener('load', (event) => {
+	handleToolTippToggle();
+});
+
 function appendExamples(tr, category, featureKey, examples, examplesMap) {
   const examplesDomElements = [];
   examplesMap.set(featureKey, examplesDomElements);

@@ -1,6 +1,5 @@
 window.addEventListener('load', (event) => {
     load();
-	handleToolTippToggle();
 });
 
 
