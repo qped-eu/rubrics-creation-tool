@@ -268,7 +268,8 @@ function handleFiles(files){
 	reader.readAsText(files[0]);
 }
 
-function handleToolTippToggle(checkbox){
+function handleToolTippToggle(){
+	let checkbox = document.getElementById("tooltip_checkbox");
 	let tableBody = document.getElementById("rubrics_table");
 	if(checkbox.checked){
 		tableBody.classList.remove("hideToolTipps");
