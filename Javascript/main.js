@@ -68,7 +68,7 @@ function load() {
   tasks = JSON.parse(localStorage.getItem('all_tasks'));
   if(tasks.length==0){
 	setTable([], false);
-	reset();  
+	reset();	
   }
   else{
 	setTask(tasks.length - 1);	
@@ -127,27 +127,45 @@ function unhighlight(e) {
   e.target.classList.remove('highlight');
 }
 
-function reset() {  
-  for (let domElement of notEnteredInputs.values()) {
-      domElement.checked = true;
-  }
+function reset() {
+	for (let domElement of notEnteredInputs.values()) {
+		domElement.checked = true;
+	}
 
-  for (let domElement of disabledInputs.values()) {
-      domElement.checked = false;
-  }
+	for (let domElement of disabledInputs.values()) {
+		domElement.checked = false;
+	}
+	for (let domElements of scoreInputs.values()) {
+		domElements[2].checked = true;
+	}
 
-  for (let domElements of scoreInputs.values()) {
-      domElements[2].checked = true;
-  }
-
-  for (let domElements of failExInputs.values()) {
-    domElements.forEach( element => element.checked = false);
-  }
-
-  for (let domElements of passExInputs.values()) {
-    domElements.forEach( element => element.checked = false);
-  }
-
+	for (let domElements of failExInputs.values()) {
+		domElements.forEach( element => element.checked = false);
+	}
+	
+	for (let domElements of passExInputs.values()) {
+		domElements.forEach( element => element.checked = false);
+	}
+	var feedbackField = document.getElementById('feedback_text');
+	feedbackField.value = '';
+	var additionalComment = document.getElementById('comment_text');
+	additionalComment.value = '';
+	let latestFeedback = task.feedbackSet[task.feedbackSet.length-1];
+	if(task != undefined && latestFeedback != undefined){
+		additionalComment.value = latestFeedback.additionalComment;
+		for(let feedback of latestFeedback.feedbackFeature){
+			let featurePass = passExInputs.get(feedback.key);
+			let featureFail = failExInputs.get(feedback.key);
+			for(let improvementPoint of feedback.improvementPoints){
+				featureFail[parseInt(improvementPoint)-1].checked = true;
+			}
+			for(let goodPoint of feedback.goodPoints){
+				featurePass[parseInt(goodPoint)-1].checked = true;
+			}
+			examplesChange(feedback.key);
+			computePoints();
+		}
+	}
 }
 
 function FeedbackPerTask(weightedAverageScore, pointsForSolution, feedbackFeature, additionalComment, grader){
@@ -158,7 +176,8 @@ function FeedbackPerTask(weightedAverageScore, pointsForSolution, feedbackFeatur
 	this.grader = grader;
 }
 
-function FeedbackPerFeature(score, scoreWeight, improvementPoints, goodPoints){
+function FeedbackPerFeature(key, score, scoreWeight, improvementPoints, goodPoints){
+	this.key = key;
 	this.score = score;
 	this.scoreWeight = scoreWeight;
 	this.improvementPoints = improvementPoints;
@@ -169,6 +188,11 @@ function handleFeedbackButtonClick(){
 	var feedbackField = document.getElementById('feedback_text');
 	var data = [];
 	if(task!=undefined){
+		let grader = document.getElementById("grader_text").value;
+		if(grader == ""){
+			makeToast("Please enter your name in the grader field.")
+			return;
+		}
 		var feedback = 'This feedback is an auto-generated summary of the rating of your assignmnet according to the rubric. ' +
 										'The assignment may have additional grading criteria, which is why your grade may diverge from the computed score. ' +
 										'If the grader provides additional feedback, you find this at the bottom.\n\n';
@@ -232,7 +256,7 @@ function handleFeedbackButtonClick(){
 				  });
 				  feedback += '\n';
 				  
-				feedbackFeature.push(new FeedbackPerFeature(score, scoreWeighted, improvementPoints, goodPoints));
+				feedbackFeature.push(new FeedbackPerFeature(element.key, score, scoreWeighted, improvementPoints, goodPoints));
 
      		 }});
 			 
@@ -249,8 +273,6 @@ function handleFeedbackButtonClick(){
 		let additionalComment = document.getElementById("comment_text").value;
 		feedback += additionalComment;
 		
-		let grader = document.getElementById("grader_text").value;
-		
 		var data = new FeedbackPerTask(weightedAverageScore, pointsForSolution, feedbackFeature, additionalComment, grader);
 
 		feedbackField.value = feedback;
@@ -260,11 +282,91 @@ function handleFeedbackButtonClick(){
 		else{
 			task.feedbackSet.push(data);
 		}
+		localStorage.setItem('all_tasks', JSON.stringify(tasks));
 	} else {
 		feedbackField.value = '';
 		makeToast("Please select a task before trying to generate feedback.");
 	}
 
+}
+
+function convertToCSV(object){
+	csvObject = convertObjectToCSV(object, "");
+	return csvObject[0] + "\n" + csvObject[1];
+}
+
+function convertObjectToCSV(object, addString){
+	var ret = "";
+	var header = "";
+	const map = new Map(Object.entries(object));
+	for (const [key, value] of map.entries()) {
+		if(Array.isArray(value)){
+			if(key == "deliverables"){
+				const deliverables = convertDeliverablesToCSV(value);
+				header+=deliverables[0];
+				ret+=deliverables[1];
+			}
+			else if(key == "rubricSet"){
+				const rubricSet = convertRubricSetToCSV(value);
+				header+=rubricSet[0];
+				ret+=rubricSet[1];
+			}
+			else if(key == "feedbackSet"){
+				convertFeedbackSetToCSV(value);
+			}
+			else{
+				for(let i = 0; i < value.length; i++){
+					let item = value[i];
+					if(item!=null){
+						csvItem = convertObjectToCSV(item, addString+"_"+i);
+						header += csvItem[0];
+						ret += csvItem[1];
+					}
+				}
+			}
+		}
+		else{
+			header += key + addString + ";";
+			ret+='"'+value+'";';
+		}
+	}
+	return [header,ret];
+}
+
+function convertDeliverablesToCSV(deliverables){
+	let header = "";
+	let ret = "";
+	for(let i = 0; i < deliverables.length; i++){
+		header+=deliverables[i].name+";";
+		ret+=deliverables[i].selected+";";
+	}
+	return [header,ret];
+}
+
+function convertRubricSetToCSV(rubricSet){
+	let header = "";
+	let ret = "";
+	FEATURES.forEach(
+		element =>{
+			header+=element.key+";";
+			ret+=findWeightForFeature(rubricSet, element.key)+";";
+		}
+	);
+	return [header,ret];
+}
+
+function convertFeedbackSetToCSV(feedbackSet){
+	console.log(feedbackSet);
+}
+
+function findWeightForFeature(rubricSet, key){
+	for(let i = 0; i < rubricSet.length; i++){
+		let feature = rubricSet[i];
+		if(feature.name==key){
+			return feature.weight;
+		}
+	}
+	return 0;
 }
 
 function handleExportButtonClick(){
@@ -274,10 +376,13 @@ function handleExportButtonClick(){
 	else{
 		var exportFormat = document.getElementById('export_format').value;
 		if(exportFormat=="json"){
-			download(task.name+'_feedback.json', JSON.stringify(task));
+			const jsonString = JSON.stringify(task);
+			download(task.name+'_feedback.json', jsonString);
 		}
 		if(exportFormat=="csv"){
 			makeToast("CSV is not yet implemented");
+			//const csv = convertToCSV(task);
+			//download(task.name+'_feedback.csv', csv);
 		}
 	}
 }
@@ -288,11 +393,9 @@ function handleNextStudentButtonClick(){
 			makeToast('Hit the "Generate Feedback"-button at least once before grading the next student.');
 		}
 		else{
-			var feedbackField = document.getElementById('feedback_text');
-			feedbackField.value = '';
-			reset();
 			task.feedbackSet.push(undefined);
 			localStorage.setItem('all_tasks', JSON.stringify(tasks));
+			reset();
 		}
 	}
 	else{
@@ -451,9 +554,10 @@ function computePointsPerFeature(feature){
 }
 
 function examplesChange(feature) {
-  computedScore = computePointsPerFeature(feature);
-  scoreInputs.get(feature)[computedScore].checked = true;
-  computePoints();
+	let scoreInput = scoreInputs.get(feature);
+	computedScore = Math.min(computePointsPerFeature(feature), scoreInput.length-1);
+	scoreInput[computedScore].checked = true;
+	computePoints();
 }
 
 function computePoints(){
