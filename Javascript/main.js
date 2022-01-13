@@ -378,7 +378,13 @@ function convertFeedbackSetToCSV(feedbackSet){
 				ret[ret.length-1]+=value+";";
 			}
 		}
-		for(let feedbackFeature of feedback.feedbackFeature){
+		let feedbackFeatures = [];
+		FEATURES.forEach(
+			element => {
+				feedbackFeatures.push(getFeedbackForFeature(element.key, feedback));
+			}
+		)
+		for(let feedbackFeature of feedbackFeatures){
 			const feedbackFeatureMap = new Map(Object.entries(feedbackFeature));
 			let headerPrefix = feedbackFeature.key + "_";
 			for (const [key, value] of feedbackFeatureMap.entries()) {
@@ -418,6 +424,15 @@ function convertFeedbackSetToCSV(feedbackSet){
 		}
 	}
 	return [header,ret];
+}
+
+function getFeedbackForFeature(feature, feedback){
+	for(let feedbackFeature of feedback.feedbackFeature){
+		if(feedbackFeature.key == feature){
+			return feedbackFeature;
+		}
+	}
+	return new FeedbackPerFeature(feature, -1, -1, [], []);
 }
 
 function getExamplesPerFeature(feature_key){
