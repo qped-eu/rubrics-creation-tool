@@ -150,20 +150,22 @@ function reset() {
 	feedbackField.value = '';
 	var additionalComment = document.getElementById('comment_text');
 	additionalComment.value = '';
+	if(task != undefined){
 	let latestFeedback = task.feedbackSet[task.feedbackSet.length-1];
-	if(task != undefined && latestFeedback != undefined){
-		additionalComment.value = latestFeedback.additionalComment;
-		for(let feedback of latestFeedback.feedbackFeature){
-			let featurePass = passExInputs.get(feedback.key);
-			let featureFail = failExInputs.get(feedback.key);
-			for(let improvementPoint of feedback.improvementPoints){
-				featureFail[parseInt(improvementPoint)-1].checked = true;
+		if(latestFeedback != undefined){
+			additionalComment.value = latestFeedback.additionalComment;
+			for(let feedback of latestFeedback.feedbackFeature){
+				let featurePass = passExInputs.get(feedback.key);
+				let featureFail = failExInputs.get(feedback.key);
+				for(let improvementPoint of feedback.improvementPoints){
+					featureFail[parseInt(improvementPoint)-1].checked = true;
+				}
+				for(let goodPoint of feedback.goodPoints){
+					featurePass[parseInt(goodPoint)-1].checked = true;
+				}
+				examplesChange(feedback.key);
+				computePoints();
 			}
-			for(let goodPoint of feedback.goodPoints){
-				featurePass[parseInt(goodPoint)-1].checked = true;
-			}
-			examplesChange(feedback.key);
-			computePoints();
 		}
 	}
 }
@@ -312,7 +314,13 @@ function convertObjectToCSV(object, addString){
 				ret+=rubricSet[1];
 			}
 			else if(key == "feedbackSet"){
-				convertFeedbackSetToCSV(value);
+				const feedbackSet = convertFeedbackSetToCSV(value);
+				header+=feedbackSet[0];
+				let temp = ret;
+				ret = "";
+				for(let line of feedbackSet[1]){
+					ret+= temp + line + "\n";
+				}
 			}
 			else{
 				for(let i = 0; i < value.length; i++){
@@ -356,7 +364,79 @@ function convertRubricSetToCSV(rubricSet){
 }
 
 function convertFeedbackSetToCSV(feedbackSet){
-	console.log(feedbackSet);
+	let header = undefined;
+	let ret = [];
+	for(let feedback of feedbackSet){
+		ret.push("");
+		let tempHeader = "";	
+		const feedbackMap = new Map(Object.entries(feedback));
+		for (const [key, value] of feedbackMap.entries()) {
+			if(!(key=="key" || Array.isArray(value))){
+				if(header==undefined){
+					tempHeader+= key +";";
+				}
+				ret[ret.length-1]+=value+";";
+			}
+		}
+		for(let feedbackFeature of feedback.feedbackFeature){
+			const feedbackFeatureMap = new Map(Object.entries(feedbackFeature));
+			let headerPrefix = feedbackFeature.key + "_";
+			for (const [key, value] of feedbackFeatureMap.entries()) {
+				if(!(key=="key" || Array.isArray(value))){
+					if(header==undefined){
+						tempHeader+= headerPrefix+key +";";
+					}
+					ret[ret.length-1]+=value+";";
+				}
+			}
+			const examples = getExamplesPerFeature(feedbackFeature.key);
+			let goodExampleValues = [];
+			let badExampleValues = [];	
+			for(let goodPoint of feedbackFeature.goodPoints){
+				goodExampleValues[parseInt(goodPoint) - 1] = true;
+			}
+			for(let improvementPoint of feedbackFeature.improvementPoints){
+				badExampleValues[parseInt(improvementPoint) - 1] = true;
+			}
+			for(let i = 0; i < examples[0].length; i++){
+				let example = examples[0][i];
+				if(header==undefined){
+					tempHeader+=example + ";";
+				}
+				ret[ret.length-1]+=(goodExampleValues[i]!=undefined)+";";
+			}
+			for(let i = 0; i < examples[1].length; i++){
+				let example = examples[1][i];
+				if(header==undefined){
+					tempHeader+=example + ";";
+				}			
+				ret[ret.length-1]+=(badExampleValues[i]!=undefined)+";";
+			}			
+		}
+		if(header==undefined){
+			header = tempHeader;
+		}
+	}
+	return [header,ret];
+}
+
+function getExamplesPerFeature(feature_key){
+	let passExamples = [];
+	let failExamples = [];
+	FEATURES.forEach(
+		element =>{
+			if(element.key==feature_key){
+				for(let example of element.fail_examples){
+					failExamples.push(example.desc.replace(" ","_"));
+				}
+				for(let example of element.pass_examples){
+					passExamples.push(example.desc.replace(" ","_"));
+				}
+				
+			}
+		}
+	);
+	return [passExamples, failExamples];
 }
 
 function findWeightForFeature(rubricSet, key){
@@ -380,9 +460,9 @@ function handleExportButtonClick(){
 			download(task.name+'_feedback.json', jsonString);
 		}
 		if(exportFormat=="csv"){
-			makeToast("CSV is not yet implemented");
-			//const csv = convertToCSV(task);
-			//download(task.name+'_feedback.csv', csv);
+			//makeToast("CSV is not yet implemented");
+			const csv = convertToCSV(task);
+			download(task.name+'_feedback.csv', csv);
 		}
 	}
 }
@@ -547,16 +627,23 @@ function computePointsPerFeature(feature){
     });
 
 	failRatio = failExamplesSelected / failExampleCount;
+	if(isNaN(failRatio)){
+		failRatio = 0;
+	}
 
 	passRatio = passExamplesSelected / passExampleCount;
+	if(isNaN(passRatio)){
+		passRatio = 0;
+	}
 
 	return Math.round(((passRatio - failRatio) + 1) * 2);
 }
 
 function examplesChange(feature) {
 	let scoreInput = scoreInputs.get(feature);
-	computedScore = Math.min(computePointsPerFeature(feature), scoreInput.length-1);
-	scoreInput[computedScore].checked = true;
+	let computedScore = computePointsPerFeature(feature);
+	let index = Math.min(computedScore, scoreInput.length-1);
+	scoreInput[index].checked = true;
 	computePoints();
 }
 
