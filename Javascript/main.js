@@ -79,12 +79,27 @@ function load() {
   if(localStorage.grader) {
   	document.getElementById("grader_text").value = localStorage.grader;
   }
+
+  if(localStorage.courseYear) {
+  	document.getElementById("course_year_text").value = localStorage.courseYear;
+  }
+  if(!localStorage.courseRun) {
+  	localStorage.courseRun = "1";
+  }
+  document.getElementById("course_run_text").value = localStorage.courseRun;
 }
 
 function handleGraderChange() {
 	localStorage.grader = document.getElementById("grader_text").value;
 }
 
+function handleCourseYearChange() {
+	localStorage.courseYear = document.getElementById("course_year_text").value;
+}
+
+function handleCourseRunChange() {
+	localStorage.courseRun = document.getElementById("course_run_text").value;
+}
 
 function setTask(index){
 	task = tasks[index];
@@ -170,12 +185,15 @@ function reset() {
 	}
 }
 
-function FeedbackPerTask(weightedAverageScore, pointsForSolution, feedbackFeature, additionalComment, grader){
+function FeedbackPerTask(weightedAverageScore, pointsForSolution, feedbackFeature, additionalComment, grader, courseYear, courseRun){
 	this.weightedAverageScore = weightedAverageScore;
 	this.pointsForSolution = pointsForSolution;
 	this.feedbackFeature = feedbackFeature;
 	this.additionalComment = additionalComment;
 	this.grader = grader;
+	this.courseRun = courseRun;
+	this.courseYear = courseYear;
+	this.timestamp = new Date().toISOString();
 }
 
 function FeedbackPerFeature(key, score, scoreWeight, improvementPoints, goodPoints){
@@ -193,6 +211,16 @@ function handleFeedbackButtonClick(){
 		let grader = document.getElementById("grader_text").value;
 		if(grader == ""){
 			makeToast("Please enter your name in the grader field.")
+			return;
+		}
+		let courseYear = document.getElementById("course_year_text").value;
+		if(courseYear == ""){
+			makeToast("Please enter the start year of the course.")
+			return;
+		}
+		let courseRun = document.getElementById("course_run_text").value;
+		if(courseRun == ""){
+			makeToast("Please enter the current run of the course.")
 			return;
 		}
 		var feedback = 'This feedback is an auto-generated summary of the rating of your assignmnet according to the rubric. ' +
@@ -275,7 +303,7 @@ function handleFeedbackButtonClick(){
 		let additionalComment = document.getElementById("comment_text").value;
 		feedback += additionalComment;
 		
-		var data = new FeedbackPerTask(weightedAverageScore, pointsForSolution, feedbackFeature, additionalComment, grader);
+		var data = new FeedbackPerTask(weightedAverageScore, pointsForSolution, feedbackFeature, additionalComment, grader, courseYear, courseRun);
 
 		feedbackField.value = feedback;
 		if(task.feedbackSet.length!=0){
@@ -469,15 +497,20 @@ function handleExportButtonClick(){
 		makeToast("Please select a task before trying to export one.");
 	}
 	else{
-		var exportFormat = document.getElementById('export_format').value;
-		if(exportFormat=="json"){
-			const jsonString = JSON.stringify(task);
-			download(task.name+'_feedback.json', jsonString);
-		}
-		if(exportFormat=="csv"){
-			//makeToast("CSV is not yet implemented");
-			const csv = convertToCSV(task);
-			download(task.name+'_feedback.csv', csv);
+		try {
+			var simpleFileName = task.course + "_" + task.name + "_" + localStorage.grader + "_" + localStorage.courseYear + "_" + localStorage.courseRun + "_feedback";
+			var exportFormat = document.getElementById('export_format').value;
+			if(exportFormat=="json"){
+				const jsonString = JSON.stringify(task);
+				download(simpleFileName+'.json', jsonString);
+			}
+			if(exportFormat=="csv"){
+				//makeToast("CSV is not yet implemented");
+				const csv = convertToCSV(task);
+				download(simpleFileName+'.csv', csv);
+			}
+		} catch (err) {
+			makeToast("Something went wrong. Probably you need to press 'Generate Feedback' first.");
 		}
 	}
 }

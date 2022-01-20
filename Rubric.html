@@ -31,8 +31,37 @@
 				</div>
 			</div>
 		</div>
-		<h2>Grader</h2>
-		<input type="text" id="grader_text" oninput="handleGraderChange()" />
+		<table>
+			<tr>
+				<td style="vertical-align: top;">
+					<h2>Grader</h2>
+					<input type="text" id="grader_text" oninput="handleGraderChange()" />
+				</td>
+				<td style="vertical-align: top;">
+					<h2>Course year</h2>
+					<input type="text" id="course_year_text" oninput="handleCourseYearChange()" /><br/>
+					<p>
+						<i>
+							Enter the year in which<br/>
+							the course started with<br/>
+							four digits (e.g., 2022).
+						</i>
+					</p>
+				</td>
+				<td style="vertical-align: top;">
+					<h2>Course run</h2>
+					<input type="text" id="course_run_text" oninput="handleCourseRunChange()" /><br/>
+					<p>
+						<i>
+							If the course runs multiple<br/>
+							times per year, enter the<br/>
+							number of the run.<br/>
+							Otherwise enter 1.
+						</i>
+					</p>
+				</td>
+			</tr>
+		</table>
 		<h2>Show Tooltipps</h2>
 		<label>
 			<input type="checkbox" onchange="handleToolTippToggle();" id="tooltip_checkbox"/>
