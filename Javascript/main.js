@@ -12,6 +12,12 @@ var textFieldsDirty = false;
 window.addEventListener('load', (event) => {
 	handleToolTippToggle();
 });
+function handleLeavePage() {
+	if(currentInputDirty()) {
+		makeToast("There is unsaved feedback. You can press 'Next Student' to store.");
+		return "There is unsaved feedback. You can press 'Next Student' to store. Do you want to leave?";
+	}
+}
 
 function appendExamples(tr, category, featureKey, examples, examplesMap) {
   const examplesDomElements = [];
