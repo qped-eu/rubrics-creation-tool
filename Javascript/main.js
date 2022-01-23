@@ -205,23 +205,27 @@ function FeedbackPerFeature(key, score, scoreWeight, improvementPoints, goodPoin
 }
 
 function handleFeedbackButtonClick(){
+	summarizeFeedback(true)
+}
+
+function summarizeFeedback(updateTextField){
 	var feedbackField = document.getElementById('feedback_text');
 	var data = [];
 	if(task!=undefined){
 		let grader = document.getElementById("grader_text").value;
 		if(grader == ""){
 			makeToast("Please enter your name in the grader field.")
-			return;
+			return false;
 		}
 		let courseYear = document.getElementById("course_year_text").value;
 		if(courseYear == ""){
 			makeToast("Please enter the start year of the course.")
-			return;
+			return false;
 		}
 		let courseRun = document.getElementById("course_run_text").value;
 		if(courseRun == ""){
 			makeToast("Please enter the current run of the course.")
-			return;
+			return false;
 		}
 		var feedback = 'This feedback is an auto-generated summary of the rating of your assignmnet according to the rubric. ' +
 										'The assignment may have additional grading criteria, which is why your grade may diverge from the computed score. ' +
@@ -305,7 +309,10 @@ function handleFeedbackButtonClick(){
 		
 		var data = new FeedbackPerTask(weightedAverageScore, pointsForSolution, feedbackFeature, additionalComment, grader, courseYear, courseRun);
 
-		feedbackField.value = feedback;
+		if (updateTextField) {
+			feedbackField.value = feedback;
+		}
+
 		if(task.feedbackSet.length!=0){
 			task.feedbackSet[task.feedbackSet.length-1] = data;
 		}
@@ -316,8 +323,9 @@ function handleFeedbackButtonClick(){
 	} else {
 		feedbackField.value = '';
 		makeToast("Please select a task before trying to generate feedback.");
+		return false;
 	}
-
+	return true;
 }
 
 function convertToCSV(object){
@@ -503,7 +511,16 @@ function handleExportButtonClick(){
 		makeToast("Please select a task before trying to export one.");
 	}
 	else{
-		// try {
+
+		// make sure that the currently entered information is stored
+		// in the current task
+		// don't update the feedback text field
+		if (!summarizeFeedback(false)) {
+			// if the feedback could not be summarized
+			// then stop exporting.
+			return;
+		}
+		try {
 			var simpleFileName = task.course + "_" + task.name + "_" + localStorage.grader + "_" + localStorage.courseYear + "_" + localStorage.courseRun + "_feedback";
 			var exportFormat = document.getElementById('export_format').value;
 			if(exportFormat=="json"){
@@ -515,22 +532,23 @@ function handleExportButtonClick(){
 				const csv = convertToCSV(task);
 				download(simpleFileName+'.csv', csv);
 			}
-		// } catch (err) {
-		// 	makeToast("Something went wrong. Probably you need to press 'Generate Feedback' first.");
-		// }
+		} catch (err) {
+			makeToast("Something went wrong: " + err);
+		}
 	}
 }
 
 function handleNextStudentButtonClick(){
 	if(task!=undefined){
-		if(task.feedbackSet.length==0||task.feedbackSet[task.feedbackSet.length-1]==undefined){
-			makeToast('Hit the "Generate Feedback"-button at least once before grading the next student.');
-		}
-		else{
-			task.feedbackSet.push(undefined);
-			localStorage.setItem('all_tasks', JSON.stringify(tasks));
-			reset();
-		}
+		// ensure that the currently filled in information
+		// is stored in the task's feedback
+
+		// do so without updating the text field for feedback
+		summarizeFeedback(false);
+
+		task.feedbackSet.push(undefined);
+		localStorage.setItem('all_tasks', JSON.stringify(tasks));
+		reset();
 	}
 	else{
 		makeToast("You can not grade the next student if no task is selected.");
