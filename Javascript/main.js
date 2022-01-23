@@ -194,6 +194,9 @@ function FeedbackPerTask(weightedAverageScore, pointsForSolution, feedbackFeatur
 	this.courseRun = courseRun;
 	this.courseYear = courseYear;
 	this.timestamp = new Date().toISOString();
+	this.reserved1 = "";
+	this.reserved2 = "";
+	this.reserved3 = "";
 }
 
 function FeedbackPerFeature(key, score, scoreWeight, improvementPoints, goodPoints){
