@@ -7,6 +7,7 @@ const disabledInputs = new Map();
 const OK = "OK";
 var tasks;
 var task;
+var pointsEntered = false;
 
 window.addEventListener('load', (event) => {
 	handleToolTippToggle();
@@ -102,6 +103,10 @@ function handleCourseRunChange() {
 	localStorage.courseRun = document.getElementById("course_run_text").value;
 }
 
+function handlePointsChange() {
+	pointsEntered = true;
+}
+
 function setTask(index){
 	task = tasks[index];
 
@@ -144,6 +149,8 @@ function unhighlight(e) {
 }
 
 function reset() {
+	pointsEntered = false;
+
 	for (let domElement of notEnteredInputs.values()) {
 		domElement.checked = true;
 	}
@@ -209,6 +216,7 @@ function FeedbackPerFeature(key, score, scoreWeight, improvementPoints, goodPoin
 }
 
 function handleFeedbackButtonClick(){
+	pointsEntered = true;
 	summarizeFeedback(true)
 }
 
@@ -515,16 +523,19 @@ function handleExportButtonClick(){
 		makeToast("Please select a task before trying to export one.");
 	}
 	else{
-
-		// make sure that the currently entered information is stored
-		// in the current task
-		// don't update the feedback text field
-		var exitCode = summarizeFeedback(false);
-		if (exitCode != OK) {
-			// if the feedback could not be summarized
-			// then stop exporting.
-			makeToast("Please first fix the following: " + exitCode);
-			return;
+		// if there are "unsaved" changes, first save the current
+		// data to the feedback set of the current task
+		if (currentInputDirty()) {
+			// make sure that the currently entered information is stored
+			// in the current task
+			// don't update the feedback text field
+			var exitCode = summarizeFeedback(false);
+			if (exitCode != OK) {
+				// if the feedback could not be summarized
+				// then stop exporting.
+				makeToast("Please first fix the following: " + exitCode);
+				return;
+			}
 		}
 		try {
 			var simpleFileName = task.course + "_" + task.name + "_" + localStorage.grader + "_" + localStorage.courseYear + "_" + localStorage.courseRun + "_feedback";
@@ -544,8 +555,24 @@ function handleExportButtonClick(){
 	}
 }
 
+function currentInputDirty() {
+	var featureChanged = false;
+	FEATURES.forEach(
+    element => {
+    		if (notEnteredInputs.get(element.key) != undefined) {
+	    		featureChanged |= !notEnteredInputs.get(element.key).checked;
+	    	}
+    	});
+	return featureChanged || pointsEntered;
+}
+
 function handleNextStudentButtonClick(){
 	if(task!=undefined){
+		if (!currentInputDirty()) {
+			makeToast("No Data entered. Did not go to next student.");
+			return;
+		}
+
 		// ensure that the currently filled in information
 		// is stored in the task's feedback
 
@@ -689,7 +716,7 @@ function setTable(enabledFeatures, filter){
 }
 
 function scoreSet(feature) {
-  notEnteredInputs.get(feature).value = false;
+  notEnteredInputs.get(feature).checked = false;
   computePoints();
 }
 
@@ -728,6 +755,9 @@ function examplesChange(feature) {
 	let computedScore = computePointsPerFeature(feature);
 	let index = Math.min(computedScore, scoreInput.length-1);
 	scoreInput[index].checked = true;
+
+  notEnteredInputs.get(feature).checked = false;
+
 	computePoints();
 }
 
