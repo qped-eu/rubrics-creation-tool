@@ -4,6 +4,7 @@ const failExInputs = new Map();
 const passExInputs = new Map();
 const notEnteredInputs = new Map();
 const disabledInputs = new Map();
+const OK = "OK";
 var tasks;
 var task;
 
@@ -218,17 +219,17 @@ function summarizeFeedback(updateTextField){
 		let grader = document.getElementById("grader_text").value;
 		if(grader == ""){
 			makeToast("Please enter your name in the grader field.")
-			return false;
+			return "Enter grader.";
 		}
 		let courseYear = document.getElementById("course_year_text").value;
 		if(courseYear == ""){
 			makeToast("Please enter the start year of the course.")
-			return false;
+			return "Enter start year.";
 		}
 		let courseRun = document.getElementById("course_run_text").value;
 		if(courseRun == ""){
 			makeToast("Please enter the current run of the course.")
-			return false;
+			return "Enter run.";
 		}
 		var feedback = 'This feedback is an auto-generated summary of the rating of your assignmnet according to the rubric. ' +
 										'The assignment may have additional grading criteria, which is why your grade may diverge from the computed score. ' +
@@ -326,9 +327,9 @@ function summarizeFeedback(updateTextField){
 	} else {
 		feedbackField.value = '';
 		makeToast("Please select a task before trying to generate feedback.");
-		return false;
+		return "Select a task.";
 	}
-	return true;
+	return OK;
 }
 
 function convertToCSV(object){
@@ -518,9 +519,11 @@ function handleExportButtonClick(){
 		// make sure that the currently entered information is stored
 		// in the current task
 		// don't update the feedback text field
-		if (!summarizeFeedback(false)) {
+		var exitCode = summarizeFeedback(false);
+		if (exitCode != OK) {
 			// if the feedback could not be summarized
 			// then stop exporting.
+			makeToast("Please first fix the following: " + exitCode);
 			return;
 		}
 		try {
@@ -547,7 +550,13 @@ function handleNextStudentButtonClick(){
 		// is stored in the task's feedback
 
 		// do so without updating the text field for feedback
-		summarizeFeedback(false);
+		var exitCode = summarizeFeedback(false);
+		if (exitCode != OK) {
+			// if the feedback could not be summarized
+			// then stop exporting.
+			makeToast("Please first fix the following: " + exitCode);
+			return;
+		}
 
 		task.feedbackSet.push(undefined);
 		localStorage.setItem('all_tasks', JSON.stringify(tasks));
