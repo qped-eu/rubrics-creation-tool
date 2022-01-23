@@ -72,5 +72,5 @@ function makeToast(displayText) {
   snackbar.className = "show";
 
   // After 3 seconds, remove the show class from DIV
-  setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
+  setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 9500);
 } 
