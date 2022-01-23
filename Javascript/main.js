@@ -395,6 +395,8 @@ function convertFeedbackSetToCSV(feedbackSet){
 	let header = undefined;
 	let ret = [];
 	for(let feedback of feedbackSet){
+		if (feedback==undefined)
+			continue;
 		ret.push("");
 		let tempHeader = "";	
 		const feedbackMap = new Map(Object.entries(feedback));
@@ -424,28 +426,32 @@ function convertFeedbackSetToCSV(feedbackSet){
 				}
 			}
 			const examples = getExamplesPerFeature(feedbackFeature.key);
-			let goodExampleValues = [];
-			let badExampleValues = [];	
+
+			if(header==undefined){
+				tempHeader += headerPrefix + "positive_examples;";
+			}
+
+			let goodPoints = "";
 			for(let goodPoint of feedbackFeature.goodPoints){
-				goodExampleValues[parseInt(goodPoint) - 1] = true;
-			}
-			for(let improvementPoint of feedbackFeature.improvementPoints){
-				badExampleValues[parseInt(improvementPoint) - 1] = true;
-			}
-			for(let i = 0; i < examples[0].length; i++){
-				let example = examples[0][i];
-				if(header==undefined){
-					tempHeader+=example + ";";
+				if (goodPoints.length != 0) {
+					goodPoints += ",";
 				}
-				ret[ret.length-1]+=(goodExampleValues[i]!=undefined)+";";
+				goodPoints += goodPoint;
 			}
-			for(let i = 0; i < examples[1].length; i++){
-				let example = examples[1][i];
-				if(header==undefined){
-					tempHeader+=example + ";";
-				}			
-				ret[ret.length-1]+=(badExampleValues[i]!=undefined)+";";
-			}			
+			ret[ret.length-1] += goodPoints + ";";
+
+			if(header==undefined){
+				tempHeader += headerPrefix + "negative_examples;";
+			}
+
+			let improvementPoints = "";	
+			for(let improvementPoint of feedbackFeature.improvementPoints){
+				if (improvementPoints.length != 0) {
+					improvementPoints += ",";
+				}
+				improvementPoints += improvementPoint;
+			}
+			ret[ret.length-1] += improvementPoints + ";";
 		}
 		if(header==undefined){
 			header = tempHeader;
@@ -470,10 +476,10 @@ function getExamplesPerFeature(feature_key){
 		element =>{
 			if(element.key==feature_key){
 				for(let example of element.fail_examples){
-					failExamples.push(example.desc.replace(" ","_"));
+					failExamples.push(example.key);
 				}
 				for(let example of element.pass_examples){
-					passExamples.push(example.desc.replace(" ","_"));
+					passExamples.push(example.key);
 				}
 				
 			}
@@ -497,7 +503,7 @@ function handleExportButtonClick(){
 		makeToast("Please select a task before trying to export one.");
 	}
 	else{
-		try {
+		// try {
 			var simpleFileName = task.course + "_" + task.name + "_" + localStorage.grader + "_" + localStorage.courseYear + "_" + localStorage.courseRun + "_feedback";
 			var exportFormat = document.getElementById('export_format').value;
 			if(exportFormat=="json"){
@@ -509,9 +515,9 @@ function handleExportButtonClick(){
 				const csv = convertToCSV(task);
 				download(simpleFileName+'.csv', csv);
 			}
-		} catch (err) {
-			makeToast("Something went wrong. Probably you need to press 'Generate Feedback' first.");
-		}
+		// } catch (err) {
+		// 	makeToast("Something went wrong. Probably you need to press 'Generate Feedback' first.");
+		// }
 	}
 }
 
