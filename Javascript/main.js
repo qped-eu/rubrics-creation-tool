@@ -7,7 +7,7 @@ const disabledInputs = new Map();
 const OK = "OK";
 var tasks;
 var task;
-var pointsEntered = false;
+var textFieldsDirty = false;
 
 window.addEventListener('load', (event) => {
 	handleToolTippToggle();
@@ -103,8 +103,8 @@ function handleCourseRunChange() {
 	localStorage.courseRun = document.getElementById("course_run_text").value;
 }
 
-function handlePointsChange() {
-	pointsEntered = true;
+function handleTextChange() {
+	textFieldsDirty = true;
 }
 
 function setTask(index){
@@ -149,7 +149,7 @@ function unhighlight(e) {
 }
 
 function reset() {
-	pointsEntered = false;
+	textFieldsDirty = false;
 
 	for (let domElement of notEnteredInputs.values()) {
 		domElement.checked = true;
@@ -169,6 +169,9 @@ function reset() {
 	for (let domElements of passExInputs.values()) {
 		domElements.forEach( element => element.checked = false);
 	}
+
+	document.getElementById('task_points').value = "0";
+
 	var feedbackField = document.getElementById('feedback_text');
 	feedbackField.value = '';
 	var additionalComment = document.getElementById('comment_text');
@@ -216,7 +219,7 @@ function FeedbackPerFeature(key, score, scoreWeight, improvementPoints, goodPoin
 }
 
 function handleFeedbackButtonClick(){
-	pointsEntered = true;
+	textFieldsDirty = true;
 	summarizeFeedback(true)
 }
 
@@ -563,7 +566,7 @@ function currentInputDirty() {
 	    		featureChanged |= !notEnteredInputs.get(element.key).checked;
 	    	}
     	});
-	return featureChanged || pointsEntered;
+	return featureChanged || textFieldsDirty;
 }
 
 function handleNextStudentButtonClick(){
@@ -799,6 +802,8 @@ function getScoreFromRadioButton(feature) {
 function handleApplyComputedPoints() {
 	let score = computeWeightedScore();
 	let extrapolatedPoints = computeExtrapolatedPoints(score);
+
+	textFieldsDirty = true;
 
 	document.getElementById('task_points').value = extrapolatedPoints;
 }
