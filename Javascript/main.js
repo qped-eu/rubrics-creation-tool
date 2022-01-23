@@ -299,7 +299,7 @@ function summarizeFeedback(updateTextField){
 
 		feedback += "Grading\n";
 		feedback += "=======\n";
-		feedback += "Weighted average score   : " + weightedAverageScore + ' [1 (fully failed) - 4 (fully passed)]\n';
+		feedback += "Weighted average score   : " + weightedAverageScore.toFixed(1) + ' [1 (fully failed) - 4 (fully passed)]\n';
 		feedback += "Points for this solution : " + pointsForSolution + " [of " + task.maxPoints + ']\n\n';
 		
 		feedback += "Additional Comment\n";
