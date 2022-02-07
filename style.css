@@ -147,8 +147,8 @@ textarea{
 /* Show the snackbar when clicking on a button (class added with JavaScript) */
 #snackbar.show {
   visibility: visible;
-  -webkit-animation: fadeinSnackbar 0.5s, fadeoutSnackbar 0.5s 2.5s;
-  animation: fadeinSnackbar 0.5s, fadeoutSnackbar 0.5s 2.5s;
+  -webkit-animation: fadeinSnackbar 0.5s, fadeoutSnackbar 0.5s 9s;
+  animation: fadeinSnackbar 0.5s, fadeoutSnackbar 0.5s 9s;
 }
 
 /* Animations to fade the snackbar in and out */

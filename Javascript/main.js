@@ -4,12 +4,20 @@ const failExInputs = new Map();
 const passExInputs = new Map();
 const notEnteredInputs = new Map();
 const disabledInputs = new Map();
+const OK = "OK";
 var tasks;
 var task;
+var textFieldsDirty = false;
 
 window.addEventListener('load', (event) => {
 	handleToolTippToggle();
 });
+function handleLeavePage() {
+	if(currentInputDirty()) {
+		makeToast("There is unsaved feedback. You can press 'Next Student' to store.");
+		return "There is unsaved feedback. You can press 'Next Student' to store. Do you want to leave?";
+	}
+}
 
 function appendExamples(tr, category, featureKey, examples, examplesMap) {
   const examplesDomElements = [];
@@ -101,6 +109,10 @@ function handleCourseRunChange() {
 	localStorage.courseRun = document.getElementById("course_run_text").value;
 }
 
+function handleTextChange() {
+	textFieldsDirty = true;
+}
+
 function setTask(index){
 	task = tasks[index];
 
@@ -143,6 +155,8 @@ function unhighlight(e) {
 }
 
 function reset() {
+	textFieldsDirty = false;
+
 	for (let domElement of notEnteredInputs.values()) {
 		domElement.checked = true;
 	}
@@ -161,6 +175,9 @@ function reset() {
 	for (let domElements of passExInputs.values()) {
 		domElements.forEach( element => element.checked = false);
 	}
+
+	document.getElementById('task_points').value = "0";
+
 	var feedbackField = document.getElementById('feedback_text');
 	feedbackField.value = '';
 	var additionalComment = document.getElementById('comment_text');
@@ -194,6 +211,9 @@ function FeedbackPerTask(weightedAverageScore, pointsForSolution, feedbackFeatur
 	this.courseRun = courseRun;
 	this.courseYear = courseYear;
 	this.timestamp = new Date().toISOString();
+	this.reserved1 = "";
+	this.reserved2 = "";
+	this.reserved3 = "";
 }
 
 function FeedbackPerFeature(key, score, scoreWeight, improvementPoints, goodPoints){
@@ -205,23 +225,28 @@ function FeedbackPerFeature(key, score, scoreWeight, improvementPoints, goodPoin
 }
 
 function handleFeedbackButtonClick(){
+	textFieldsDirty = true;
+	summarizeFeedback(true)
+}
+
+function summarizeFeedback(updateTextField){
 	var feedbackField = document.getElementById('feedback_text');
 	var data = [];
 	if(task!=undefined){
 		let grader = document.getElementById("grader_text").value;
 		if(grader == ""){
 			makeToast("Please enter your name in the grader field.")
-			return;
+			return "Enter grader.";
 		}
 		let courseYear = document.getElementById("course_year_text").value;
 		if(courseYear == ""){
 			makeToast("Please enter the start year of the course.")
-			return;
+			return "Enter start year.";
 		}
 		let courseRun = document.getElementById("course_run_text").value;
 		if(courseRun == ""){
 			makeToast("Please enter the current run of the course.")
-			return;
+			return "Enter run.";
 		}
 		var feedback = 'This feedback is an auto-generated summary of the rating of your assignmnet according to the rubric. ' +
 										'The assignment may have additional grading criteria, which is why your grade may diverge from the computed score. ' +
@@ -295,7 +320,7 @@ function handleFeedbackButtonClick(){
 
 		feedback += "Grading\n";
 		feedback += "=======\n";
-		feedback += "Weighted average score   : " + weightedAverageScore + ' [1 (fully failed) - 4 (fully passed)]\n';
+		feedback += "Weighted average score   : " + weightedAverageScore.toFixed(1) + ' [1 (fully failed) - 4 (fully passed)]\n';
 		feedback += "Points for this solution : " + pointsForSolution + " [of " + task.maxPoints + ']\n\n';
 		
 		feedback += "Additional Comment\n";
@@ -305,7 +330,10 @@ function handleFeedbackButtonClick(){
 		
 		var data = new FeedbackPerTask(weightedAverageScore, pointsForSolution, feedbackFeature, additionalComment, grader, courseYear, courseRun);
 
-		feedbackField.value = feedback;
+		if (updateTextField) {
+			feedbackField.value = feedback;
+		}
+
 		if(task.feedbackSet.length!=0){
 			task.feedbackSet[task.feedbackSet.length-1] = data;
 		}
@@ -316,8 +344,9 @@ function handleFeedbackButtonClick(){
 	} else {
 		feedbackField.value = '';
 		makeToast("Please select a task before trying to generate feedback.");
+		return "Select a task.";
 	}
-
+	return OK;
 }
 
 function convertToCSV(object){
@@ -395,6 +424,8 @@ function convertFeedbackSetToCSV(feedbackSet){
 	let header = undefined;
 	let ret = [];
 	for(let feedback of feedbackSet){
+		if (feedback==undefined)
+			continue;
 		ret.push("");
 		let tempHeader = "";	
 		const feedbackMap = new Map(Object.entries(feedback));
@@ -424,28 +455,32 @@ function convertFeedbackSetToCSV(feedbackSet){
 				}
 			}
 			const examples = getExamplesPerFeature(feedbackFeature.key);
-			let goodExampleValues = [];
-			let badExampleValues = [];	
+
+			if(header==undefined){
+				tempHeader += headerPrefix + "positive_examples;";
+			}
+
+			let goodPoints = "";
 			for(let goodPoint of feedbackFeature.goodPoints){
-				goodExampleValues[parseInt(goodPoint) - 1] = true;
-			}
-			for(let improvementPoint of feedbackFeature.improvementPoints){
-				badExampleValues[parseInt(improvementPoint) - 1] = true;
-			}
-			for(let i = 0; i < examples[0].length; i++){
-				let example = examples[0][i];
-				if(header==undefined){
-					tempHeader+=example + ";";
+				if (goodPoints.length != 0) {
+					goodPoints += ",";
 				}
-				ret[ret.length-1]+=(goodExampleValues[i]!=undefined)+";";
+				goodPoints += goodPoint;
 			}
-			for(let i = 0; i < examples[1].length; i++){
-				let example = examples[1][i];
-				if(header==undefined){
-					tempHeader+=example + ";";
-				}			
-				ret[ret.length-1]+=(badExampleValues[i]!=undefined)+";";
-			}			
+			ret[ret.length-1] += goodPoints + ";";
+
+			if(header==undefined){
+				tempHeader += headerPrefix + "negative_examples;";
+			}
+
+			let improvementPoints = "";	
+			for(let improvementPoint of feedbackFeature.improvementPoints){
+				if (improvementPoints.length != 0) {
+					improvementPoints += ",";
+				}
+				improvementPoints += improvementPoint;
+			}
+			ret[ret.length-1] += improvementPoints + ";";
 		}
 		if(header==undefined){
 			header = tempHeader;
@@ -470,10 +505,10 @@ function getExamplesPerFeature(feature_key){
 		element =>{
 			if(element.key==feature_key){
 				for(let example of element.fail_examples){
-					failExamples.push(example.desc.replace(" ","_"));
+					failExamples.push(example.key);
 				}
 				for(let example of element.pass_examples){
-					passExamples.push(example.desc.replace(" ","_"));
+					passExamples.push(example.key);
 				}
 				
 			}
@@ -497,6 +532,20 @@ function handleExportButtonClick(){
 		makeToast("Please select a task before trying to export one.");
 	}
 	else{
+		// if there are "unsaved" changes, first save the current
+		// data to the feedback set of the current task
+		if (currentInputDirty()) {
+			// make sure that the currently entered information is stored
+			// in the current task
+			// don't update the feedback text field
+			var exitCode = summarizeFeedback(false);
+			if (exitCode != OK) {
+				// if the feedback could not be summarized
+				// then stop exporting.
+				makeToast("Please first fix the following: " + exitCode);
+				return;
+			}
+		}
 		try {
 			var simpleFileName = task.course + "_" + task.name + "_" + localStorage.grader + "_" + localStorage.courseYear + "_" + localStorage.courseRun + "_feedback";
 			var exportFormat = document.getElementById('export_format').value;
@@ -510,21 +559,44 @@ function handleExportButtonClick(){
 				download(simpleFileName+'.csv', csv);
 			}
 		} catch (err) {
-			makeToast("Something went wrong. Probably you need to press 'Generate Feedback' first.");
+			makeToast("Something went wrong: " + err);
 		}
 	}
 }
 
+function currentInputDirty() {
+	var featureChanged = false;
+	FEATURES.forEach(
+    element => {
+    		if (notEnteredInputs.get(element.key) != undefined) {
+	    		featureChanged |= !notEnteredInputs.get(element.key).checked;
+	    	}
+    	});
+	return featureChanged || textFieldsDirty;
+}
+
 function handleNextStudentButtonClick(){
 	if(task!=undefined){
-		if(task.feedbackSet.length==0||task.feedbackSet[task.feedbackSet.length-1]==undefined){
-			makeToast('Hit the "Generate Feedback"-button at least once before grading the next student.');
+		if (!currentInputDirty()) {
+			makeToast("No Data entered. Did not go to next student.");
+			return;
 		}
-		else{
-			task.feedbackSet.push(undefined);
-			localStorage.setItem('all_tasks', JSON.stringify(tasks));
-			reset();
+
+		// ensure that the currently filled in information
+		// is stored in the task's feedback
+
+		// do so without updating the text field for feedback
+		var exitCode = summarizeFeedback(false);
+		if (exitCode != OK) {
+			// if the feedback could not be summarized
+			// then stop exporting.
+			makeToast("Please first fix the following: " + exitCode);
+			return;
 		}
+
+		task.feedbackSet.push(undefined);
+		localStorage.setItem('all_tasks', JSON.stringify(tasks));
+		reset();
 	}
 	else{
 		makeToast("You can not grade the next student if no task is selected.");
@@ -653,7 +725,7 @@ function setTable(enabledFeatures, filter){
 }
 
 function scoreSet(feature) {
-  notEnteredInputs.get(feature).value = false;
+  notEnteredInputs.get(feature).checked = false;
   computePoints();
 }
 
@@ -692,6 +764,9 @@ function examplesChange(feature) {
 	let computedScore = computePointsPerFeature(feature);
 	let index = Math.min(computedScore, scoreInput.length-1);
 	scoreInput[index].checked = true;
+
+  notEnteredInputs.get(feature).checked = false;
+
 	computePoints();
 }
 
@@ -733,6 +808,8 @@ function getScoreFromRadioButton(feature) {
 function handleApplyComputedPoints() {
 	let score = computeWeightedScore();
 	let extrapolatedPoints = computeExtrapolatedPoints(score);
+
+	textFieldsDirty = true;
 
 	document.getElementById('task_points').value = extrapolatedPoints;
 }

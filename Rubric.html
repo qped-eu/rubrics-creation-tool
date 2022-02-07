@@ -11,7 +11,7 @@
 		<script language="javascript" type="text/javascript" src="javascript/main.js"></script>	
 
 	</head>
-	<body >
+	<body onbeforeunload="return handleLeavePage()">
 		<div class="minipageLeft">
 			<h2>Select Task</h2>
 			<div id="task_select" class="buttons" style="width:90%">
@@ -99,7 +99,7 @@
 				</table>
 				<div class="minipageTaskLeft">
 					<h2>Achieved Points</h2>
-					<input type="number" id='task_points'/>
+					<input type="number" id='task_points' oninput="handleTextChange()"/>
 					<button type="button" id='apply_computed_points' onclick="handleApplyComputedPoints()">Apply Computed</button>
 				</div>
 				<div class="minipageTaskLeft">
@@ -131,7 +131,7 @@
 				</div>
 				<div class="minipageLeft">
 					<h2>Additional Comment</h2>
-					<textarea id='comment_text' cols="80" rows="10"></textarea>
+					<textarea id='comment_text' cols="80" rows="10" onchange="handleTextChange()"></textarea>
 				</div>
 				<div class="minipageRight">
 					<h2>Generated Feedback</h2>
