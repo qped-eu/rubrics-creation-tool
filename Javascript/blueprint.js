@@ -4,6 +4,12 @@ $(() => {
         width: 500,
         searchEnabled: true,
         selectionMode: 'single',
+		selectByClick: true,
+		onItemSelectionChanged: function(e){
+			const selected = e.itemData;
+			const saveSelection = document.getElementById("task_blueprint_text");
+			saveSelection.value = e.itemData.id;
+		},
     }).dxTreeView('instance');
 
     $("#treeview").dxTreeView("collapseAll");
