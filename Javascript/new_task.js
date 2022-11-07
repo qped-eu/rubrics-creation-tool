@@ -34,33 +34,33 @@ function setTable(){
 
 
 function handleGenerationClick(){
-	var nameBox = document.getElementById('task_name_text');
-	var pointBox = document.getElementById('task_points_text');
-	var courseBox = document.getElementById('course_text');
-	var weekBox = document.getElementById('week_of_task_text');
-	var differentiationBox = document.getElementById('differentiation_of_background_text');
-	var deliverablesBox = document.getElementById('deliverables_text');
-	var commentBox = document.getElementById('additional_comments');
+	const nameBox = document.getElementById('task_name_text');
+	const pointBox = document.getElementById('task_points_text');
+	const courseBox = document.getElementById('course_text');
+	const weekBox = document.getElementById('week_of_task_text');
+	const differentiationBox = document.getElementById('differentiation_of_background_text');
+	const deliverablesBox = document.getElementById('deliverables_text');
+	const commentBox = document.getElementById('additional_comments');
+	const blueprintText = document.getElementById('task_blueprint_text').value;
 
-	var enabledFeatures = [];
+	const enabledFeatures = [];
 	checkboxes.forEach(
 		checkbox => {
 			if(checkbox.checked){
-				var weightBox = document.getElementById(checkbox.id+'_weight')
+				const weightBox = document.getElementById(checkbox.id+'_weight')
 				enabledFeatures.push(new EnabledFeature(checkbox.id, weightBox.valueAsNumber));
 			}
 		}
 	);
-	var deliverables = [];
+	const deliverables = [];
 	Array.from(deliverablesBox.options).forEach(
 		option => {
 			deliverables.push(new Deliverable(option.value, option.selected));
 		}
 	);
 	if(enabledFeatures.length!=0){
-		var task = new Task(nameBox.value, pointBox.value, courseBox.value, weekBox.value, differentiationBox.value, deliverables, enabledFeatures, commentBox.value);
-		console.log(task);
-		var json_task = JSON.stringify(task);
+		const task = new Task(nameBox.value, pointBox.value, courseBox.value, weekBox.value, differentiationBox.value, deliverables, enabledFeatures, commentBox.value, blueprintText);
+		const json_task = JSON.stringify(task);
 		download(nameBox.value+'.json', json_task);
 	}
 	else{

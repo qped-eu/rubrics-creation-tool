@@ -3,7 +3,7 @@ window.addEventListener('load', (event) => {
 });
 
 
-function Task(name, maxPoints, course, week, differentiation, deliverables, rubricSet, additionalComments){
+function Task(name, maxPoints, course, week, differentiation, deliverables, rubricSet, additionalComments, blueprint){
 
 	this.name = name;
 	this.maxPoints = maxPoints;
@@ -14,6 +14,7 @@ function Task(name, maxPoints, course, week, differentiation, deliverables, rubr
 	this.rubricSet = rubricSet;
 	this.additionalComments = additionalComments;
 	this.feedbackSet=[];
+	this.blueprint = blueprint;
 }
 
 function Deliverable(name,selected){
