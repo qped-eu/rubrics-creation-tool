@@ -1,3 +1,3 @@
-export default function Rubric() {
-  return <div>Rubric</div>;
-}
+import Rubric from "../components/Rubric";
+
+export default Rubric;

@@ -1,3 +1,3 @@
-export default function NewTask() {
-  return <div>New Task</div>;
-}
+import NewTask from "../components/NewTask";
+
+export default NewTask;
