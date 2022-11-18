@@ -1,10 +1,16 @@
 import React from "react";
 import Grid from "@mui/material/Unstable_Grid2";
+import { useLocalStorage } from "../../hooks";
+import { TextField, Typography } from "@mui/material";
 
 function GradingInfo() {
-  function handleGraderChange() {}
-  function handleCourseYearChange() {}
-  function handleCourseRunChange() {}
+  const [grader, setGrader] = useLocalStorage("grader", "");
+  const [courseYear, setCourseYear] = useLocalStorage("courseYear", "");
+  const [courseRun, setCourseRun] = useLocalStorage("courseRun", "");
+
+  const handleGraderChange = (event) => setGrader(event.target.value);
+  const handleCourseYearChange = (event) => setCourseYear(event.target.value);
+  const handleCourseRunChange = (event) => setCourseRun(event.target.value);
 
   const sxStyle = { verticalAlign: "top" };
 
@@ -14,18 +20,14 @@ function GradingInfo() {
       sx={{ border: "1px solid #ddd", backgroundColor: "#f2f2f2" }}
     >
       <Grid xs={4} style={sxStyle}>
-        <h2>Grader</h2>
-        <input type="text" id="grader_text" onInput={handleGraderChange} />
+        <Typography variant="h4">Grader</Typography>
+        <TextField value={grader} onInput={handleGraderChange} />
       </Grid>
       <Grid xs={4} style={sxStyle}>
-        <h2>Course year</h2>
-        <input
-          type="text"
-          id="course_year_text"
-          onInput={handleCourseYearChange}
-        />
-        <br />
-        <p>
+        <Typography variant="h4">Course year</Typography>
+        <TextField value={courseYear} onInput={handleCourseYearChange} />
+        <Typography>
+          <br />
           <i>
             Enter the year in which
             <br />
@@ -33,17 +35,13 @@ function GradingInfo() {
             <br />
             four digits (e.g., 2022).
           </i>
-        </p>
+        </Typography>
       </Grid>
       <Grid xs={4} style={sxStyle}>
-        <h2>Course run</h2>
-        <input
-          type="text"
-          id="course_run_text"
-          onInput={handleCourseRunChange}
-        />
-        <br />
-        <p>
+        <Typography variant="h4">Course run</Typography>
+        <TextField value={courseRun} onInput={handleCourseRunChange} />
+        <Typography>
+          <br />
           <i>
             If the course runs multiple
             <br />
@@ -53,7 +51,7 @@ function GradingInfo() {
             <br />
             Otherwise enter 1.
           </i>
-        </p>
+        </Typography>
       </Grid>
     </Grid>
   );
