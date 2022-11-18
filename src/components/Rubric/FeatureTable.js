@@ -1,3 +1,4 @@
+import { Checkbox, FormControlLabel, FormGroup, Switch } from "@mui/material";
 import React from "react";
 
 function FeatureTable() {
@@ -14,14 +15,12 @@ function FeatureTable() {
   return (
     <>
       <h2>Show Tooltipps</h2>
-      <label>
-        <input
-          type="checkbox"
-          onChange={handleToolTippToggle}
-          id="tooltip_checkbox"
+      <FormGroup>
+        <FormControlLabel
+          control={<Switch onChange={handleToolTippToggle} />}
+          label="Toggle Tooltipps"
         />
-        Toggle Tooltipps
-      </label>
+      </FormGroup>
       <form>
         <div className="toggle-buttons together">
           <table width="100%">
