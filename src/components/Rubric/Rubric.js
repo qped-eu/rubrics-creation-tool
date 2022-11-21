@@ -3,21 +3,15 @@ import "../style.css";
 import FeatureTable from "./FeatureTable";
 import FeedbackGenerator from "./FeedbackGenerator";
 import GradingInfo from "./GradingInfo";
-import SelectTask from "./SelectTask";
-import UploadTask from "./UploadTask";
 import Grid from "@mui/material/Unstable_Grid2";
 import Snackbar from "@mui/material/Snackbar";
 import Points from "./Points";
+import TaskManager from "./TaskManager";
 
 function Rubric() {
   return (
     <Grid container spacing={2} style={{ margin: "8px" }}>
-      <Grid xs={6}>
-        <SelectTask />
-      </Grid>
-      <Grid xs={6}>
-        <UploadTask />
-      </Grid>
+      <TaskManager />
       <Grid xs={12}>
         <GradingInfo />
       </Grid>
@@ -27,9 +21,7 @@ function Rubric() {
       <Grid xs={12}>
         <Points />
       </Grid>
-      <Grid xs={12}>
-        <FeedbackGenerator />
-      </Grid>
+      <FeedbackGenerator />
     </Grid>
   );
 }

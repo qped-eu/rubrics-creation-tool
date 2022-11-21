@@ -24,14 +24,15 @@ function FeedbackGenerator() {
   };
 
   return (
-    <Grid container>
-      <Grid
-        xs={12}
-        sx={clearPointerStyle}
-        onClick={handleFeedbackButtonClick}
-        className="buttons"
-      >
-        Generate Feedback
+    <>
+      <Grid xs={12}>
+        <div
+          style={clearPointerStyle}
+          onClick={handleFeedbackButtonClick}
+          className="buttons"
+        >
+          Generate Feedback
+        </div>
       </Grid>
       <Grid xs={6}>
         <div
@@ -73,10 +74,10 @@ function FeedbackGenerator() {
           cols="80"
           rows="10"
           onClick={handleTextAreaClick("feedback")}
-          readonly=""
+          readOnly=""
         ></textarea>
       </Grid>
-    </Grid>
+    </>
   );
 }
 
