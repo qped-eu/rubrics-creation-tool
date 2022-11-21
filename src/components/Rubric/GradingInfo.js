@@ -12,46 +12,47 @@ function GradingInfo() {
   const handleCourseYearChange = (event) => setCourseYear(event.target.value);
   const handleCourseRunChange = (event) => setCourseRun(event.target.value);
 
-  const sxStyle = { verticalAlign: "top" };
+  const sxStyle = {
+    verticalAlign: "top",
+  };
 
   return (
-    <Grid
-      container
-      sx={{ border: "1px solid #ddd", backgroundColor: "#f2f2f2" }}
-    >
-      <Grid xs={4} style={sxStyle}>
-        <Typography variant="h4">Grader</Typography>
-        <TextField value={grader} onInput={handleGraderChange} />
-      </Grid>
-      <Grid xs={4} style={sxStyle}>
-        <Typography variant="h4">Course year</Typography>
-        <TextField value={courseYear} onInput={handleCourseYearChange} />
-        <Typography>
-          <br />
-          <i>
-            Enter the year in which
+    <Grid xs={12} sx={{ border: "1px solid #ddd", backgroundColor: "#f2f2f2" }}>
+      <Grid container>
+        <Grid xs={4} style={sxStyle}>
+          <Typography variant="h4">Grader</Typography>
+          <TextField value={grader} onInput={handleGraderChange} />
+        </Grid>
+        <Grid xs={4} style={sxStyle}>
+          <Typography variant="h4">Course year</Typography>
+          <TextField value={courseYear} onInput={handleCourseYearChange} />
+          <Typography>
             <br />
-            the course started with
+            <i>
+              Enter the year in which
+              <br />
+              the course started with
+              <br />
+              four digits (e.g., 2022).
+            </i>
+          </Typography>
+        </Grid>
+        <Grid xs={4} style={sxStyle}>
+          <Typography variant="h4">Course run</Typography>
+          <TextField value={courseRun} onInput={handleCourseRunChange} />
+          <Typography>
             <br />
-            four digits (e.g., 2022).
-          </i>
-        </Typography>
-      </Grid>
-      <Grid xs={4} style={sxStyle}>
-        <Typography variant="h4">Course run</Typography>
-        <TextField value={courseRun} onInput={handleCourseRunChange} />
-        <Typography>
-          <br />
-          <i>
-            If the course runs multiple
-            <br />
-            times per year, enter the
-            <br />
-            number of the run.
-            <br />
-            Otherwise enter 1.
-          </i>
-        </Typography>
+            <i>
+              If the course runs multiple
+              <br />
+              times per year, enter the
+              <br />
+              number of the run.
+              <br />
+              Otherwise enter 1.
+            </i>
+          </Typography>
+        </Grid>
       </Grid>
     </Grid>
   );

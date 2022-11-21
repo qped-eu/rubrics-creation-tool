@@ -11,9 +11,7 @@ function Rubric() {
   return (
     <Grid container spacing={2} style={{ margin: "8px" }}>
       <TaskManager />
-      <Grid xs={12}>
-        <GradingInfo />
-      </Grid>
+      <GradingInfo />
       <FeatureTable />
       <FeedbackGenerator />
     </Grid>
