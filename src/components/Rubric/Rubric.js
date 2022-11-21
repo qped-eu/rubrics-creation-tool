@@ -5,7 +5,6 @@ import FeedbackGenerator from "./FeedbackGenerator";
 import GradingInfo from "./GradingInfo";
 import Grid from "@mui/material/Unstable_Grid2";
 import Snackbar from "@mui/material/Snackbar";
-import Points from "./Points";
 import TaskManager from "./TaskManager";
 
 function Rubric() {
@@ -15,12 +14,7 @@ function Rubric() {
       <Grid xs={12}>
         <GradingInfo />
       </Grid>
-      <Grid xs={12}>
-        <FeatureTable />
-      </Grid>
-      <Grid xs={12}>
-        <Points />
-      </Grid>
+      <FeatureTable />
       <FeedbackGenerator />
     </Grid>
   );
