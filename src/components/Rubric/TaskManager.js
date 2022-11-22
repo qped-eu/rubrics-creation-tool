@@ -7,7 +7,8 @@ import { useLocalStorage } from "../../hooks";
 
 function TaskManager() {
   const [allTasks, setAllTasks] = useLocalStorage("all_tasks", []);
-  const [selectedTask, setSelectedTask] = useState(0);
+  const [selectedTaskIdx, setSelectedTaskIdx] = useState(0);
+  const handleSelectTask = (idx) => () => setSelectedTaskIdx(idx);
 
   const handleFiles = (acceptedFiles) => {
     let newAllTasks = _.clone(allTasks);
@@ -32,11 +33,11 @@ function TaskManager() {
           <div id="selected_task">
             {allTasks.length === 0
               ? "No tasks added"
-              : allTasks?.[selectedTask]?.name}
+              : allTasks?.[selectedTaskIdx]?.name}
           </div>
           <ul id="task_list">
             {_.map(allTasks, (task, idx) => (
-              <li key={task} onClick={() => setSelectedTask(idx)}>
+              <li key={task} onClick={handleSelectTask(idx)}>
                 {task.name}
               </li>
             ))}
