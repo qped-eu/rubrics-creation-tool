@@ -1,14 +1,41 @@
 import React from "react";
 import Grid from "@mui/material/Unstable_Grid2";
+import { getFromLocalStorage } from "../../utils";
 
-function FeedbackGenerator() {
+function FeedbackGenerator({ selectedTask, setError }) {
   function handleTextChange() {}
 
-  function handleFeedbackButtonClick() {}
+  function handleFeedbackButtonClick() {
+    const grader = getFromLocalStorage("grader");
+    const courseYear = getFromLocalStorage("courseYear");
+    const courseRun = getFromLocalStorage("courseRun");
+
+    if (!courseRun || courseRun.length === 0) {
+      setError("Please enter the current run of the course.");
+    }
+
+    if (!courseYear || courseYear.length === 0) {
+      setError("Please enter the start year of the course.");
+    }
+
+    if (!grader || grader.length === 0) {
+      setError("Please enter your name in the grader field.");
+    }
+
+    if (!selectedTask) {
+      setError("Please select a task before trying to generate feedback.");
+    }
+  }
 
   function handleNextStudentButtonClick() {}
 
-  function handleExportButtonClick() {}
+  function handleExportButtonClick() {
+    if (!selectedTask) {
+      setError("Please select a task before trying to export one.");
+    }
+
+    // Exportieren als JSON oder CSV
+  }
 
   function handleTextAreaClick(feedback) {
     return () => {};
