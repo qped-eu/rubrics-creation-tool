@@ -23,8 +23,12 @@ function Rubric() {
         let newAllTasks = _.clone(allTasks);
         var dataURL = reader.result;
         var task = JSON.parse(dataURL);
-        newAllTasks.push(task);
-        setAllTasks(newAllTasks);
+        if (_.map(allTasks, (task) => task.name).includes(task.name)) {
+          setError("A task with the same name has already been uploaded.");
+        } else {
+          newAllTasks.push(task);
+          setAllTasks(newAllTasks);
+        }
       };
       reader.readAsText(file);
     });
