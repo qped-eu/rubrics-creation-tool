@@ -6,7 +6,7 @@ import GradingInfo from "./GradingInfo";
 import Grid from "@mui/material/Unstable_Grid2";
 import Snackbar from "@mui/material/Snackbar";
 import TaskManager from "./TaskManager";
-import { useLocalStorage } from "../../hooks";
+import { useLocalStorage } from "usehooks-ts";
 import _ from "lodash";
 
 function Rubric() {
