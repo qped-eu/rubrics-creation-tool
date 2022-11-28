@@ -19,8 +19,9 @@ const router = createBrowserRouter([
     element: <NewTask />,
   },
   {
-    path: "/rubric",
+    path: "/rubric/:name",
     element: <Rubric />,
+    loader: ({ params }) => params.name,
   },
 ]);
 

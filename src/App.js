@@ -1,12 +1,11 @@
 import logo from "./logo2.png";
 import "./App.css";
-import { Button, Stack, Typography } from "@mui/material";
-import Grid from "@mui/material/Unstable_Grid2";
-import Dropzone from "react-dropzone";
+import { Button, Stack, Typography, Snackbar } from "@mui/material";
+import { TaskSelector, TaskUpload } from "./components/TaskManager";
+import { useState } from "react";
 
 function App() {
-  function handleFiles(acceptedFiles) {}
-
+  const [error, setError] = useState(null);
   return (
     <div className="App">
       <header className="App-header">
@@ -14,46 +13,26 @@ function App() {
         <p>QPED Rubric Creation Tool</p>
 
         <Stack spacing={2}>
-          <Grid xs={6}>
-            <Typography variant="text">Upload new Task</Typography>
-            <div
-              className="buttons"
-              style={{ width: "90%", backgroundColor: "#1a263d" }}
-            >
-              <Dropzone onDrop={handleFiles}>
-                {({ getRootProps, getInputProps }) => (
-                  <div id="fileDragOverField" {...getRootProps()}>
-                    <input {...getInputProps()} type="file" id="input_file" />
-                    <label>
-                      <strong style={{ cursor: "pointer" }}>
-                        Choose a file
-                      </strong>{" "}
-                      or drag it here
-                    </label>
-                  </div>
-                )}
-              </Dropzone>
-            </div>
-            <Button
-              variant="outlined"
-              href="new_task"
-              size="large"
-              disableElevation
-            >
-              {" "}
-              create new Task
-            </Button>
-          </Grid>
+          <Typography variant="text">Upload new Task</Typography>
+          <TaskUpload setError={setError} />
           <Button
-            variant="contained"
-            href="rubric"
+            variant="outlined"
+            href="new_task"
             size="large"
             disableElevation
           >
-            Fill out Rubric
+            {" "}
+            create new Task
           </Button>
+          <TaskSelector />
         </Stack>
       </header>
+      <Snackbar
+        open={!!error}
+        autoHideDuration={6000}
+        onClose={() => setError(null)}
+        message={error}
+      />
     </div>
   );
 }
