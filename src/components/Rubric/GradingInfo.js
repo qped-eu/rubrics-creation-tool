@@ -1,6 +1,6 @@
 import React from "react";
 import Grid from "@mui/material/Unstable_Grid2";
-import { useLocalStorage } from "../../hooks";
+import { useLocalStorage } from "usehooks-ts";
 import { TextField, Typography } from "@mui/material";
 
 function GradingInfo() {

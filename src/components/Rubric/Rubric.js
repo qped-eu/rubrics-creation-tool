@@ -5,48 +5,20 @@ import FeedbackGenerator from "./FeedbackGenerator";
 import GradingInfo from "./GradingInfo";
 import Grid from "@mui/material/Unstable_Grid2";
 import Snackbar from "@mui/material/Snackbar";
-import TaskManager from "./TaskManager";
-import { useLocalStorage } from "../../hooks";
+import { useReadLocalStorage } from "usehooks-ts";
 import _ from "lodash";
+import { useLoaderData } from "react-router-dom";
 
 function Rubric() {
   const [error, setError] = useState(null);
-  const [allTasks, setAllTasks] = useLocalStorage("all_tasks", []);
-  const [selectedTaskIdx, setSelectedTaskIdx] = useState(0);
-  const handleSelectTask = (idx) => () => setSelectedTaskIdx(idx);
-
-  const handleFiles = (acceptedFiles) => {
-    _.forEach(acceptedFiles, (file) => {
-      const reader = new FileReader();
-      reader.onerror = () => setError("Failed to read File");
-      reader.onload = () => {
-        let newAllTasks = _.clone(allTasks);
-        var dataURL = reader.result;
-        var task = JSON.parse(dataURL);
-        if (_.map(allTasks, (task) => task.name).includes(task.name)) {
-          setError("A task with the same name has already been uploaded.");
-        } else {
-          newAllTasks.push(task);
-          setAllTasks(newAllTasks);
-        }
-      };
-      reader.readAsText(file);
-    });
-  };
+  const allTasks = useReadLocalStorage("all_tasks");
+  const taskName = useLoaderData();
+  const selectedTask = _.find(allTasks, (task) => task.name === taskName);
   return (
     <Grid container spacing={2} style={{ margin: "8px" }}>
-      <TaskManager
-        allTasks={allTasks}
-        selectedTaskIdx={selectedTaskIdx}
-        handleSelectTask={handleSelectTask}
-        handleFiles={handleFiles}
-      />
       <GradingInfo />
       <FeatureTable />
-      <FeedbackGenerator
-        selectedTask={allTasks?.[selectedTaskIdx]}
-        setError={setError}
-      />
+      <FeedbackGenerator selectedTask={selectedTask} setError={setError} />
       <Snackbar
         open={!!error}
         autoHideDuration={6000}
