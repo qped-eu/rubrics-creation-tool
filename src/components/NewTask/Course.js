@@ -1,4 +1,4 @@
-import { MenuItem, Select, Typography } from "@mui/material";
+import { MenuItem, Select } from "@mui/material";
 import _ from "lodash";
 import React, { useState } from "react";
 
@@ -21,19 +21,15 @@ function Course() {
   }
 
   return (
-    <>
-      <Typography variant="h4">Course</Typography>
-      <Select
-        value={value}
-        sx={{ mt: 2 }}
-        inputProps={{ "aria-label": "Without label" }}
-        onChange={handleChange}
-      >
-        {_.map(options, (option) => (
-          <MenuItem value={option}>{option}</MenuItem>
-        ))}
-      </Select>
-    </>
+    <Select
+      value={value}
+      inputProps={{ "aria-label": "Without label" }}
+      onChange={handleChange}
+    >
+      {_.map(options, (option) => (
+        <MenuItem value={option}>{option}</MenuItem>
+      ))}
+    </Select>
   );
 }
 

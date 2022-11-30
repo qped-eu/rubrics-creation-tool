@@ -1,17 +1,16 @@
-import React from "react";
+import { MenuItem, Select } from "@mui/material";
+import _ from "lodash";
+import React, { useState } from "react";
 
 function Differentiation() {
+  const options = ["Extra support", "Regular", "Challenging"];
+  const [value, setValue] = useState(1);
   return (
-    <>
-      <h2>Differentiation of background (TU/e)</h2>
-      <select id="differentiation_of_background_text">
-        <option value="extra_support">Extra support</option>
-        <option value="regular" selected="">
-          Regular
-        </option>
-        <option value="challenging">Challenging</option>
-      </select>
-    </>
+    <Select value={value} id="differentiation_of_background_text">
+      {_.map(options, (opt, idx) => (
+        <MenuItem value={idx}>{opt}</MenuItem>
+      ))}
+    </Select>
   );
 }
 

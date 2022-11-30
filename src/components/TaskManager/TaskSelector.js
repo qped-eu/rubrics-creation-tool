@@ -15,7 +15,6 @@ function TaskSelector() {
           variant="outlined"
           sx={{ width: "100%" }}
           value={taskIndex}
-          label="Age"
           onChange={handleChange}
         >
           <MenuItem value={""}>
