@@ -12,7 +12,7 @@ function TaskSelector() {
     <Grid container>
       <Grid xs={6}>
         <Select
-          variant="outlined"
+          variant= "outlined"
           sx={{ width: "100%" }}
           value={taskIndex}
           onChange={handleChange}
@@ -30,6 +30,7 @@ function TaskSelector() {
       <Grid xs={6} sx={{ textAlign: "right", alignSelf: "end" }}>
         <Button
           variant="contained"
+          color="secondary"
           href={`rubric/${allTasks?.[taskIndex]?.name}`}
           size="large"
           disabled={taskIndex === ""}

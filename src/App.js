@@ -3,23 +3,52 @@ import "./App.css";
 import { Button, Stack, Typography, Snackbar } from "@mui/material";
 import { TaskSelector, TaskUpload } from "./components/TaskManager";
 import { useState } from "react";
+import { createTheme, ThemeProvider } from "@mui/material";
+
+
+const theme= createTheme({
+  palette: {
+    type: 'dark',
+    primary: {
+      main: '#485B8F',
+    },
+    secondary: {
+      main: '#FF8575',
+    },
+    success: {
+      main: '#8CE789',
+    },
+  },
+
+
+})
+
+
+
+
 
 function App() {
   const [error, setError] = useState(null);
   return (
+    <ThemeProvider theme={theme}>
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>QPED Rubric Creation Tool</p>
+      
+        <Typography>QPED Rubric Creation Tool</Typography>
 
         <Stack spacing={2}>
-          <Typography variant="text">Upload new Task</Typography>
+          
           <TaskUpload setError={setError} />
           <Button
             variant="outlined"
             href="new_task"
             size="large"
             disableElevation
+            color="secondary"
+            style={{border :'2px solid'}}
+            
+
           >
             {" "}
             create new Task
@@ -34,6 +63,7 @@ function App() {
         message={error}
       />
     </div>
+    </ThemeProvider>
   );
 }
 
