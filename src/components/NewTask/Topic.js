@@ -5,29 +5,32 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import TreeItem from "@mui/lab/TreeItem";
 import { Box, Paper, TextField, Typography } from "@mui/material";
 import { Search } from "@mui/icons-material";
+import topics from "../../resources/topics.json";
+import { useState } from "react";
+import _ from "lodash";
 
-const data = {
-  id: "root",
-  name: "Parent",
-  children: [
-    {
-      id: "1",
-      name: "Child - 1",
-    },
-    {
-      id: "3",
-      name: "Child - 3",
-      children: [
-        {
-          id: "4",
-          name: "Child - 4",
-        },
-      ],
-    },
-  ],
+const filterTopics = (text, o, nodeIds) => {
+  o.children = _.filter(
+    o.children ?? [],
+    (child) => !!filterTopics(text, child, nodeIds)
+  );
+  if (o.children?.length > 0 || o.name.includes(text)) {
+    if (o.id) {
+      nodeIds.push(o.id);
+    } else {
+      console.log("No id found:", o);
+    }
+    return o;
+  }
 };
 
 function Topic() {
+  const [searchText, setSearchText] = useState("");
+  let ids = [];
+  let data = filterTopics(searchText, _.cloneDeep(topics), ids);
+  const [expanded, setExpanded] = useState(ids);
+  const handleToggle = (event, nodeIds) => setExpanded(nodeIds);
+
   const renderTree = (nodes) => (
     <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}>
       {Array.isArray(nodes.children)
@@ -39,18 +42,37 @@ function Topic() {
   return (
     <>
       <Typography variant="h6">Main Topic (IO-1 Blueprint)</Typography>
-      <Paper sx={{ height: 400, mt: 1 }}>
-        <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+      <Paper sx={{ my: 1 }}>
+        <Box sx={{ display: "flex", alignchildren: "flex-end" }}>
           <Search sx={{ mr: 1, my: 0.5 }} />
-          <TextField variant="standard" sx={{ width: "100%", mr: 1 }} />
+          <TextField
+            variant="standard"
+            sx={{ width: "100%", mr: 1 }}
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+          />
         </Box>
-        <TreeView
-          defaultCollapseIcon={<ExpandMoreIcon />}
-          defaultExpandIcon={<ChevronRightIcon />}
-          sx={{ flexGrow: 1, overflowY: "auto", mt: 1 }}
+        <Box
+          sx={{
+            height: 400,
+            mt: 1,
+            overflowY: "auto",
+          }}
         >
-          {renderTree(data)}
-        </TreeView>
+          <TreeView
+            expanded={expanded}
+            onNodeToggle={handleToggle}
+            defaultCollapseIcon={<ExpandMoreIcon />}
+            defaultExpandIcon={<ChevronRightIcon />}
+            sx={{
+              flexGrow: 1,
+              overflowY: "auto",
+              mt: 1,
+            }}
+          >
+            {!!data && renderTree(data)}
+          </TreeView>
+        </Box>
       </Paper>
       <Typography>
         Scroll to view all concepts. You can browse throuugh the sub concepts
