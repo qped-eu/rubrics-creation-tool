@@ -27,7 +27,7 @@ function TaskUpload({ setError }) {
   return (
     <div
       className="buttons"
-      style={{ width: "90%", backgroundColor: "transparent" }}
+      style={{ width: "91%", backgroundColor: "transparent" }}
     >
       <Dropzone onDrop={handleFiles}>
         {({ getRootProps, getInputProps }) => (

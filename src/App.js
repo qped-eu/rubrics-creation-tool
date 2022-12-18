@@ -13,7 +13,7 @@ const theme= createTheme({
       main: '#485B8F',
     },
     secondary: {
-      main: '#FF8575',
+      main: '#d45113',
     },
     success: {
       main: '#8CE789',
@@ -37,16 +37,18 @@ function App() {
       
         <Typography>QPED Rubric Creation Tool</Typography>
 
-        <Stack spacing={2}>
+        <Stack spacing={1}>
           
           <TaskUpload setError={setError} />
           <Button
-            variant="outlined"
+            variant="contained"
             href="new_task"
             size="large"
             disableElevation
             color="secondary"
-            style={{border :'2px solid'}}
+           // style={{border :'2px solid'}}
+            sx={{height:50}}
+            
             
 
           >
