@@ -1,4 +1,4 @@
-const FEATURES = JSON.parse( `
+export const FEATURES = JSON.parse(`
 [
    {
       "name":"Modularity",
