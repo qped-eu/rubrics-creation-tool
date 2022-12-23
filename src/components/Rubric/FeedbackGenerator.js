@@ -52,7 +52,7 @@ function FeedbackGenerator({ selectedTask, setError }) {
 
   return (
     <>
-      <Grid xs={12}>
+      <Grid item xs={12}>
         <div
           style={clearPointerStyle}
           onClick={handleFeedbackButtonClick}
@@ -61,7 +61,7 @@ function FeedbackGenerator({ selectedTask, setError }) {
           Generate Feedback
         </div>
       </Grid>
-      <Grid xs={6}>
+      <Grid item xs={6}>
         <div
           style={pointerStyle}
           onClick={handleNextStudentButtonClick}
@@ -70,7 +70,7 @@ function FeedbackGenerator({ selectedTask, setError }) {
           Next Student
         </div>
       </Grid>
-      <Grid xs={6}>
+      <Grid item xs={6}>
         <div
           style={pointerStyle}
           onClick={handleExportButtonClick}
@@ -85,7 +85,7 @@ function FeedbackGenerator({ selectedTask, setError }) {
           <option value="csv">CSV-Format</option>
         </select>
       </Grid>
-      <Grid xs={6}>
+      <Grid item xs={6}>
         <h2>Additional Comment</h2>
         <textarea
           id="comment_text"
@@ -94,7 +94,7 @@ function FeedbackGenerator({ selectedTask, setError }) {
           onChange={handleTextChange}
         ></textarea>
       </Grid>
-      <Grid xs={6}>
+      <Grid item xs={6}>
         <h2>Generated Feedback</h2>
         <textarea
           id="feedback_text"

@@ -19,7 +19,7 @@ function FeatureTable() {
 
   return (
     <>
-      <Grid xs={12}>
+      <Grid item xs={12}>
         <h2>Show Tooltipps</h2>
         <FormGroup>
           <FormControlLabel
@@ -744,7 +744,7 @@ function FeatureTable() {
           </div>
         </form>
       </Grid>
-      <Grid spacing={2} xs={4}>
+      <Grid spacing={2} item xs={4}>
         <h2>Achieved Points</h2>
         <input type="number" id="task_points" onInput={handleTextChange} />
         <button
@@ -755,11 +755,11 @@ function FeatureTable() {
           Apply Computed
         </button>
       </Grid>
-      <Grid xs={4}>
+      <Grid item xs={4}>
         <h2>Calculated Points</h2>
         <input type="text" id="task_calc_points" readOnly />
       </Grid>
-      <Grid xs={4}>
+      <Grid item xs={4}>
         <h2>Maximum Points</h2>
         <input type="text" id="task_max_points" readOnly />
       </Grid>

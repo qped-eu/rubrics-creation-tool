@@ -17,13 +17,17 @@ function GradingInfo() {
   };
 
   return (
-    <Grid xs={12} sx={{ border: "1px solid #ddd", backgroundColor: "#f2f2f2" }}>
+    <Grid
+      item
+      xs={12}
+      sx={{ border: "1px solid #ddd", backgroundColor: "#f2f2f2" }}
+    >
       <Grid container>
-        <Grid xs={4} style={sxStyle}>
+        <Grid item xs={4} style={sxStyle}>
           <Typography variant="h4">Grader</Typography>
           <TextField value={grader} onInput={handleGraderChange} />
         </Grid>
-        <Grid xs={4} style={sxStyle}>
+        <Grid item xs={4} style={sxStyle}>
           <Typography variant="h4">Course year</Typography>
           <TextField value={courseYear} onInput={handleCourseYearChange} />
           <Typography>
@@ -37,7 +41,7 @@ function GradingInfo() {
             </i>
           </Typography>
         </Grid>
-        <Grid xs={4} style={sxStyle}>
+        <Grid item xs={4} style={sxStyle}>
           <Typography variant="h4">Course run</Typography>
           <TextField value={courseRun} onInput={handleCourseRunChange} />
           <Typography>
