@@ -1,24 +1,16 @@
 import { MenuItem, Select } from "@mui/material";
 import _ from "lodash";
-import React, { useState } from "react";
+import { useLocalStorage } from "usehooks-ts";
+import general_information from "../../resources/general_information.json";
+
+const { options, defaultIndex } = general_information.courses;
 
 function Course() {
-  const options = [
-    "NHL - Java 1",
-    "NHL - Python",
-    "OUNL - IB0902",
-    "OUNL – IB1502",
-    "UMR - OOP",
-    "UOC - DS",
-    "TU/e - 2IP90",
-    "TU/e - 2IPC0",
-  ];
-
-  const [value, setValue] = useState(options[0]);
-
-  function handleChange(event) {
-    setValue(event.target.value);
-  }
+  const [value, setValue] = useLocalStorage(
+    "new_task_courseIdx",
+    defaultIndex ?? 0
+  );
+  const handleChange = ({ target: { value } }) => setValue(value);
 
   return (
     <Select
@@ -26,8 +18,10 @@ function Course() {
       inputProps={{ "aria-label": "Without label" }}
       onChange={handleChange}
     >
-      {_.map(options, (option) => (
-        <MenuItem value={option}>{option}</MenuItem>
+      {_.map(options, (option, idx) => (
+        <MenuItem key={option} value={idx}>
+          {option}
+        </MenuItem>
       ))}
     </Select>
   );

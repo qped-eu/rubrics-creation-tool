@@ -1,14 +1,27 @@
 import { MenuItem, Select } from "@mui/material";
 import _ from "lodash";
-import React, { useState } from "react";
+import { useLocalStorage } from "usehooks-ts";
+import general_information from "../../resources/general_information.json";
+
+const { options, defaultIndex } =
+  general_information.differentiationBackgrounds;
 
 function Differentiation() {
-  const options = ["Extra support", "Regular", "Challenging"];
-  const [value, setValue] = useState(1);
+  const [value, setValue] = useLocalStorage(
+    "new_task_differentiationIdx",
+    defaultIndex ?? 0
+  );
+  const handleChange = ({ target: { value } }) => setValue(value);
   return (
-    <Select value={value} id="differentiation_of_background_text">
+    <Select
+      value={value}
+      id="differentiation_of_background_text"
+      onChange={handleChange}
+    >
       {_.map(options, (opt, idx) => (
-        <MenuItem value={idx}>{opt}</MenuItem>
+        <MenuItem key={opt} value={idx}>
+          {opt}
+        </MenuItem>
       ))}
     </Select>
   );
