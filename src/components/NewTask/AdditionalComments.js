@@ -1,15 +1,21 @@
+import { Typography } from "@mui/material";
 import React from "react";
+import MyTextField from "./MyTextField";
 
 function AdditionalComments() {
   return (
     <>
-      <h2>Additional Comments</h2>
-      <textarea
+      <Typography>
+        <strong>Additional Comments:</strong>
+      </Typography>
+      <MyTextField
+        storageKey={"new_task_additionalComments"}
+        multiline
         id="additional_comments"
         cols="80"
-        rows="20"
-        style={{ width: "100%" }}
-      ></textarea>
+        rows="10"
+        style={{ width: "100%", marginTop: "16px" }}
+      ></MyTextField>
     </>
   );
 }

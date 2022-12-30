@@ -21,7 +21,7 @@ tr:nth-child(odd) {
 
 th {
   background-color: #d2d2d2;
-  position: sticky;
+  /* position: sticky;
   top: 0; /* Don't forget this, required for the stickiness */
 }
 

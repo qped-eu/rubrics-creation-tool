@@ -9,6 +9,7 @@ import topics from "../../resources/topics.json";
 import { useState } from "react";
 import _ from "lodash";
 import { Stack } from "@mui/system";
+import { useLocalStorage } from "usehooks-ts";
 
 const filterTopics = (text, o, nodeIds) => {
   o.children = _.filter(
@@ -30,7 +31,7 @@ function Topic() {
   let ids = [];
   let data = filterTopics(searchText, _.cloneDeep(topics), ids);
   const [expanded, setExpanded] = useState(ids);
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useLocalStorage("new_task_topic", null);
   const handleToggle = (e, nodeIds) => setExpanded(nodeIds);
   const handleSelect = (e, nodeId) => setSelected(nodeId);
   const handleDeselect = () => setSelected(null);

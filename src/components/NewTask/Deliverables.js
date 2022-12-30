@@ -8,26 +8,17 @@ import {
   OutlinedInput,
 } from "@mui/material";
 import _ from "lodash";
-import { useState } from "react";
+import { useLocalStorage } from "usehooks-ts";
+import general_information from "../../resources/general_information.json";
+
+const { options } = general_information.deliverables;
 
 function Deliverables() {
-  const [value, setValue] = useState([]);
-  const options = [
-    "IO1 – TILEd slides",
-    "IO1 - TILEd assignment",
-    "IO2 – PG API",
-    "IO2 – PG IPI",
-    "O2 – PG Implementation",
-    "IO3 – syntax, semantics",
-    "IO3 – style",
-    "IO3 – testing",
-    "IO3 – class design",
-  ];
+  const [value, setValue] = useLocalStorage("new_task_deliverables", []);
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
-  const handleChange = ({ target: { value } }) => {
+  const handleChange = ({ target: { value } }) =>
     setValue(typeof value === "string" ? value.split(",") : value);
-  };
   return (
     <FormControl sx={{ width: "100%" }}>
       <InputLabel id="demo-multiple-deliverables-label">
@@ -47,7 +38,7 @@ function Deliverables() {
         }
         renderValue={(selected) => (
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-            {selected.map((val) => (
+            {_.map(selected, (val) => (
               <Chip key={val} label={val} />
             ))}
           </Box>
