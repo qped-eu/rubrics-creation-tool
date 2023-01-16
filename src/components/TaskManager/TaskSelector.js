@@ -13,8 +13,15 @@ function TaskSelector() {
       <Grid item xs={6}>
         <Select
           variant="outlined"
-          sx={{ width: "100%", height: "80%" }}
+          style={{border :'2px solid'}}
+          
+          sx={{ width: "100%", height: "80%", color: "white" , 
+          '.MuiSvgIcon-root ': {
+            fill: "white !important",
+          } }}
+        
           value={taskIndex}
+          
           onChange={handleChange}
         >
           <MenuItem value={""}>
@@ -33,10 +40,11 @@ function TaskSelector() {
         sx={{ textAlign: "right", alignSelf: "end", marginBottom: 1.5 }}
       >
         <Button
-          variant="contained"
+          variant="outlined"
           color="secondary"
           href={`rubric/${allTasks?.[taskIndex]?.name}`}
-          size="large"
+          size="medium"
+          style={{border :'2px solid'}}
           disabled={taskIndex === ""}
           disableElevation
           sx={{ height: 50 }}

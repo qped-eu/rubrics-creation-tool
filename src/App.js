@@ -1,5 +1,6 @@
 import logo from "./logo2.png";
 import "./App.css";
+import background from "./background1.png";
 import { Button, Stack, Typography, Snackbar } from "@mui/material";
 import { TaskSelector, TaskUpload } from "./components/TaskManager";
 import { useState } from "react";
@@ -12,7 +13,8 @@ const theme = createTheme({
       main: "#485B8F",
     },
     secondary: {
-      main: "#d45113",
+     // main: "#d45113",
+        main:"#ffffff"
     },
     success: {
       main: "#8CE789",
@@ -33,12 +35,12 @@ function App() {
           <Stack spacing={1}>
             <TaskUpload setError={setError} />
             <Button
-              variant="contained"
+              variant="outlined"
               href="new_task"
               size="large"
               disableElevation
               color="secondary"
-              // style={{border :'2px solid'}}
+               style={{border :'2px solid'}}
               sx={{ height: 50 }}
             >
               {" "}
