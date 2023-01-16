@@ -1,6 +1,6 @@
 import logo from "./logo2.png";
 import "./App.css";
-import background from "./background1.png";
+
 import { Button, Stack, Typography, Snackbar } from "@mui/material";
 import { TaskSelector, TaskUpload } from "./components/TaskManager";
 import { useState } from "react";
