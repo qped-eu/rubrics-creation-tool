@@ -1,3 +1,4 @@
+
 .App {
   text-align: center;
 }
@@ -15,8 +16,20 @@
 
 .App-header {
   background-color: #ffffff;
-  background-image: linear-gradient(160deg, #2F447D, #6468CF);
+  /* background-image: linear-gradient(160deg, #2F447D, #6468CF); */
+  background-image: url(background5.png)  ;
+  
+  background-position:initial;
+  background-size:150%;
+  background-position-x: 50%;
+  background-position-y: 90%;
+  background-clip: padding-box;
+  background-repeat: no-repeat;
+ 
   min-height: 100vh;
+  max-height: 100vh;
+  
+  
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -30,11 +43,4 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+
