@@ -1,6 +1,7 @@
 import { Stepper, Step, StepLabel, Button, Paper } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState, useEffect } from "react";
+import { useLocalStorage, useReadLocalStorage } from "usehooks-ts";
 import Topic from "./Topic";
 import { Features } from "./Features";
 import _ from "lodash";
@@ -15,7 +16,19 @@ const steps = [
 ];
 
 function NewTask() {
+  //read data from localstorage
+  const name = useReadLocalStorage("new_task_name");
+  const courseIdx = useReadLocalStorage("new_task_courseIdx");
+  const week = useReadLocalStorage("new_task_week");
+  const maxPoints = useReadLocalStorage("new_task_maxPoints");
+  const differentiationIdx = useReadLocalStorage("new_task_differentiationIdx");
+  const topic = useReadLocalStorage("new_task_topic");
+  const deliverables = useReadLocalStorage("new_task_deliverables");
+  const activeFeatures = useReadLocalStorage("new_task_features");
+  const [allTasks, setAllTasks] = useLocalStorage("all_tasks", []);
+
   const [activeStep, setActiveStep] = useState(0);
+  const [task, setTask] = useLocalStorage("task", "");
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [activeStep]);
@@ -28,7 +41,52 @@ function NewTask() {
 
   const handleReset = () => {};
 
-  const handleGenerateFeedback = () => {};
+  const handleAddToList = () => {
+    const taskToAdd = generateTaskObject();
+    allTasks.push(taskToAdd);
+
+    setAllTasks(allTasks);
+  };
+
+  const handleGenerateJSON = () => {
+    const exportJSON = JSON.stringify(generateTaskObject());
+
+    downloadTask(exportJSON);
+  };
+
+  const downloadTask = (taskString) => {
+    // create file in browser
+    const fileName = name;
+    const blob = new Blob([taskString], { type: "application/json" });
+    const href = URL.createObjectURL(blob);
+  
+    // create "a" HTML element with href to file
+    const link = document.createElement("a");
+    link.href = href;
+    link.download = fileName + ".json";
+    document.body.appendChild(link);
+    link.click();
+  
+    // clean up "a" element & remove ObjectURL
+    document.body.removeChild(link);
+    URL.revokeObjectURL(href);
+  };
+
+  //builds Task JSON and stringifies
+  const generateTaskObject = () => {
+    const taskObject = {
+      name : name,
+      courseIdx : courseIdx,
+      week : week,
+      maxPoints : maxPoints,
+      differentiationIdx : differentiationIdx,
+      topic : topic,
+      deliverables : deliverables,
+      activeFeatures : activeFeatures
+    }
+
+    return taskObject;
+  };
 
   const StepperContent = () => {
     switch (activeStep) {
@@ -73,14 +131,21 @@ function NewTask() {
               </Button>
             )}
 
+            <Box sx={{ flex: "1 1 auto" }} />
+            {activeStep === steps.length - 1 && (
+              <Button onClick={handleAddToList} sx={{ mr: 1 }}>
+                Add Task
+              </Button>
+            )}
+
             <Button
               onClick={
                 activeStep === steps.length - 1
-                  ? handleGenerateFeedback
+                  ? handleGenerateJSON
                   : handleNext
               }
             >
-              {activeStep === steps.length - 1 ? "Generate Feedback" : "Next"}
+              {activeStep === steps.length - 1 ? "Generate JSON" : "Next"}
             </Button>
           </Box>
         </>
