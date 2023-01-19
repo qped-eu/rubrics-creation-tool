@@ -28,7 +28,6 @@ function NewTask() {
   const [allTasks, setAllTasks] = useLocalStorage("all_tasks", []);
 
   const [activeStep, setActiveStep] = useState(0);
-  const [task, setTask] = useLocalStorage("task", "");
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [activeStep]);
