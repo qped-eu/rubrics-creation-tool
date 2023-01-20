@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, Tooltip } from "@mui/material";
 import { Box } from "@mui/system";
 import {useReadLocalStorage, useLocalStorage} from "usehooks-ts";
 
@@ -18,29 +18,34 @@ function ButtonsBox(props) {
   const {handleBack, 
     handleNext, 
     activeStep, 
-    steps} = props;
+    steps,
+    setNameIsUnique} = props;
 
   const handleReset = () => {};
 
   const handleAddToList = () => {
     const taskToAdd = generateTaskObject();
+    
     if (nameIsUnique()) {
       allTasks.push(taskToAdd);
     } else {
-      
+      setNameIsUnique(false);
+      console.log("Name is not unique!");
     }
-
+    
     setAllTasks(allTasks);
   };
 
   const nameIsUnique = () => {
-    /* for (task in allTasks) {
-      if (task.name == name) {
+    for (var i = 0 ; i < allTasks.length ; i++ ) {
+      const currentTask = allTasks[i];
+      if (name === currentTask.name) {
         return false;
       }
-      return true;
-    } */
+    }
+    return true;
   };
+
 
   const handleGenerateJSON = () => {
     const exportJSON = JSON.stringify(generateTaskObject());
@@ -92,7 +97,7 @@ function ButtonsBox(props) {
     >
     Back
     </Button>
-    <Box sx={{ flex: "1 1 auto" }} />
+    <Box  />
     {activeStep === steps.length - 1 && (
       <Button color="inherit" onClick={handleReset} sx={{ mr: 1 }}>
       Reset
@@ -100,7 +105,14 @@ function ButtonsBox(props) {
     )}
 
     <Box sx={{ flex: "1 1 auto" }} />
-    {activeStep === steps.length - 1 && (
+    {activeStep === steps.length - 1 && !nameIsUnique() && (
+      <Tooltip title="Change your Name to be unique, before adding to your Rubric list.">
+        <Button onClick={handleAddToList} sx={{ mr: 1 }} disabled>
+        Add Task
+        </Button>
+      </Tooltip>
+    )}
+    {activeStep === steps.length - 1 && nameIsUnique() && (
       <Button onClick={handleAddToList} sx={{ mr: 1 }}>
       Add Task
       </Button>

@@ -16,6 +16,7 @@ const steps = [
 ];
 
 function NewTask() {
+  const [nameIsUnique, setNameIsUnique] = useState(true);
   
   const [activeStep, setActiveStep] = useState(0);
   useEffect(() => {
@@ -37,7 +38,7 @@ function NewTask() {
       case 2:
         return <Features style={{ margin: "auto", width: "100%" }} />;
       default:
-        return <Overview sx={{ margin: "auto", width: "100%" }} />;
+        return <Overview nameIsUnique={nameIsUnique} sx={{ margin: "auto", width: "100%" }} />;
     }
   };
 
@@ -61,7 +62,9 @@ function NewTask() {
         handleNext={handleNext} 
         handleBack={handleBack} 
         activeStep={activeStep} 
-        steps={steps} />
+        steps={steps} 
+        nameIsUnique={nameIsUnique}
+        setNameIsUnique={setNameIsUnique}/>
       </Paper>
     </Box>
   );
