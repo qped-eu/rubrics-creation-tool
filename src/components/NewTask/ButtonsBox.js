@@ -106,11 +106,9 @@ function ButtonsBox(props) {
 
     <Box sx={{ flex: "1 1 auto" }} />
     {activeStep === steps.length - 1 && !nameIsUnique() && (
-      <Tooltip title="Change your Name to be unique, before adding to your Rubric list.">
         <Button onClick={handleAddToList} sx={{ mr: 1 }} disabled>
         Add Task
         </Button>
-      </Tooltip>
     )}
     {activeStep === steps.length - 1 && nameIsUnique() && (
       <Button onClick={handleAddToList} sx={{ mr: 1 }}>

@@ -36,6 +36,7 @@ function Overview(props) {
     featuresList,
     (feature) => getKeysForLevel(level.basic).includes(feature.key)
   );
+  
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
