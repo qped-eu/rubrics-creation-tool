@@ -1,27 +1,43 @@
 import { Button, Tooltip } from "@mui/material";
 import { Box } from "@mui/system";
-import {useReadLocalStorage, useLocalStorage} from "usehooks-ts";
+import { set } from "lodash";
+import {useLocalStorage} from "usehooks-ts";
+import general_information from "../../resources/general_information.json";
 
 
 function ButtonsBox(props) {
     //read data from localstorage
-  const name = useReadLocalStorage("new_task_name");
-  const courseIdx = useReadLocalStorage("new_task_courseIdx");
-  const week = useReadLocalStorage("new_task_week");
-  const maxPoints = useReadLocalStorage("new_task_maxPoints");
-  const differentiationIdx = useReadLocalStorage("new_task_differentiationIdx");
-  const topic = useReadLocalStorage("new_task_topic");
-  const deliverables = useReadLocalStorage("new_task_deliverables");
-  const activeFeatures = useReadLocalStorage("new_task_features");
+  const [name, setName] = useLocalStorage("new_task_name");
+  const [courseIdx, setCourseIdx] = useLocalStorage("new_task_courseIdx");
+  const [week, setWeek] = useLocalStorage("new_task_week");
+  const [maxPoints, setMaxPoints] = useLocalStorage("new_task_maxPoints");
+  const [differentiationIdx, setDifferentiationIdx] = useLocalStorage("new_task_differentiationIdx");
+  const [topic, setTopic] = useLocalStorage("new_task_topic");
+  const [deliverables, setDeliverables] = useLocalStorage("new_task_deliverables");
+  const [activeFeatures, setActiveFeatures] = useLocalStorage("new_task_features");
+  const [description, setDescription] = useLocalStorage("new_task_description");
   const [allTasks, setAllTasks] = useLocalStorage("all_tasks", []);
 
   const {handleBack, 
     handleNext, 
     activeStep, 
     steps,
-    setNameIsUnique} = props;
+    setNameIsUnique,
+    setActiveStep} = props;
 
-  const handleReset = () => {};
+  const handleReset = () => {
+    setActiveStep(0);
+
+    setName("");
+    setCourseIdx(general_information.courses.defaultIndex);
+    setWeek(1);
+    setMaxPoints(0);
+    setDifferentiationIdx(general_information.differentiationBackgrounds.defaultIndex);
+    setTopic("");
+    setDeliverables([]);
+    setActiveFeatures([]);
+    setDescription("");
+  };
 
   const handleAddToList = () => {
     const taskToAdd = generateTaskObject();
@@ -81,7 +97,8 @@ function ButtonsBox(props) {
       differentiationIdx : differentiationIdx,
       topic : topic,
       deliverables : deliverables,
-      activeFeatures : activeFeatures
+      activeFeatures : activeFeatures,
+      description: description
     }
 
     return taskObject;

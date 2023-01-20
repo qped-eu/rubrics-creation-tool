@@ -1,10 +1,11 @@
 import React from "react";
-import { Grid } from "@mui/material";
+import { Grid, Divider } from "@mui/material";
 import Course from "./Course";
 import Differentiation from "./Differentiation";
 import Deliverables from "./Deliverables";
 import MyTextField from "./MyTextField";
 import Title from "./Title";
+import TaskDescription from "./TaskDescription";
 
 function GeneralInformation(props) {
   return (
@@ -25,8 +26,8 @@ function GeneralInformation(props) {
         <MyTextField
           defaultValue={""}
           storageKey={"new_task_name"}
+          placeholder={"enter unique name"}
           id="task_name"
-          helperText="must be unique"
         />
       </Grid>
       <Grid item xs={4}>
@@ -61,6 +62,12 @@ function GeneralInformation(props) {
       </Grid>
       <Grid item xs={4}>
         <Deliverables />
+      </Grid>
+      <Grid item xs={12}> 
+        <Divider orientation="horizontal" flexItem/>
+      </Grid>
+      <Grid item xs={12}>
+        <TaskDescription />
       </Grid>
     </Grid>
   );

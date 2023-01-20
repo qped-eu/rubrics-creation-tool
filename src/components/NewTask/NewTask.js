@@ -64,7 +64,8 @@ function NewTask() {
         activeStep={activeStep} 
         steps={steps} 
         nameIsUnique={nameIsUnique}
-        setNameIsUnique={setNameIsUnique}/>
+        setNameIsUnique={setNameIsUnique}
+        setActiveStep={setActiveStep}/>
       </Paper>
     </Box>
   );
