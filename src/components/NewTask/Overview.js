@@ -7,6 +7,8 @@ import Title from "./Title";
 import _ from "lodash";
 import features from "../../resources/features.json";
 import { level, getKeysForLevel } from "./utils";
+import general_information from "../../resources/general_information.json";
+
 
 function Overview(props) {
   const name = useReadLocalStorage("new_task_name");
@@ -17,6 +19,9 @@ function Overview(props) {
   const topic = useReadLocalStorage("new_task_topic");
   const deliverables = useReadLocalStorage("new_task_deliverables");
   const activeFeatures = useReadLocalStorage("new_task_features");
+
+  const differentiation = general_information.differentiationBackgrounds.options[differentiationIdx];
+  const course = general_information.courses.options[courseIdx];
 
   const nameIsUnique = props.nameIsUnique;
   console.log("name is unique" + nameIsUnique);
@@ -48,7 +53,7 @@ function Overview(props) {
           : <Parameter title={"Name"} value={name} sx={{color: 'error.main'}}/>}
       </Grid>
       <Grid item xs={6}>
-        <Parameter title={"Course"} value={courseIdx} />
+        <Parameter title={"Course"} value={course} />
       </Grid>
       <Grid item xs={6}>
         <Parameter title={"Week"} value={week} />
@@ -59,7 +64,7 @@ function Overview(props) {
       <Grid item xs={6}>
         <Parameter
           title={"Differentiation of background (TU/e)"}
-          value={differentiationIdx}
+          value={differentiation}
         />
         <Parameter title={"Topic"} value={topic} sx={{ marginTop: "16px" }} />
       </Grid>
