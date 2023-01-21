@@ -16,18 +16,10 @@ const steps = [
 ];
 
 function NewTask() {
-  const [nameIsUnique, setNameIsUnique] = useState(true);
-  
   const [activeStep, setActiveStep] = useState(0);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [activeStep]);
-
-  const handleNext = () =>
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-
-  const handleBack = () =>
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
 
   const StepperContent = () => {
     switch (activeStep) {
@@ -38,7 +30,7 @@ function NewTask() {
       case 2:
         return <Features style={{ margin: "auto", width: "100%" }} />;
       default:
-        return <Overview nameIsUnique={nameIsUnique} sx={{ margin: "auto", width: "100%" }} />;
+        return <Overview sx={{ margin: "auto", width: "100%" }} />;
     }
   };
 
@@ -56,16 +48,12 @@ function NewTask() {
           <Box sx={{ mt: 2 }}>
             <StepperContent />
           </Box>
-          
         </>
-        <ButtonsBox 
-        handleNext={handleNext} 
-        handleBack={handleBack} 
-        activeStep={activeStep} 
-        steps={steps} 
-        nameIsUnique={nameIsUnique}
-        setNameIsUnique={setNameIsUnique}
-        setActiveStep={setActiveStep}/>
+        <ButtonsBox
+          activeStep={activeStep}
+          setActiveStep={setActiveStep}
+          steps={steps}
+        />
       </Paper>
     </Box>
   );

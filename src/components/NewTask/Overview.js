@@ -1,15 +1,21 @@
 import { Grid } from "@mui/material";
+import { Stack } from "@mui/system";
 import React from "react";
-import { useReadLocalStorage } from "usehooks-ts";
+import { useReadLocalStorage, useLocalStorage } from "usehooks-ts";
 import AdditionalComments from "./AdditionalComments";
 import { Parameter, ParameterTable } from "./Parameter";
 import Title from "./Title";
 import _ from "lodash";
 import features from "../../resources/features.json";
+import general_information from "../../resources/general_information.json";
 import { level, getKeysForLevel } from "./utils";
+import ParameterEditable from "./Parameter/ParameterEditable";
 
-function Overview(props) {
-  const name = useReadLocalStorage("new_task_name");
+const { differentiationBackgrounds } = general_information;
+
+function Overview() {
+  const [name, setName] = useLocalStorage("new_task_name", "");
+  const allTasks = useReadLocalStorage("all_tasks");
   const courseIdx = useReadLocalStorage("new_task_courseIdx");
   const week = useReadLocalStorage("new_task_week");
   const maxPoints = useReadLocalStorage("new_task_maxPoints");
@@ -18,8 +24,8 @@ function Overview(props) {
   const deliverables = useReadLocalStorage("new_task_deliverables");
   const activeFeatures = useReadLocalStorage("new_task_features");
 
-  const nameIsUnique = props.nameIsUnique;
-  console.log("name is unique" + nameIsUnique);
+  const nameIsDuplicate = _.map(allTasks, (t) => t.name).includes(name);
+  const nameIsEmpty = name.trim() === "";
 
   const [pgFeaturesList, featuresList] = _.chain(activeFeatures)
     .filter((f) => f.checked)
@@ -36,16 +42,22 @@ function Overview(props) {
     featuresList,
     (feature) => getKeysForLevel(level.basic).includes(feature.key)
   );
-  
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
         <Title>Overview</Title>
       </Grid>
       <Grid item xs={6}>
-        {nameIsUnique ? 
-            <Parameter title={"Name"} value={name} sx={{color: 'primary.main'}}/>
-          : <Parameter title={"Name"} value={name} sx={{color: 'error.main'}}/>}
+        <Stack direction={"row"} sx={{ alignItems: "center" }}>
+          <ParameterEditable
+            title={"Name"}
+            value={name}
+            sx={{ color: (nameIsDuplicate || nameIsEmpty) && "error.main" }}
+            mode={(nameIsDuplicate || nameIsEmpty) && "edit"}
+            handleUpdateValue={(newValue) => () => setName(newValue)}
+          />
+        </Stack>
       </Grid>
       <Grid item xs={6}>
         <Parameter title={"Course"} value={courseIdx} />
@@ -59,7 +71,11 @@ function Overview(props) {
       <Grid item xs={6}>
         <Parameter
           title={"Differentiation of background (TU/e)"}
-          value={differentiationIdx}
+          value={
+            differentiationBackgrounds.options[
+              differentiationIdx ?? differentiationBackgrounds.defaultIndex
+            ]
+          }
         />
         <Parameter title={"Topic"} value={topic} sx={{ marginTop: "16px" }} />
       </Grid>
