@@ -14,8 +14,8 @@ const theme = createTheme({
       main: "#485B8F",
     },
     secondary: {
-     // main: "#d45113",
-        main:"#ffffff"
+      // main: "#d45113",
+      main: "#ffffff",
     },
     success: {
       main: "#8CE789",
@@ -37,11 +37,11 @@ function App() {
             <TaskUpload setError={setError} />
             <Button
               variant="outlined"
-              href="new_task"
+              href="#/new_task"
               size="large"
               disableElevation
               color="secondary"
-               style={{border :'2px solid'}}
+              style={{ border: "2px solid" }}
               sx={{ height: 50 }}
             >
               {" "}
