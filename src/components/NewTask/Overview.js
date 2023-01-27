@@ -9,12 +9,7 @@ import _ from "lodash";
 import features from "../../resources/features.json";
 import general_information from "../../resources/general_information.json";
 import { level, getKeysForLevel } from "./utils";
-<<<<<<< HEAD
-import general_information from "../../resources/general_information.json";
-
-=======
 import ParameterEditable from "./Parameter/ParameterEditable";
->>>>>>> ad917893d1e4df2270b63b878f6d8b1f2e2e5662
 
 const { differentiationBackgrounds } = general_information;
 
