@@ -11,6 +11,9 @@ import {
 } from "@mui/material";
 
 const IncludedFeatureTable = ({ title, values }) => {
+  if (values.length === 0) {
+    return null;
+  }
   return (
     <Table
       size={"small"}
@@ -45,6 +48,9 @@ const IncludedFeatureTable = ({ title, values }) => {
 
 function ParameterTable(props) {
   const { title, basic, advanced, pg } = props;
+  if (basic.length + advanced.length + pg.length === 0) {
+    return null;
+  }
   return (
     <>
       <Typography>

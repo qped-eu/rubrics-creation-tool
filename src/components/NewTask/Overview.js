@@ -1,30 +1,41 @@
 import { Grid } from "@mui/material";
+import { Stack } from "@mui/system";
 import React from "react";
-import { useReadLocalStorage } from "usehooks-ts";
+import { useReadLocalStorage, useLocalStorage } from "usehooks-ts";
 import AdditionalComments from "./AdditionalComments";
 import { Parameter, ParameterTable } from "./Parameter";
 import Title from "./Title";
 import _ from "lodash";
 import features from "../../resources/features.json";
+import general_information from "../../resources/general_information.json";
 import { level, getKeysForLevel } from "./utils";
+<<<<<<< HEAD
 import general_information from "../../resources/general_information.json";
 
+=======
+import ParameterEditable from "./Parameter/ParameterEditable";
+>>>>>>> ad917893d1e4df2270b63b878f6d8b1f2e2e5662
 
-function Overview(props) {
-  const name = useReadLocalStorage("new_task_name");
-  const courseIdx = useReadLocalStorage("new_task_courseIdx");
-  const week = useReadLocalStorage("new_task_week");
-  const maxPoints = useReadLocalStorage("new_task_maxPoints");
-  const differentiationIdx = useReadLocalStorage("new_task_differentiationIdx");
-  const topic = useReadLocalStorage("new_task_topic");
+const { differentiationBackgrounds } = general_information;
+
+function Overview() {
+  const [name, setName] = useLocalStorage("new_task_name", "");
+  const allTasks = useReadLocalStorage("all_tasks");
+  const courseIdx =
+    useReadLocalStorage("new_task_courseIdx") ??
+    general_information.courses.defaultIndex;
+  const week = useReadLocalStorage("new_task_week") ?? 1;
+  const maxPoints = useReadLocalStorage("new_task_maxPoints") ?? 0;
+  const differentiationIdx =
+    useReadLocalStorage("new_task_differentiationIdx") ??
+    general_information.differentiationBackgrounds.defaultIndex;
+  const topic = useReadLocalStorage("new_task_topic") ?? "None";
   const deliverables = useReadLocalStorage("new_task_deliverables");
   const activeFeatures = useReadLocalStorage("new_task_features");
+  const description = useReadLocalStorage("new_task_description") ?? "";
 
-  const differentiation = general_information.differentiationBackgrounds.options[differentiationIdx];
-  const course = general_information.courses.options[courseIdx];
-
-  const nameIsUnique = props.nameIsUnique;
-  console.log("name is unique" + nameIsUnique);
+  const nameIsDuplicate = _.map(allTasks, (t) => t.name).includes(name);
+  const nameIsEmpty = name.trim() === "";
 
   const [pgFeaturesList, featuresList] = _.chain(activeFeatures)
     .filter((f) => f.checked)
@@ -41,19 +52,28 @@ function Overview(props) {
     featuresList,
     (feature) => getKeysForLevel(level.basic).includes(feature.key)
   );
-  
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
         <Title>Overview</Title>
       </Grid>
       <Grid item xs={6}>
-        {nameIsUnique ? 
-            <Parameter title={"Name"} value={name} sx={{color: 'primary.main'}}/>
-          : <Parameter title={"Name"} value={name} sx={{color: 'error.main'}}/>}
+        <Stack direction={"row"} sx={{ alignItems: "center" }}>
+          <ParameterEditable
+            title={"Name"}
+            value={name}
+            sx={{ color: (nameIsDuplicate || nameIsEmpty) && "error.main" }}
+            mode={(nameIsDuplicate || nameIsEmpty) && "edit"}
+            handleUpdateValue={(newValue) => () => setName(newValue)}
+          />
+        </Stack>
       </Grid>
       <Grid item xs={6}>
-        <Parameter title={"Course"} value={course} />
+        <Parameter
+          title={"Course"}
+          value={general_information.courses.options[courseIdx]}
+        />
       </Grid>
       <Grid item xs={6}>
         <Parameter title={"Week"} value={week} />
@@ -64,12 +84,19 @@ function Overview(props) {
       <Grid item xs={6}>
         <Parameter
           title={"Differentiation of background (TU/e)"}
-          value={differentiation}
+          value={
+            differentiationBackgrounds.options[
+              differentiationIdx ?? differentiationBackgrounds.defaultIndex
+            ]
+          }
         />
         <Parameter title={"Topic"} value={topic} sx={{ marginTop: "16px" }} />
       </Grid>
       <Grid item xs={6}>
         <Parameter title={"QPED deliverables"} value={deliverables} />
+      </Grid>
+      <Grid item xs={12}>
+        <Parameter title={"Description"} value={description} />
       </Grid>
       <Grid item xs={12}>
         <ParameterTable
