@@ -62,7 +62,8 @@ function ButtonsBox(props) {
 
   const handleAddToList = () => {
     const taskToAdd = generateTaskObject();
-    setAllTasks(allTasks);
+    const newAllTasks = _.concat(allTasks, taskToAdd);
+    setAllTasks(newAllTasks);
   };
 
   const handleGenerateJSON = () => {
