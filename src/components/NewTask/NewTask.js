@@ -1,4 +1,4 @@
-import { Stepper, Step, StepLabel, Button, Paper } from "@mui/material";
+import { Stepper, Step, StepLabel, Paper } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState, useEffect } from "react";
 import Topic from "./Topic";
