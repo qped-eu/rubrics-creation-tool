@@ -6,8 +6,24 @@ import Deliverables from "./Deliverables";
 import MyTextField from "./MyTextField";
 import Title from "./Title";
 import TaskDescription from "./TaskDescription";
+import _ from "lodash";
+import { useReadLocalStorage } from "usehooks-ts";
 
 function GeneralInformation(props) {
+  const name = useReadLocalStorage("new_task_name") ?? "";
+  const allTasks = useReadLocalStorage("all_tasks") ?? [];
+  let nameProps = {
+    error: false,
+    label: "",
+  };
+  if (name === "") {
+    nameProps.error = true;
+    nameProps.label = "Name is empty";
+  } else if (_.map(allTasks, (x) => x.name).includes(name)) {
+    nameProps.error = true;
+    nameProps.label = "Name is not unique";
+  }
+
   return (
     <Grid container spacing={2} sx={props.sx}>
       <Grid item xs={4}>
@@ -24,6 +40,7 @@ function GeneralInformation(props) {
       </Grid>
       <Grid item xs={4}>
         <MyTextField
+          {...nameProps}
           defaultValue={""}
           storageKey={"new_task_name"}
           placeholder={"enter unique name"}
@@ -63,8 +80,8 @@ function GeneralInformation(props) {
       <Grid item xs={4}>
         <Deliverables />
       </Grid>
-      <Grid item xs={12}> 
-        <Divider orientation="horizontal" flexItem/>
+      <Grid item xs={12}>
+        <Divider orientation="horizontal" flexItem />
       </Grid>
       <Grid item xs={12}>
         <TaskDescription />

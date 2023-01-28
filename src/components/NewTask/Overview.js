@@ -48,6 +48,18 @@ function Overview() {
     (feature) => getKeysForLevel(level.basic).includes(feature.key)
   );
 
+  let nameProps = {
+    error: false,
+    label: "",
+  };
+  if (name === "") {
+    nameProps.error = true;
+    nameProps.label = "Name is empty";
+  } else if (_.map(allTasks, (x) => x.name).includes(name)) {
+    nameProps.error = true;
+    nameProps.label = "Name is not unique";
+  }
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -58,9 +70,10 @@ function Overview() {
           <ParameterEditable
             title={"Name"}
             value={name}
+            caption={nameProps.label}
             sx={{ color: (nameIsDuplicate || nameIsEmpty) && "error.main" }}
             mode={(nameIsDuplicate || nameIsEmpty) && "edit"}
-            handleUpdateValue={(newValue) => () => setName(newValue)}
+            updateValue={(newValue) => setName(newValue)}
           />
         </Stack>
       </Grid>
