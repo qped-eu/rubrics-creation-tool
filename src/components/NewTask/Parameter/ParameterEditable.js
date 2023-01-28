@@ -1,6 +1,5 @@
 import { Stack } from "@mui/system";
 import {
-  Box,
   IconButton,
   Typography,
   TextField,
@@ -11,7 +10,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { useState } from "react";
-import { Check, Edit } from "@mui/icons-material";
+import { Edit } from "@mui/icons-material";
 import { useReadLocalStorage } from "usehooks-ts";
 import _ from "lodash";
 
