@@ -1,6 +1,5 @@
 import logo from "./logo2.png";
 import "./App.css";
-import  OpenSans from "./fonts/OpenSans.ttf";
 
 import { Button, Stack, Typography, Snackbar } from "@mui/material";
 import { TaskSelector, TaskUpload } from "./components/TaskManager";
