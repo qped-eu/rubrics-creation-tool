@@ -1,26 +1,43 @@
 import logo from "./logo2.png";
 import "./App.css";
+import  OpenSans from "./fonts/OpenSans.ttf";
 
 import { Button, Stack, Typography, Snackbar } from "@mui/material";
 import { TaskSelector, TaskUpload } from "./components/TaskManager";
 import { useState } from "react";
 import { useLocalStorage, useReadLocalStorage } from "usehooks-ts";
 import { createTheme, ThemeProvider } from "@mui/material";
+import { dark } from "@mui/material/styles/createPalette";
+import { blue } from "@mui/material/colors";
+
 
 const theme = createTheme({
   palette: {
-    type: "dark",
     primary: {
-      main: "#485B8F",
+      light:"#f27a41",
+      main: "#e36022",
+      dark: "#c24408",
     },
     secondary: {
      // main: "#d45113",
-        main:"#ffffff"
+        main:"#ffffff",
+        dark:"#fefefe",
     },
     success: {
-      main: "#8CE789",
+      light: "#76e072",
+      main: "#50d14b",
+      dark: "#2bad4e",
+      contrastText: "#ffff",
     },
   },
+  typography:{
+    fontFamily: 'sans-serif',
+    fontWeightLight: 400,
+    fontWeightRegular: 500,
+    fontWeightMedium: 600,
+    fontWeightBold: 700,
+    
+  }
 });
 
 function App() {
@@ -38,7 +55,7 @@ function App() {
             <Button
               variant="outlined"
               href="new_task"
-              size="large"
+              size="small"
               disableElevation
               color="secondary"
                style={{border :'2px solid'}}
