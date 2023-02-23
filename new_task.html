@@ -6,9 +6,893 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>QPED O4 - Create Task</title>
 		<link rel="stylesheet" href="style.css">	
-		<script language="javascript" type="text/javascript" src="javascript/features.js"></script>
-		<script language="javascript" type="text/javascript" src="javascript/general.js"></script>	
-		<script language="javascript" type="text/javascript" src="javascript/new_task.js"></script>	
+		<script language="javascript" type="text/javascript">
+		const FEATURES = JSON.parse(
+`[
+   {
+      "name":"Modularity",
+      "key":"modularity",
+      "level":"advanced",
+      "fail_examples":[
+         {
+            "key":"1",
+            "desc":"Unclear structure",
+            "desc_long":"Project structure is unclear since the code is not organized in coherent packages, folders, files, etc."
+         },
+         {
+            "key":"2",
+            "desc":"Unrelated tasks in functions/low cohesion",
+            "desc_long":"Most of the classes and functions perform many unrelated tasks and/or their bodies are large."
+         },
+         {
+            "key":"3",
+            "desc":"High degree of coupling",
+            "desc_long":"Modules (classes, objects) depend heavily on each other to function properly. Modules are not very well encapsulated."
+         },
+         {
+            "key":"4",
+            "desc":"No information hiding",
+            "desc_long":"The visibility of methods/fields is not well thought out (fields should usually be private)."
+         }
+      ],
+      "pass_examples":[
+         {
+            "key":"1",
+            "desc":"Clear structure",
+            "desc_long":"Project structure is clear since the code is organized in coherent packages, folders, files, etc."
+         },
+         {
+            "key":"2",
+            "desc":"Clear-cut scope of classes and functions/high cohesion",
+            "desc_long":"Most of the classes and functions perform a limited set of tasks and their bodies are limited in length."
+         },
+         {
+            "key":"3",
+            "desc":"Low degree of coupling",
+            "desc_long":"Modules are well encapsulated. They only depend on each other if necessary."
+         },
+         {
+            "key":"4",
+            "desc":"Information hiding",
+            "desc_long":"The modifiers for visibility are very well thought out. Each module (class, method, package) only has access to intended methods."
+         }
+      ]
+   },
+   {
+      "name":"Data Types",
+      "key":"data_types",
+      "level":"basic",
+      "fail_examples":[
+         {
+            "key":"1",
+            "desc":"Wrong data types",
+            "desc_long":"The choice of some data types is wrong, e.g., an integer is used when a boolean is more suitable."
+         },
+         {
+            "key":"2",
+            "desc":"Unnecessary complex types",
+            "desc_long":"Unnecessary use of more complex types. E.g., the result of an integer computation is stored in a double variable."
+         },
+         {
+            "key":"3",
+            "desc":"Unnecessary type casts",
+            "desc_long":"Manually casting types unnecessarily. E.g., (Object) \\\"Hello World!\\\"."
+         },
+         {
+            "key":"4",
+            "desc":"Confusing implicit casting",
+            "desc_long":"Implicitly using toString() when not intended."
+         }
+      ],
+      "pass_examples":[
+         {
+            "key":"1",
+            "desc":"Appropriate data types",
+            "desc_long":"The choice of the data types is correct, e.g., an integer is used when an integer is necessary"
+         },
+         {
+            "key":"2",
+            "desc":"Appropriate data structures",
+            "desc_long":"Complex data structures are only used when needed, e.g., ArrayList instead of array when size varies dynamically. No unnecessary coercion or casts necessary."
+         }
+      ]
+   },
+   {
+      "name":"Readability",
+      "key":"readability",
+      "level":"basic",
+      "fail_examples":[
+         {
+            "key":"1",
+            "desc":"Wrong indentation",
+            "desc_long":"Indentation of code is not up to code conventions."
+         },
+         {
+            "key":"2",
+            "desc":"Broken lines of code",
+            "desc_long":"Code lines are broken badly. They either contain too much code or line-breaks are unnecessarily placed."
+         },
+         {
+            "key":"3",
+            "desc":"Parentheses wrongly placed",
+            "desc_long":"Parentheses are placed in ways contrary to code conventions."
+         },
+         {
+            "key":"4",
+            "desc":"Poor naming",
+            "desc_long":"Some names appear unreadable, meaningless, misleading and/or do not meet naming conventions."
+         },
+         {
+            "key":"5",
+            "desc":"Bad comments",
+            "desc_long":"Comments are usually missing or only explain obvious issues, such as what the code statement is doing."
+         }
+      ],
+      "pass_examples":[
+         {
+            "key":"1",
+            "desc":"Correct indentation",
+            "desc_long":"Indentation conforms to the code conventions."
+         },
+         {
+            "key":"2",
+            "desc":"Considered lines of code",
+            "desc_long":"Complex lines of code are broken up in smaller, easier to understand and coherent chunks."
+         },
+         {
+            "key":"3",
+            "desc":"Correctly placed parentheses",
+            "desc_long":"Placement of parentheses conforms to the code conventions."
+         },
+         {
+            "key":"4",
+            "desc":"Good names",
+            "desc_long":"Meaningful identifiers which meet naming conventions are used as variables, functions and class names."
+         },
+         {
+            "key":"5",
+            "desc":"Useful comments",
+            "desc_long":"Comments explain tricky or important decisions."
+         }
+      ]
+   },
+   {
+      "name":"DRY principle",
+      "key":"dry_principle",
+      "level":"basic",
+      "fail_examples":[
+         {
+            "key":"1",
+            "desc":"Repeated code",
+            "desc_long":"Repeat snippets of code quite often."
+         },
+         {
+            "key":"2",
+            "desc":"Magic numbers",
+            "desc_long":"Frequently used numbers or Strings with a specific meaning and/or derived values are hard-coded (magic numbers)."
+         }
+      ],
+      "pass_examples":[
+         {
+            "key":"1",
+            "desc":"Helper functions are used",
+            "desc_long":"Helper functions are used in order to reuse code."
+         },
+         {
+            "key":"2",
+            "desc":"Use of constants",
+            "desc_long":"Symbolic (named) constants are used and they are kept in a common place."
+         }
+      ]
+   },
+   {
+      "name":"Flow",
+      "key":"flow",
+      "level":"advanced",
+      "fail_examples":[
+         {
+            "key":"1",
+            "desc":"Obscured flow",
+            "desc_long":"Code order of blocks obscures intuition of assignment."
+         },
+         {
+            "key":"2",
+            "desc":"Unnecessary branching",
+            "desc_long":"A conditional statement is used when instead the if-predicate should be used in an expression. For example: if(x) return true else return false; instead of return x;"
+         },
+         {
+            "key":"3",
+            "desc":"Unnecessary nesting",
+            "desc_long":"Nested if-statements are used when not strictly necessary or useful for readability. E.g., if(a) if(b) instead of if(a && b)."
+         },
+         {
+            "key":"4",
+            "desc":"Switch/if often mixed up",
+            "desc_long":"Multiple if-blocks are frequently used instead of using switch or a switch statement is used for binary decisions."
+         }
+      ],
+      "pass_examples":[
+         {
+            "key":"1",
+            "desc":"Simple flow",
+            "desc_long":"Code order of blocks corresponds to intuition of assignment."
+         },
+         {
+            "key":"2",
+            "desc":"Only necessary branches",
+            "desc_long":"Code only branches when necessary, not when possible."
+         },
+         {
+            "key":"3",
+            "desc":"Only necessary nesting",
+            "desc_long":"Nested conditionals are only used when necessary."
+         },
+         {
+            "key":"4",
+            "desc":"Correct use of Switch/if",
+            "desc_long":"Switch is used instead of multiple if-blocks. If-statements are used for binary decisions."
+         }
+      ]
+   },
+   {
+      "name":"API Documentation",
+      "key":"api_documentation",
+      "level":"advanced",
+      "fail_examples":[
+         {
+            "key":"1",
+            "desc":"Class Documentation is missing",
+            "desc_long":"Author, version and goal of the class are missing."
+         },
+         {
+            "key":"2",
+            "desc":"Attributes not well documented",
+            "desc_long":"Incorrect or insufficient documentation of attributes."
+         },
+         {
+            "key":"3",
+            "desc":"Missing method documentation",
+            "desc_long":"Documentation of methods is flawed. Either pre- and post-conditions are missing or the method is not well explained (including a summarizing first sentence)."
+         },
+         {
+            "key":"4",
+            "desc":"Incorrect method signature documentation",
+            "desc_long":"The documentation for the signature of a method is flawed. Either parameters are not well documented (wrong position, bad explanation) or exceptions are not documented."
+         }
+      ],
+      "pass_examples":[
+         {
+            "key":"1",
+            "desc":"Classes are well documented",
+            "desc_long":"One or more of author, version and the goal of the class are mentioned within the documentation."
+         },
+         {
+            "key":"2",
+            "desc":"Attributes documented",
+            "desc_long":"Documentation about attributes is correct."
+         },
+         {
+            "key":"3",
+            "desc":"Method functionality documented",
+            "desc_long":"Documentation about methods is correct. It contains a meaningful first sentence and documentation of pre- post conditions."
+         },
+         {
+            "key":"4",
+            "desc":"Documentation of a methods signature is correct.",
+            "desc_long":"Parameters as well as possible exceptions are mentioned and well documented."
+         }
+      ]
+   },
+   {
+      "name":"Correctness",
+      "key":"correctness",
+      "level":"basic",
+      "fail_examples":[
+         {
+            "key":"1",
+            "desc":"Wrong file format",
+            "desc_long":"The file format of the submitted code is not in the correct format. E.g., a PDF is used instead of a Java file."
+         },
+         {
+            "key":"2",
+            "desc":"Not compiling/running",
+            "desc_long":"The code does not compile or does not run without errors."
+         },
+         {
+            "key":"3",
+            "desc":"Specifications not met",
+            "desc_long":"The program does not meet some of the specifications in the assignment."
+         }
+      ],
+      "pass_examples":[
+         {
+            "key":"1",
+            "desc":"Functions properly",
+            "desc_long":"The program conforms to the specifications provided by the assignment."
+         },
+         {
+            "key":"2",
+            "desc":"Correct results",
+            "desc_long":"The program produces correct results for correct inputs."
+         }
+      ]
+   },
+   {
+      "name":"Robustness",
+      "key":"robustness",
+      "level":"advanced",
+      "fail_examples":[
+         {
+            "key":"1",
+            "desc":"No error handling",
+            "desc_long":"Errors or abnormal conditions are not all handled."
+         },
+         {
+            "key":"2",
+            "desc":"Edge cases not handled",
+            "desc_long":"Edge cases are mostly ignored within the implementation. E.g., empty strings, empty lists, and so on."
+         },
+         {
+            "key":"3",
+            "desc":"No parameter validation",
+            "desc_long":"Validation of parameters is mostly missing. E.g., it is possible to pass negative numbers to a function over natural numbers."
+         }
+      ],
+      "pass_examples":[
+         {
+            "key":"1",
+            "desc":"Errors handled properly",
+            "desc_long":"The program reacts properly to abnormal conditions and erroneous inputs."
+         },
+         {
+            "key":"2",
+            "desc":" Edge cases handled",
+            "desc_long":"Edge cases are handled within the method. E.g., empty strings, empty lists, etc. are handled within the code."
+         },
+         {
+            "key":"3",
+            "desc":"Parameters are validated",
+            "desc_long":"Parameters are validated. It is not possible to enter forbidden input into a method."
+         }
+      ]
+   },
+   {
+      "name":"Test Traceability",
+      "key":"test_traceability",
+      "level":"advanced",
+      "fail_examples":[
+         {
+            "key":"1",
+            "desc":"Test scenario clear",
+            "desc_long":"The test scenario is not prepared clearly or preparation is mixed with the test execution."
+         },
+         {
+            "key":"2",
+            "desc":"Tests multiple units",
+            "desc_long":"A test asserts properties of multiple methods (e.g., method calls and assertions alternate a lot)."
+         },
+         {
+            "key":"3",
+            "desc":"Not traceable",
+            "desc_long":"It is not easy to see a relation between the specifications in the assignment and tests."
+         },
+         {
+            "key":"4",
+            "desc":"Bad test naming",
+            "desc_long":"The names of the tests do not clearly describe the test case."
+         }
+      ],
+      "pass_examples":[
+         {
+            "key":"1",
+            "desc":"Test scenario clear",
+            "desc_long":"The creation of the context in which the tested functionality is performed is meaningful."
+         },
+         {
+            "key":"2",
+            "desc":"Tests one unit",
+            "desc_long":"One test asserts properties of just one method."
+         },
+         {
+            "key":"3",
+            "desc":"Traceable",
+            "desc_long":"For each test the underlying requirements are easily recognizable."
+         },
+         {
+            "key":"4",
+            "desc":"Good test naming",
+            "desc_long":"The names of tests clearly describe the test cases."
+         }
+      ]
+   },
+   {
+      "name":"Test Completeness",
+      "key":"test_completeness",
+      "level":"advanced",
+      "fail_examples":[
+         {
+            "key":"1",
+            "desc":"Insufficient specification coverage",
+            "desc_long":"Some specifications are not tested at all or are tested insufficiently."
+         },
+         {
+            "key":"2",
+            "desc":"Insufficient coverage for the happy path",
+            "desc_long":"The most common path through a program is not sufficiently tested. E.g., there are common branches that get ignored in testing."
+         },
+         {
+            "key":"3",
+            "desc":"Insufficient coverage of edge cases",
+            "desc_long":"Some or all edge cases get ignored in testing. E.g.,  or empty Strings are ignored in testing."
+         },
+         {
+            "key":"4",
+            "desc":"Insufficient coverage of exceptional path",
+            "desc_long":"Less frequent branches are not sufficiently tested."
+         },
+         {
+            "key":"5",
+            "desc":"Thrown exceptions are not tested",
+            "desc_long":"A method that is supposed to throw an exception in a certain case is not tested to do so."
+         },
+         {
+            "key":"6",
+            "desc":"Incorrect assertions",
+            "desc_long":"The expected values in assertions are wrong or conditions are too weak, such that incorrect programs pass the tests."
+         }
+      ],
+      "pass_examples":[
+         {
+            "key":"1",
+            "desc":"Sufficient specification coverage",
+            "desc_long":"All specifications of the program are tested properly and sufficiently."
+         },
+         {
+            "key":"2",
+            "desc":"Sufficient coverage happy path",
+            "desc_long":"The most common path through a program is sufficiently tested."
+         },
+         {
+            "key":"3",
+            "desc":"Sufficient coverage of edge cases",
+            "desc_long":"All edge cases are tested for every method within the program."
+         },
+         {
+            "key":"4",
+            "desc":"Sufficient coverage of exceptional path",
+            "desc_long":"Infrequent or exceptional paths through the program are tested sufficiently."
+         },
+         {
+            "key":"5",
+            "desc":"Thrown exceptions are tested",
+            "desc_long":"It is tested if every method that throws exceptions does indeed throw the exception in question in the correct situations."
+         },
+         {
+            "key":"6",
+            "desc":"Correct Assertions",
+            "desc_long":"The expected values in assertions are correct and strong enough. Only correct programs can pass the tests."
+         }
+      ]
+   },
+   {
+      "name":"PG - Extern - Design",
+      "key":"pg_external_design",
+      "level":"procedural_guidance",
+      "fail_examples":[
+         
+      ],
+      "pass_examples":[
+         {
+            "key":"1",
+            "desc":"Suitable entities and types.",
+            "desc_long":"Proposing suitable classes, methods, parameter and return types for the API."
+         }
+      ]
+   },
+   {
+      "name":"PG - Extern - Specification",
+      "key":"pg_external_specification",
+      "level":"procedural_guidance",
+      "fail_examples":[
+         
+      ],
+      "pass_examples":[
+         {
+            "key":"1",
+            "desc":"Informal pre- and postconditions",
+            "desc_long":"Giving informal preconditions and postconditions for the methods in the API in terms of the application domain."
+         },
+         {
+            "key":"2",
+            "desc":"Specification for robustness",
+            "desc_long":"Providing robustness by specifying the desired behavior in case satisfying the postcondition is not possible (e.g. throwing exceptions, asking for user input, using default values)."
+         },
+         {
+            "key":"3",
+            "desc":"Well-named subspecifications",
+            "desc_long":"Organizing the case analysis in the specification into well-named subspecifications."
+         },
+         {
+            "key":"4",
+            "desc":"Completeness of subcontracts",
+            "desc_long":"Completeness of subcontracts"
+         }
+      ]
+   },
+   {
+      "name":"PG - Extern - Tests",
+      "key":"pg_external_tests",
+      "level":"procedural_guidance",
+      "fail_examples":[
+         
+      ],
+      "pass_examples":[
+         {
+            "key":"1",
+            "desc":"Test coverage",
+            "desc_long":"Proposing a sufficient number of test cases to cover all the cases in the specification, including both typical and edge values."
+         }
+      ]
+   },
+   {
+      "name":"PG - Intern - Analaysis",
+      "key":"pg_internal_analysis",
+      "level":"procedural_guidance",
+      "fail_examples":[
+         
+      ],
+      "pass_examples":[
+         {
+            "key":"1",
+            "desc":"Data types",
+            "desc_long":"Being able to answer questions about the analysis considerations in terms of the choices of data types and the problem decomposition. "
+         },
+         {
+            "key":"2",
+            "desc":"Analysis considerations",
+            "desc_long":"If asked for: a description of the analysis considerations."
+         }
+      ]
+   },
+   {
+      "name":"PG - Intern - Design",
+      "key":"pg_internal_design",
+      "level":"procedural_guidance",
+      "fail_examples":[
+         
+      ],
+      "pass_examples":[
+         {
+            "key":"1",
+            "desc":"Hhigh cohesion/low coupling, separation",
+            "desc_long":"Decomposing the problem into classes and methods with high cohesion/low coupling and clear responsibilities."
+         },
+         {
+            "key":"2",
+            "desc":"Types of the class attributes",
+            "desc_long":"Deciding on type of the class attributes necessary for realizing the class’s responsibilities."
+         },
+         {
+            "key":"3",
+            "desc":"Names reflect purposes",
+            "desc_long":"Coming up with names for classes, attributes, (private) methods, parameters (name and type of) that reflect their purpose."
+         }
+      ]
+   },
+   {
+      "name":"PG - Intern - Specification",
+      "key":"pg_internal_specification",
+      "level":"procedural_guidance",
+      "fail_examples":[
+         
+      ],
+      "pass_examples":[
+         {
+            "key":"1",
+            "desc":"Invariants",
+            "desc_long":"Providing a representation invariant that describes the relationship between application domain concepts and data types."
+         },
+         {
+            "key":"2",
+            "desc":"Less on domain knowledge",
+            "desc_long":"Translating the external method specifications, using the representation invariant, into versions that rely less on domain knowledge."
+         },
+         {
+            "key":"3",
+            "desc":"Specifications for internal methods/classes",
+            "desc_long":"Providing specifications for private methods and methods of helper-objects introduced in the internal design."
+         }
+      ]
+   },
+   {
+      "name":"PG - Intern - Tests",
+      "key":"pg_internal_tests",
+      "level":"procedural_guidance",
+      "fail_examples":[
+         
+      ],
+      "pass_examples":[
+         {
+            "key":"1",
+            "desc":"Grey box tests",
+            "desc_long":"Extending the tests of public methods using their internal specification (grey box tests)."
+         },
+         {
+            "key":"2",
+            "desc":"Tests for internal methods",
+            "desc_long":"Adding tests for the methods introduced in the internal design, i.e. private methods and helper-objects (grey box) ."
+         }
+      ]
+   },
+   {
+      "name":"PG - Impl - Analysis",
+      "key":"pg_implementation_analysis",
+      "level":"procedural_guidance",
+      "fail_examples":[
+         
+      ],
+      "pass_examples":[
+         {
+            "key":"1",
+            "desc":"Considering re-use",
+            "desc_long":"Consideration of the advantages of using library components or to design build own software."
+         }
+      ]
+   },
+   {
+      "name":"PG - Impl - Design",
+      "key":"pg_implementation_design",
+      "level":"procedural_guidance",
+      "fail_examples":[
+         
+      ],
+      "pass_examples":[
+         {
+            "key":"1",
+            "desc":"Algorithm selection",
+            "desc_long":"Deciding on an algorithm that satisfies the specification and exhibits reasonable efficiency."
+         },
+         {
+            "key":"2",
+            "desc":"Maintainability",
+            "desc_long":"Providing for maintainability through replacing switches by subclassing, avoiding loop exit jumps, avoiding external calls from temporarily corrupt objects, etc."
+         }
+      ]
+   },
+   {
+      "name":"PG - Impl - Coding",
+      "key":"pg_implementation_coding",
+      "level":"procedural_guidance",
+      "fail_examples":[
+         
+      ],
+      "pass_examples":[
+         {
+            "key":"1",
+            "desc":"Correct algorithm implementation",
+            "desc_long":"Providing code that implements the chosen algorithms and does not generate compiler errors or warnings."
+         }
+      ]
+   },
+   {
+      "name":"PG - Impl - Tests",
+      "key":"pg_implementation_tests",
+      "level":"procedural_guidance",
+      "fail_examples":[
+         
+      ],
+      "pass_examples":[
+         {
+            "key":"1",
+            "desc":"Test coverage",
+            "desc_long":"Adding tests to ensure that all code is covered."
+         },
+         {
+            "key":"2",
+            "desc":"Tests for code risks",
+            "desc_long":"Adding tests to check for risks in the code (e.g. division by zero, overflow, file I/O)."
+         },
+         {
+            "key":"3",
+            "desc":"Running all tests.",
+            "desc_long":"Running all tests."
+         }
+      ]
+   }
+]`
+);</script>
+		<script language="javascript" type="text/javascript">
+		window.addEventListener('load', (event) => {
+    load();
+});
+
+
+function Task(name, maxPoints, course, week, differentiation, deliverables, rubricSet, additionalComments, blueprint){
+
+	this.name = name;
+	this.maxPoints = maxPoints;
+	this.course = course;
+    this.week = week;
+    this.differentiation = differentiation;
+    this.deliverables = deliverables;
+	this.rubricSet = rubricSet;
+	this.additionalComments = additionalComments;
+	this.feedbackSet=[];
+	this.blueprint = blueprint;
+}
+
+function Deliverable(name,selected){
+    this.name = name;
+    this.selected = selected;
+}
+
+function EnabledFeature(name, weight){
+    this.name = name;
+    this.weight = weight;
+}
+
+/* HTML to Element(s) copied from
+ * https://stackoverflow.com/questions/494143/creating-a-new-dom-element-from-an-html-string-using-built-in-dom-methods-or-pro/35385518#35385518
+ */
+/**
+ * @param {String} HTML representing a single element
+ * @return {Element}
+ */
+function htmlToElement(html) {
+    var template = document.createElement('template');
+    html = html.trim(); // Never return a text node of whitespace as the result
+    template.innerHTML = html;
+    return template.content.firstChild;
+}
+
+/**
+ * @param {String} HTML representing any number of sibling elements
+ * @return {NodeList} 
+ */
+function htmlToElements(html) {
+    var template = document.createElement('template');
+    template.innerHTML = html;
+    return template.content.childNodes;
+}
+
+function download(filename, text) {
+  var element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  element.setAttribute('download', filename);
+
+  element.style.display = 'none';
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
+}
+
+function makeToast(displayText) {
+  // Get the snackbar DIV
+  var snackbar = document.getElementById("snackbar");
+  snackbar.innerHTML = displayText;
+
+  // Add the "show" class to DIV
+  snackbar.className = "show";
+
+  // After 3 seconds, remove the show class from DIV
+  setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 9500);
+} </script>	
+		<script language="javascript" type="text/javascript">
+		function load() {
+  setTable();
+}
+
+const checkboxes = [];
+
+function setTable(){
+	var tableBody = document.getElementById('rubrics_table');
+	tableBody.innerHTML = "";
+	FEATURES.forEach(
+    element => {
+      var tr = htmlToElement('<tr/>')
+      tableBody.appendChild(tr);
+
+      var th = htmlToElement(
+        '<td class="first_col">' +
+          element.name +
+        '</td>');
+	  input = htmlToElement(`<input type="checkbox" class="${element.key}" id="${element.key}" name="${element.key}"/>`);
+	  checkboxes.push(input);
+	  
+	  var inputTh = htmlToElement('<td></td>');
+	  inputTh.appendChild(input);
+
+	  var weightInput = htmlToElement(`<input type="number" value="1" class="${element.key}_weight" id="${element.key}_weight" id="${element.key}_weight"/>`);
+	  var weightTd = htmlToElement('<td></td>');
+	  weightTd.appendChild(weightInput);
+
+	  tr.appendChild(inputTh);
+	  tr.appendChild(th);
+	  tr.appendChild(weightTd);
+	});
+}
+
+
+function handleGenerationClick(){
+	const nameBox = document.getElementById('task_name_text');
+	const pointBox = document.getElementById('task_points_text');
+	const courseBox = document.getElementById('course_text');
+	const weekBox = document.getElementById('week_of_task_text');
+	const differentiationBox = document.getElementById('differentiation_of_background_text');
+	const deliverablesBox = document.getElementById('deliverables_text');
+	const commentBox = document.getElementById('additional_comments');
+	const blueprintText = document.getElementById('task_blueprint_text').value;
+
+	const enabledFeatures = [];
+	checkboxes.forEach(
+		checkbox => {
+			if(checkbox.checked){
+				const weightBox = document.getElementById(checkbox.id+'_weight')
+				enabledFeatures.push(new EnabledFeature(checkbox.id, weightBox.valueAsNumber));
+			}
+		}
+	);
+	const deliverables = [];
+	Array.from(deliverablesBox.options).forEach(
+		option => {
+			deliverables.push(new Deliverable(option.value, option.selected));
+		}
+	);
+	if(enabledFeatures.length!=0){
+		const task = new Task(nameBox.value, pointBox.value, courseBox.value, weekBox.value, differentiationBox.value, deliverables, enabledFeatures, commentBox.value, blueprintText);
+		const json_task = JSON.stringify(task);
+		download(nameBox.value+'.json', json_task);
+	}
+	else{
+		makeToast("Please select at least one feature for your task");
+	}
+}
+
+
+function handleToggleAll() {
+	toggle(checkboxes);
+}
+
+function handleToggleBasic() {
+	toggle(getFilteredCheckboxes('basic'));
+}
+
+function getFilteredCheckboxes(level) {
+	var filteredCheckboxes = [];
+	FEATURES.forEach(feature => {
+		if (feature.level === level) {
+			filteredCheckboxes.push(document.getElementById(feature.key));
+		}
+	})
+	return filteredCheckboxes;
+}
+
+function handleToggleAdvanced() {
+	toggle(getFilteredCheckboxes('advanced'));
+}
+
+function handleTogglePG() {
+	toggle(getFilteredCheckboxes('procedural_guidance'));
+
+}
+
+function toggle(checkboxes) {
+	var allEnabled = true;
+	checkboxes.forEach(
+		checkbox => {
+			allEnabled &= checkbox.checked;
+		}
+	);
+
+	checkboxes.forEach(
+		checkbox => {
+			checkbox.checked = !allEnabled;
+		}
+	);
+
+}</script>	
 
 		    <!-- ... -->
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -21,7 +905,1002 @@
     <!-- <script type="text/javascript" src="https://cdn3.devexpress.com/jslib/21.2.6/js/dx.web.js"></script> -->
     <!-- <script type="text/javascript" src="https://cdn3.devexpress.com/jslib/21.2.6/js/dx.viz.js"></script> -->
 
-		<script language="javascript" type="text/javascript" src="javascript/blueprint.js"></script>
+		<script language="javascript" type="text/javascript">
+		$(() => {
+    const treeView = $('#treeview').dxTreeView({
+        items: products,
+        width: 500,
+        searchEnabled: true,
+        selectionMode: 'single',
+		selectByClick: true,
+		onItemSelectionChanged: function(e){
+			const selected = e.itemData;
+			const saveSelection = document.getElementById("task_blueprint_text");
+			saveSelection.value = e.itemData.id;
+		},
+    }).dxTreeView('instance');
+
+    $("#treeview").dxTreeView("collapseAll");
+
+    $('#searchMode').dxSelectBox({
+        items: ['contains', 'startswith', 'equals'],
+        value: 'contains',
+        onValueChanged(data) {
+            treeView.option('searchMode', data.value);
+        },
+    });
+});
+
+
+const products = [{
+    id: "O1 Blueprint (combined, restructured)",
+    text: "O1 Blueprint (combined, restructured)",
+    expanded: true,
+    items: [{
+            id: "expressions",
+            text: "expressions",
+            expanded: true,
+            items: [{
+                    id: "operators",
+                    text: "operators",
+                    expanded: true,
+                    items: [{
+                            id: "relational operators",
+                            text: "relational operators",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "logical operators",
+                            text: "logical operators",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "arithmetic operators",
+                            text: "arithmetic operators",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "bit operators",
+                            text: "bit operators",
+                            expanded: true,
+                            items: []
+                        },
+                    ]
+                },
+                {
+                    id: "evaluation",
+                    text: "evaluation",
+                    expanded: true,
+                    items: [{
+                            id: "precedence",
+                            text: "precedence",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "lazy evaluation",
+                            text: "lazy evaluation",
+                            expanded: true,
+                            items: []
+                        },
+                    ]
+                },
+            ]
+        },
+        {
+            id: "control flow",
+            text: "control flow",
+            expanded: true,
+            items: [{
+                    id: "conditionals",
+                    text: "conditionals",
+                    expanded: true,
+                    items: [{
+                            id: "switch",
+                            text: "switch",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "if",
+                            text: "if",
+                            expanded: true,
+                            items: []
+                        },
+                    ]
+                },
+                {
+                    id: "loops",
+                    text: "loops",
+                    expanded: true,
+                    items: [{
+                            id: "for",
+                            text: "for",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "while",
+                            text: "while",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "foreach",
+                            text: "foreach",
+                            expanded: true,
+                            items: []
+                        },
+                    ]
+                },
+                {
+                    id: "exceptions",
+                    text: "exceptions",
+                    expanded: true,
+                    items: []
+                },
+                {
+                    id: "jumping",
+                    text: "jumping",
+                    expanded: true,
+                    items: [{
+                            id: "break",
+                            text: "break",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "continue",
+                            text: "continue",
+                            expanded: true,
+                            items: []
+                        },
+                    ]
+                },
+            ]
+        },
+        {
+            id: "data",
+            text: "data",
+            expanded: true,
+            items: [{
+                    id: "user-defined structures",
+                    text: "user-defined structures",
+                    expanded: true,
+                    items: [{
+                            id: "trees",
+                            text: "trees",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "stacks",
+                            text: "stacks",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "queues",
+                            text: "queues",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "graphs",
+                            text: "graphs",
+                            expanded: true,
+                            items: []
+                        },
+                    ]
+                },
+                {
+                    id: "type conversion",
+                    text: "type conversion",
+                    expanded: true,
+                    items: [{
+                            id: "coercion",
+                            text: "coercion",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "casting",
+                            text: "casting",
+                            expanded: true,
+                            items: []
+                        },
+                    ]
+                },
+                {
+                    id: "types (built-in)",
+                    text: "types (built-in)",
+                    expanded: true,
+                    items: [{
+                            id: "primitive",
+                            text: "primitive",
+                            expanded: true,
+                            items: [{
+                                    id: "char",
+                                    text: "char",
+                                    expanded: true,
+                                    items: []
+                                },
+                                {
+                                    id: "boolean",
+                                    text: "boolean",
+                                    expanded: true,
+                                    items: []
+                                },
+                                {
+                                    id: "numeric",
+                                    text: "numeric",
+                                    expanded: true,
+                                    items: [{
+                                            id: "int",
+                                            text: "int",
+                                            expanded: true,
+                                            items: []
+                                        },
+                                        {
+                                            id: "float",
+                                            text: "float",
+                                            expanded: true,
+                                            items: []
+                                        },
+                                    ]
+                                },
+                            ]
+                        },
+                        {
+                            id: "composite",
+                            text: "composite",
+                            expanded: true,
+                            items: [{
+                                    id: "dictionaries",
+                                    text: "dictionaries",
+                                    expanded: true,
+                                    items: [{
+                                        id: "map",
+                                        text: "map",
+                                        expanded: true,
+                                        items: []
+                                    }, ]
+                                },
+                                {
+                                    id: "sets",
+                                    text: "sets",
+                                    expanded: true,
+                                    items: []
+                                },
+                                {
+                                    id: "sequences",
+                                    text: "sequences",
+                                    expanded: true,
+                                    items: [{
+                                            id: "lists",
+                                            text: "lists",
+                                            expanded: true,
+                                            items: []
+                                        },
+                                        {
+                                            id: "strings",
+                                            text: "strings",
+                                            expanded: true,
+                                            items: []
+                                        },
+                                        {
+                                            id: "tuples",
+                                            text: "tuples",
+                                            expanded: true,
+                                            items: []
+                                        },
+                                    ]
+                                },
+                                {
+                                    id: "array",
+                                    text: "array",
+                                    expanded: true,
+                                    items: []
+                                },
+                            ]
+                        },
+                    ]
+                },
+            ]
+        },
+        {
+            id: "imperative programming",
+            text: "imperative programming",
+            expanded: true,
+            items: [{
+                    id: "functions",
+                    text: "functions",
+                    expanded: true,
+                    items: [{
+                            id: "signature",
+                            text: "signature",
+                            expanded: true,
+                            items: [{
+                                    id: "arguments/parameters",
+                                    text: "arguments/parameters",
+                                    expanded: true,
+                                    items: [{
+                                            id: "positional",
+                                            text: "positional",
+                                            expanded: true,
+                                            items: []
+                                        },
+                                        {
+                                            id: "keyword (kwargs)",
+                                            text: "keyword (kwargs)",
+                                            expanded: true,
+                                            items: []
+                                        },
+                                        {
+                                            id: "default values",
+                                            text: "default values",
+                                            expanded: true,
+                                            items: []
+                                        },
+                                        {
+                                            id: "arbitrary number of arguments",
+                                            text: "arbitrary number of arguments",
+                                            expanded: true,
+                                            items: [{
+                                                    id: "*args",
+                                                    text: "*args",
+                                                    expanded: true,
+                                                    items: []
+                                                },
+                                                {
+                                                    id: "**kwargs",
+                                                    text: "**kwargs",
+                                                    expanded: true,
+                                                    items: []
+                                                },
+                                                {
+                                                    id: "...",
+                                                    text: "...",
+                                                    expanded: true,
+                                                    items: []
+                                                },
+                                            ]
+                                        },
+                                    ]
+                                },
+                                {
+                                    id: "return type",
+                                    text: "return type",
+                                    expanded: true,
+                                    items: []
+                                },
+                            ]
+                        },
+                        {
+                            id: "calling functions",
+                            text: "calling functions",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "return",
+                            text: "return",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "anonymous function",
+                            text: "anonymous function",
+                            expanded: true,
+                            items: [{
+                                id: "lambda",
+                                text: "lambda",
+                                expanded: true,
+                                items: [{
+                                        id: "functional interfaces",
+                                        text: "functional interfaces",
+                                        expanded: true,
+                                        items: []
+                                    },
+                                    {
+                                        id: "method references",
+                                        text: "method references",
+                                        expanded: true,
+                                        items: []
+                                    },
+                                ]
+                            }, ]
+                        },
+                        {
+                            id: "algorithms",
+                            text: "algorithms",
+                            expanded: true,
+                            items: [{
+                                    id: "algorithm specifications",
+                                    text: "algorithm specifications",
+                                    expanded: true,
+                                    items: []
+                                },
+                                {
+                                    id: "correctness",
+                                    text: "correctness",
+                                    expanded: true,
+                                    items: []
+                                },
+                                {
+                                    id: "recursion",
+                                    text: "recursion",
+                                    expanded: true,
+                                    items: []
+                                },
+                                {
+                                    id: "non-functional properties",
+                                    text: "non-functional properties",
+                                    expanded: true,
+                                    items: [{
+                                            id: "computational complexity",
+                                            text: "computational complexity",
+                                            expanded: true,
+                                            items: []
+                                        },
+                                        {
+                                            id: "termination",
+                                            text: "termination",
+                                            expanded: true,
+                                            items: []
+                                        },
+                                    ]
+                                },
+                            ]
+                        },
+                        {
+                            id: "creating/defining",
+                            text: "creating/defining",
+                            expanded: true,
+                            items: []
+                        },
+                    ]
+                },
+                {
+                    id: "variables",
+                    text: "variables",
+                    expanded: true,
+                    items: [{
+                            id: "constants",
+                            text: "constants",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "scope",
+                            text: "scope",
+                            expanded: true,
+                            items: [{
+                                    id: "global variables",
+                                    text: "global variables",
+                                    expanded: true,
+                                    items: []
+                                },
+                                {
+                                    id: "local variables",
+                                    text: "local variables",
+                                    expanded: true,
+                                    items: []
+                                },
+                            ]
+                        },
+                        {
+                            id: "assignment",
+                            text: "assignment",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "variable declaration",
+                            text: "variable declaration",
+                            expanded: true,
+                            items: []
+                        },
+                    ]
+                },
+            ]
+        },
+        {
+            id: "multi-threading",
+            text: "multi-threading",
+            expanded: true,
+            items: [{
+                id: "synchronization",
+                text: "synchronization",
+                expanded: true,
+                items: []
+            }, ]
+        },
+        {
+            id: "Design principles",
+            text: "Design principles",
+            expanded: true,
+            items: [{
+                    id: "top-down",
+                    text: "top-down",
+                    expanded: true,
+                    items: []
+                },
+                {
+                    id: "bottom-up",
+                    text: "bottom-up",
+                    expanded: true,
+                    items: []
+                },
+            ]
+        },
+        {
+            id: "IO",
+            text: "IO",
+            expanded: true,
+            items: [{
+                    id: "files",
+                    text: "files",
+                    expanded: true,
+                    items: [{
+                            id: "text",
+                            text: "text",
+                            expanded: true,
+                            items: [{
+                                    id: "plain",
+                                    text: "plain",
+                                    expanded: true,
+                                    items: []
+                                },
+                                {
+                                    id: "JSON",
+                                    text: "JSON",
+                                    expanded: true,
+                                    items: []
+                                },
+                            ]
+                        },
+                        {
+                            id: "binary",
+                            text: "binary",
+                            expanded: true,
+                            items: [{
+                                id: "excel",
+                                text: "excel",
+                                expanded: true,
+                                items: []
+                            }, ]
+                        },
+                    ]
+                },
+                {
+                    id: "standard",
+                    text: "standard",
+                    expanded: true,
+                    items: [{
+                            id: "input",
+                            text: "input",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "print",
+                            text: "print",
+                            expanded: true,
+                            items: []
+                        },
+                    ]
+                },
+            ]
+        },
+        {
+            id: "object orientation (OO)",
+            text: "object orientation (OO)",
+            expanded: true,
+            items: [{
+                    id: "objects",
+                    text: "objects",
+                    expanded: true,
+                    items: [{
+                            id: "instantiation",
+                            text: "instantiation",
+                            expanded: true,
+                            items: [{
+                                id: "cloning",
+                                text: "cloning",
+                                expanded: true,
+                                items: []
+                            }, ]
+                        },
+                        {
+                            id: "garbage collection",
+                            text: "garbage collection",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "referencing",
+                            text: "referencing",
+                            expanded: true,
+                            items: []
+                        },
+                    ]
+                },
+                {
+                    id: "Access modifiers",
+                    text: "Access modifiers",
+                    expanded: true,
+                    items: [{
+                            id: "public",
+                            text: "public",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "protected",
+                            text: "protected",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "private",
+                            text: "private",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "package private",
+                            text: "package private",
+                            expanded: true,
+                            items: []
+                        },
+                    ]
+                },
+                {
+                    id: "Inheritance",
+                    text: "Inheritance",
+                    expanded: true,
+                    items: [{
+                            id: "overriding",
+                            text: "overriding",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "duck typing (polymorphism)",
+                            text: "duck typing (polymorphism)",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "extension",
+                            text: "extension",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "class inheritance",
+                            text: "class inheritance",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "interface inheritance",
+                            text: "interface inheritance",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "abstract classes",
+                            text: "abstract classes",
+                            expanded: true,
+                            items: [{
+                                id: "abstract methods",
+                                text: "abstract methods",
+                                expanded: true,
+                                items: []
+                            }, ]
+                        },
+                    ]
+                },
+                {
+                    id: "Interfaces",
+                    text: "Interfaces",
+                    expanded: true,
+                    items: [{
+                            id: "interface methods",
+                            text: "interface methods",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "default methods",
+                            text: "default methods",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "interface constants",
+                            text: "interface constants",
+                            expanded: true,
+                            items: []
+                        },
+                    ]
+                },
+                {
+                    id: "Classes",
+                    text: "Classes",
+                    expanded: true,
+                    items: [{
+                            id: "methods",
+                            text: "methods",
+                            expanded: true,
+                            items: [{
+                                    id: "static methods",
+                                    text: "static methods",
+                                    expanded: true,
+                                    items: []
+                                },
+                                {
+                                    id: "instance methods",
+                                    text: "instance methods",
+                                    expanded: true,
+                                    items: []
+                                },
+                                {
+                                    id: "final methods",
+                                    text: "final methods",
+                                    expanded: true,
+                                    items: []
+                                },
+                                {
+                                    id: "overloading",
+                                    text: "overloading",
+                                    expanded: true,
+                                    items: []
+                                },
+                            ]
+                        },
+                        {
+                            id: "fields",
+                            text: "fields",
+                            expanded: true,
+                            items: [{
+                                id: "final fields",
+                                text: "final fields",
+                                expanded: true,
+                                items: []
+                            }, ]
+                        },
+                        {
+                            id: "final class",
+                            text: "final class",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "constructors",
+                            text: "constructors",
+                            expanded: true,
+                            items: []
+                        },
+                    ]
+                },
+            ]
+        },
+        {
+            id: "testing",
+            text: "testing",
+            expanded: true,
+            items: [{
+                    id: "unit tests",
+                    text: "unit tests",
+                    expanded: true,
+                    items: [{
+                            id: "unit tests manual",
+                            text: "unit tests manual",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "unit tests automated",
+                            text: "unit tests automated",
+                            expanded: true,
+                            items: []
+                        },
+                    ]
+                },
+                {
+                    id: "integration tests",
+                    text: "integration tests",
+                    expanded: true,
+                    items: []
+                },
+            ]
+        },
+        {
+            id: "coding conventions",
+            text: "coding conventions",
+            expanded: true,
+            items: [{
+                    id: "naming conventions",
+                    text: "naming conventions",
+                    expanded: true,
+                    items: [{
+                            id: "PEP 8",
+                            text: "PEP 8",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "Java Code Conventions",
+                            text: "Java Code Conventions",
+                            expanded: true,
+                            items: []
+                        },
+                    ]
+                },
+                {
+                    id: "comments",
+                    text: "comments",
+                    expanded: true,
+                    items: []
+                },
+                {
+                    id: "documentation",
+                    text: "documentation",
+                    expanded: true,
+                    items: [{
+                            id: "JavaDoc",
+                            text: "JavaDoc",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "Docstring",
+                            text: "Docstring",
+                            expanded: true,
+                            items: []
+                        },
+                    ]
+                },
+            ]
+        },
+        {
+            id: "environment",
+            text: "environment",
+            expanded: true,
+            items: [{
+                    id: "IDE",
+                    text: "IDE",
+                    expanded: true,
+                    items: [{
+                            id: "debugging",
+                            text: "debugging",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "editor",
+                            text: "editor",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "compiler",
+                            text: "compiler",
+                            expanded: true,
+                            items: []
+                        },
+                    ]
+                },
+                {
+                    id: "version control",
+                    text: "version control",
+                    expanded: true,
+                    items: [{
+                        id: "git",
+                        text: "git",
+                        expanded: true,
+                        items: []
+                    }, ]
+                },
+                {
+                    id: "build management tools",
+                    text: "build management tools",
+                    expanded: true,
+                    items: [{
+                            id: "maven",
+                            text: "maven",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "pip",
+                            text: "pip",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "gradle",
+                            text: "gradle",
+                            expanded: true,
+                            items: []
+                        },
+                    ]
+                },
+                {
+                    id: "libraries",
+                    text: "libraries",
+                    expanded: true,
+                    items: [{
+                            id: "guizero",
+                            text: "guizero",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "numpy",
+                            text: "numpy",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "random",
+                            text: "random",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "pandas",
+                            text: "pandas",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "java.util.stream",
+                            text: "java.util.stream",
+                            expanded: true,
+                            items: []
+                        },
+                    ]
+                },
+                {
+                    id: "testing frameworks",
+                    text: "testing frameworks",
+                    expanded: true,
+                    items: [{
+                            id: "JUnit",
+                            text: "JUnit",
+                            expanded: true,
+                            items: []
+                        },
+                        {
+                            id: "pytest",
+                            text: "pytest",
+                            expanded: true,
+                            items: []
+                        },
+                    ]
+                },
+                {
+                    id: "packaging",
+                    text: "packaging",
+                    expanded: true,
+                    items: [{
+                        id: "JAR-files",
+                        text: "JAR-files",
+                        expanded: true,
+                        items: []
+                    }, ]
+                },
+            ]
+        },
+    ]
+}, ];</script>
 	</head>
 	<body>
 		<div class="minipageLeft">
