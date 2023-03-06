@@ -8,10 +8,18 @@ The process of \textit{task creation} is designed in a linear fashion. There are
   \item Entering general information. Part of the \nameref{sub:metainfo}.
   \item Selecting a main topic. Part of the \nameref{sub:metainfo}.
   \item Selecting \nameref{sub:features} with their associated \textit{weights}.
-  \item Overviewing and validating the choices made in the previous steps.
+  \item Overviewing and validating the choices made in the previous steps. 
 \end{enumerate}
 
 In order to get to the next/previous step the user can press the \textit{BACK}-/\textit{NEXT}-Buttons (labeled 9 and 10 in Figure~\ref{fig:taskcreation1}).
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.8\textwidth]{figures/taskcreation1}
+  \end{center}
+  \caption{Step one of the \textit{task creation process}.}
+  \label{fig:taskcreation1}
+\end{figure}
 
 \subsection{Meta-Information}
 \label{sub:metainfo}
@@ -44,22 +52,45 @@ in Figure~\ref{fig:taskcreation1} and Figure~\ref{fig:taskcreation2}):
 
 \begin{figure}[h]
   \begin{center}
-    \includegraphics[width=0.95\textwidth]{figures/taskcreation1}
-  \end{center}
-  \caption{Step one of the \textit{task creation process}.}
-  \label{fig:taskcreation1}
-\end{figure}
-
-\begin{figure}[h]
-  \begin{center}
-    \includegraphics[width=0.95\textwidth]{figures/taskcreation2}
+    \includegraphics[width=0.8\textwidth]{figures/taskcreation2}
   \end{center}
   \caption{Step two of the \textit{task creation process}.}
   \label{fig:taskcreation2}
 \end{figure}
 
-
 \subsection{Features}
 \label{sub:features}
 Features for a \textit{task} can be selected from three main groups: \textit{Basic}, \textit{Advanced} and \textit{Procedural Guidance}.
-Set a check to include the corresponding feature and chose a weight to determine how heavily the students ability to fulfill this requirement affects the score.
+Set a check to include the corresponding feature and chose a weight to determine how heavily the students ability to fulfill the features requirements affect their final score.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.95\textwidth]{figures/features}
+  \end{center}
+  \caption{Step three of the \textit{task creation process}.}
+  \label{fig:features}
+\end{figure}
+
+\begin{wrapfigure}{r}{0.4\textwidth}
+    \includegraphics[width=0.3\textwidth]{figures/namenotunique}
+  \caption{Case: Name is not unique.}
+  \label{fig:namenotunique}
+\end{wrapfigure}
+
+
+\subsection{Overview}
+The \textit{overview} (Figure~\ref{fig:overview}) displays all relevant information the user has entered in the process. It also notifies the user if the \textit{task name} chosen is not unique (Figure~\ref{fig:namenotunique}). In this case, the user can edited the name right in the \textit{overview} by clicking the "pen"-symbol. Furthermore, the "Add Task"-Button will be visible but not enabled while the "Export JSON"-Button will be visible regardless of whether the name is unique. After pressing each of the two buttons, the user is brought back to the \nameref{sec:home}.
+The user also has the ability to add additional comments.
+
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.6\textwidth]{figures/overview}
+  \end{center}
+  \caption{The final step of the \textit{task creation process}.}
+  \label{fig:overview}
+\end{figure}
+
+
+
+
