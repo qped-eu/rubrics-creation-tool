@@ -1,5 +1,19 @@
 body {
   font-family: "Open Sans", sans-serif;
+ /* background-color: rgb(57, 152, 240);*/
+  background-image: url(/src/background6.png);
+  background-blend-mode:luminosity;
+  background-position:initial;
+  background-size:150%;
+  background-position-x: 50%;
+  background-position-y: 90%;
+  background-clip: padding-box;
+  background-repeat: no-repeat;
+ 
+  min-height: 100vh;
+  max-height: 100vh;
+ 
+  transition: 0.5s ease-in-out;
 }
 
 table {

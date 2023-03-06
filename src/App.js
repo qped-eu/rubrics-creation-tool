@@ -1,17 +1,18 @@
 import logo from "./logo2.png";
 import "./App.css";
-import  OpenSans from "./fonts/OpenSans.ttf";
 
-import { Button, Stack, Typography, Snackbar } from "@mui/material";
+
+import { Button, Stack, Typography, Snackbar, css } from "@mui/material";
 import { TaskSelector, TaskUpload } from "./components/TaskManager";
 import { useState } from "react";
 import { useLocalStorage, useReadLocalStorage } from "usehooks-ts";
 import { createTheme, ThemeProvider } from "@mui/material";
-import { dark } from "@mui/material/styles/createPalette";
-import { blue } from "@mui/material/colors";
+import customTheme from "./CustomTheme";
 
 
-const theme = createTheme({
+
+
+/*const theme = createTheme({
   palette: {
     primary: {
       light:"#f27a41",
@@ -38,12 +39,13 @@ const theme = createTheme({
     fontWeightBold: 700,
     
   }
-});
+  
+});*/
 
 function App() {
   const [error, setError] = useState(null);
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={customTheme}>
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
@@ -60,6 +62,7 @@ function App() {
               color="secondary"
                style={{border :'2px solid'}}
               sx={{ height: 50 }}
+              
             >
               {" "}
               create new Task

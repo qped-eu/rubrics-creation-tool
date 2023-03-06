@@ -14,10 +14,14 @@
   }
 }
 
+
+
+
 .App-header {
   background-color: #ffffff;
   /* background-image: linear-gradient(160deg, #2F447D, #6468CF); */
   background-image: url(background5.png)  ;
+
   
   background-position:initial;
   background-size:150%;
@@ -30,6 +34,7 @@
   max-height: 100vh;
   
   
+  
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -37,7 +42,13 @@
   font-size: calc(10px + 2vmin);
   color: white;
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  
 }
+
+
+
+
 
 .App-link {
   color: #61dafb;
