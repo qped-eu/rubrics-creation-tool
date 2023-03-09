@@ -17,7 +17,7 @@ function Rubric() {
   return (
     <Grid container spacing={2} style={{ margin: "8px" }}>
       <GradingInfo />
-      <FeatureTable />
+      <FeatureTable selectedTask={selectedTask} />
       <FeedbackGenerator selectedTask={selectedTask} setError={setError} />
       <Snackbar
         open={!!error}
