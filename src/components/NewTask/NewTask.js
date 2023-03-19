@@ -1,4 +1,4 @@
-import { Stepper, Step, StepLabel, Button, Paper } from "@mui/material";
+import { Stepper, Step, StepLabel, Button, Paper, ThemeProvider } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState, useEffect } from "react";
 import Topic from "./Topic";
@@ -7,6 +7,7 @@ import ButtonsBox from "./ButtonsBox";
 import _ from "lodash";
 import GeneralInformation from "./GeneralInformation";
 import Overview from "./Overview";
+import customTheme from "../../CustomTheme";
 
 const steps = [
   "General information",
@@ -35,6 +36,7 @@ function NewTask() {
   };
 
   return (
+    <ThemeProvider theme={customTheme}>
     <Box sx={{ p: 2 }}>
       <Paper sx={{ p: 2 }}>
         <Stepper activeStep={activeStep}>
@@ -56,6 +58,7 @@ function NewTask() {
         />
       </Paper>
     </Box>
+    </ThemeProvider>
   );
 }
 

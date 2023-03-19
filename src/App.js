@@ -12,36 +12,6 @@ import customTheme from "./CustomTheme";
 
 
 
-/*const theme = createTheme({
-  palette: {
-    primary: {
-      light:"#f27a41",
-      main: "#e36022",
-      dark: "#c24408",
-    },
-    secondary: {
-     // main: "#d45113",
-        main:"#ffffff",
-        dark:"#fefefe",
-    },
-    success: {
-      light: "#76e072",
-      main: "#50d14b",
-      dark: "#2bad4e",
-      contrastText: "#ffff",
-    },
-  },
-  typography:{
-    fontFamily: 'sans-serif',
-    fontWeightLight: 400,
-    fontWeightRegular: 500,
-    fontWeightMedium: 600,
-    fontWeightBold: 700,
-    
-  }
-  
-});*/
-
 function App() {
   const [error, setError] = useState(null);
   return (
@@ -52,8 +22,10 @@ function App() {
 
           <Typography>QPED Rubric Creation Tool</Typography>
 
+          
           <Stack spacing={1}>
             <TaskUpload setError={setError} />
+            
             <Button
               variant="outlined"
               href="new_task"
