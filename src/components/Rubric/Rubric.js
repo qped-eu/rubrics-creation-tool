@@ -40,12 +40,13 @@ function Rubric() {
   const steps = [
     {
       label: "Assess Features",
-      description: "Assess a student based on the requirements defined within the selected task.",
+      description: "Assess a student based on the requirements defined within the selected task. Toogle the tool tips for further information.",
       buttonText: "Generate Feedback",
     },
     {
       label: "Verify Assessment",
-      description: "Verify the assessment completed in step 1. You can also add additional comments or go back to step 1 in case changes need to be made.",
+      description: "Verify the assessment completed in step 1. You can also add additional comments or go back to step 1 in case changes need to be made." + 
+      "This saves the assessment to the browser storage. You can export the session at a later point in time in step 3.",
       buttonText: "Verify",
     },
     {

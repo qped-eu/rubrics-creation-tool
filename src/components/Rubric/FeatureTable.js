@@ -76,8 +76,8 @@ function FeatureTable({ selectedTask }) {
           control={
             <Switch
               sx={{ ml: 1 }}
-              value={showTooltips}
-              onChange={handleChange}
+              checked={showTooltips}
+              onClick={handleChange}
             />
           }
           label="Toggle tooltips"
