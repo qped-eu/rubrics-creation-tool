@@ -18,11 +18,11 @@ function AssessmentFinal({setActiveStep}) {
   }
 
   const handleExportJson = () => {
-
+    handleClose()
   }
 
   const handleExportCsv = () => {
-
+    handleClose()
   }
 
   const handleClose = () => {
