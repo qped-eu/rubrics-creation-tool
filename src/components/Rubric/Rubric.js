@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Box } from "@mui/system";
 import "../style.css";
 import FeatureTable from "./FeatureTable";
 import FeedbackGenerator from "./FeedbackGenerator";
@@ -31,7 +30,7 @@ function Rubric() {
 
   const handleReassess = () => {
     setActiveStep(0);
-  }
+  };
 
   // 3 Steps:
   // First: Assess the features for the current student and press "Generate Feedback"
@@ -40,20 +39,23 @@ function Rubric() {
   const steps = [
     {
       label: "Assess Features",
-      description: "Assess a student based on the requirements defined within the selected task. Toogle the tool tips for further information.",
+      description:
+        "Assess a student based on the requirements defined within the selected task. Toogle the tool tips for further information.",
       buttonText: "Generate Feedback",
     },
     {
       label: "Verify Assessment",
-      description: "Verify the assessment completed in step 1. You can also add additional comments or go back to step 1 in case changes need to be made." + 
-      "This saves the assessment to the browser storage. You can export the session at a later point in time in step 3.",
+      description:
+        "Verify the assessment completed in step 1. You can also add additional comments or go back to step 1 in case changes need to be made." +
+        "This saves the assessment to the browser storage. You can export the session at a later point in time in step 3.",
       buttonText: "Verify",
     },
     {
       label: "Save Changes",
-      description: "If you wish to assess another student, the previously assessed task is saved in your local " + 
-      "browser storage. You can assess multiple students in one session and export a list of all students assessed in the current session by " + 
-      "selecting 'Finish Session' and choosing a file format you wish to download.",
+      description:
+        "If you wish to assess another student, the previously assessed task is saved in your local " +
+        "browser storage. You can assess multiple students in one session and export a list of all students assessed in the current session by " +
+        "selecting 'Finish Session' and choosing a file format you wish to download.",
     },
   ];
 
@@ -66,11 +68,13 @@ function Rubric() {
           <FeedbackGenerator selectedTask={selectedTask} setError={setError} />
         );
       case 2:
-        return <AssessmentFinal setActiveStep={setActiveStep}/>;
+        return <AssessmentFinal setActiveStep={setActiveStep} />;
       //   default:
       //     return <Overview sx={{ margin: "auto", width: "100%" }} />;
     }
   };
+
+  console.log("Rerendering Rubric");
 
   return (
     <Grid container spacing={2} style={{ margin: "8px" }}>
@@ -85,18 +89,18 @@ function Rubric() {
                 <StepperContent />
                 {activeStep !== steps.length - 1 && (
                   <Button
-                  variant="contained"
-                  onClick={handleNext}
-                  sx={{ mt: 1, mr: 1 }}
+                    variant="contained"
+                    onClick={handleNext}
+                    sx={{ mt: 1, mr: 1 }}
                   >
                     {step.buttonText}
                   </Button>
                 )}
                 {activeStep === 1 && (
                   <Button
-                  variant="outlined"
-                  onClick={handleReassess}
-                  sx={{ mt: 1, mr: 1 }}
+                    variant="outlined"
+                    onClick={handleReassess}
+                    sx={{ mt: 1, mr: 1 }}
                   >
                     Reassess
                   </Button>
@@ -112,7 +116,7 @@ function Rubric() {
         onClose={() => setError(null)}
         message={error}
       />
-      </Grid>
+    </Grid>
   );
 }
 

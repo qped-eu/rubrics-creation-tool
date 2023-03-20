@@ -1,6 +1,4 @@
 import {
-  FormControlLabel,
-  FormGroup,
   Table,
   TableHead,
   TableBody,
@@ -10,7 +8,6 @@ import {
   Typography,
   Grid,
   Button,
-  Switch,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import FeatureTableItem from "./FeatureTableItem";
@@ -18,6 +15,7 @@ import _ from "lodash";
 import features from "../../resources/features.json";
 import { computeScore } from "./utils";
 import { useLocalStorage } from "usehooks-ts";
+import TooltipsControl from "./TooltipsControl";
 
 function FeatureTable({ selectedTask }) {
   const featureKeys = _.chain(selectedTask.activeFeatures)
@@ -58,31 +56,12 @@ function FeatureTable({ selectedTask }) {
     "rubric_totalPoints",
     ""
   );
-  const [showTooltips, setShowTooltips] = useLocalStorage(
-    "rubric_showTooltips",
-    false
-  );
-
-  const handleChange = (event) => {
-    setShowTooltips(event.target.checked);
-  };
 
   console.log("activeFeatures:", activeFeatures);
 
   return (
     <Box sx={{ width: "100%" }}>
-      <FormGroup>
-        <FormControlLabel
-          control={
-            <Switch
-              sx={{ ml: 1 }}
-              checked={showTooltips}
-              onClick={handleChange}
-            />
-          }
-          label="Toggle tooltips"
-        />
-      </FormGroup>
+      <TooltipsControl />
       <Table size={"small"} sx={{ tableLayout: "auto", width: "100%" }}>
         <TableHead>
           <TableRow>
@@ -107,7 +86,6 @@ function FeatureTable({ selectedTask }) {
               defaultFeature={feature}
               points={featurePoints[idx]}
               setPoints={setPoints(idx)}
-              showTooltips={showTooltips}
             />
           ))}
         </TableBody>

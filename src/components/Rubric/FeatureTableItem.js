@@ -11,18 +11,15 @@ import ConditonalTooltip from "./ConditionalTooltip";
 import _ from "lodash";
 import { computePoints } from "./utils";
 import IconContainer, { customIcons } from "./IconContainer";
-import { useLocalStorage } from "usehooks-ts";
+import { useLocalStorage, useReadLocalStorage } from "usehooks-ts";
 
-const FeatureTableItem = ({
-  defaultFeature,
-  points,
-  setPoints,
-  showTooltips,
-}) => {
+const FeatureTableItem = ({ defaultFeature, points, setPoints }) => {
   const [feature, setFeature] = useLocalStorage(
     `rubric_feature_${defaultFeature.key}`,
     defaultFeature
   );
+
+  const showTooltips = useReadLocalStorage("rubric_showTooltips");
 
   const onFeatureClick = (exampleIdx, featureKey, mutexKey) => {
     const oppositeExampleIdx = (exampleIdx + 1) % 2;
@@ -50,7 +47,6 @@ const FeatureTableItem = ({
     setFeature(newFeatureState);
     setPoints(Math.max(Math.min(computePoints(feature), 4), 1));
   };
-  console.log("POINTS:", points);
   return (
     <TableRow>
       <TableCell>{feature.name}</TableCell>
