@@ -1,17 +1,9 @@
 import React from "react";
 import Grid from "@mui/material/Unstable_Grid2";
-import { useLocalStorage } from "usehooks-ts";
 import { Typography } from "@mui/material";
 import MyTextField from "../CustomComponents/MyTextField";
 
 function GradingInfo() {
-  // const [grader, setGrader] = useLocalStorage("grader", "");
-  // const [courseYear, setCourseYear] = useLocalStorage("courseYear", "");
-  // const [courseRun, setCourseRun] = useLocalStorage("courseRun", "");
-
-  // const handleGraderChange = (event) => setGrader(event.target.value);
-  // const handleCourseYearChange = (event) => setCourseYear(event.target.value);
-  // const handleCourseRunChange = (event) => setCourseRun(event.target.value);
 
   const sxStyle = {
     verticalAlign: "top",

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Box } from "@mui/system";
 import "../style.css";
 import FeatureTable from "./FeatureTable";
 import FeedbackGenerator from "./FeedbackGenerator";
@@ -29,7 +28,7 @@ function Rubric() {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
-  const handleReassess = () => {
+  const handleBack = () => {
     setActiveStep(0);
   }
 
@@ -65,10 +64,8 @@ function Rubric() {
         return (
           <FeedbackGenerator selectedTask={selectedTask} setError={setError} />
         );
-      case 2:
-        return <AssessmentFinal setActiveStep={setActiveStep}/>;
-      //   default:
-      //     return <Overview sx={{ margin: "auto", width: "100%" }} />;
+      default:
+        return <AssessmentFinal setActiveStep={setActiveStep} setError={setError}/>;
     }
   };
 
@@ -95,10 +92,10 @@ function Rubric() {
                 {activeStep === 1 && (
                   <Button
                   variant="outlined"
-                  onClick={handleReassess}
+                  onClick={handleBack}
                   sx={{ mt: 1, mr: 1 }}
                   >
-                    Reassess
+                    Back
                   </Button>
                 )}
               </StepContent>

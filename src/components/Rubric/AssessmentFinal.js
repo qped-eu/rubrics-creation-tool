@@ -1,27 +1,48 @@
-import { Button, DialogActions, DialogContent, DialogTitle, Typography } from "@mui/material";
+import { Button, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import React, { useState } from "react";
 import Dialog from "@mui/material/Dialog";
-import MyTextField from "../CustomComponents/MyTextField";
 import { useReadLocalStorage } from "usehooks-ts";
 
-function AssessmentFinal({setActiveStep}) {
+function AssessmentFinal({setActiveStep, setError}) {
   const [open, setOpen] = useState(false);
-  const handleAnotherStudentClicked = () => {
-    setActiveStep(0);
-  }
-
+  const grader = useReadLocalStorage("rubric_grader");
+  const courseYear = useReadLocalStorage("rubric_course_year");
+  const courseRun = useReadLocalStorage("rubric_course_run");
+  
+  function checkCourseInfoComplete() {
+    if (!courseRun || courseRun.length === 0 ||
+      !courseYear || courseYear.length === 0 ||
+      !grader || grader.length === 0) {
+        setError("Please enter missing course information")
+        return false
+      }
+      
+      return true;
+    }
+    
+      const handleAnotherStudentClicked = () => {
+        /*
+        1. save the current feedback in another json object (append to a list of all student assessments)
+        2. reset local storage fields from previous assessment
+        */
+        setActiveStep(0);
+      }
+    
   const handleFinishClicked = () => {
-    /* TODO:
-      - öffne Dialog zum auswählen von csv oder json
-    */
-    setOpen(true);
+    if (checkCourseInfoComplete()) setOpen(true)
   }
 
   const handleExportJson = () => {
+    /*
+      - download the JSON-object (list of all student assessments)
+    */
     handleClose()
   }
 
   const handleExportCsv = () => {
+    /*
+      - build the csv file
+    */
     handleClose()
   }
 
