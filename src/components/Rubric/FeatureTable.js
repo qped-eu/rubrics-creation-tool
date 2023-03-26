@@ -12,52 +12,19 @@ import {
 import { Box } from "@mui/system";
 import FeatureTableItem from "./FeatureTableItem";
 import _ from "lodash";
-import features from "../../resources/features.json";
-import { computeScore } from "./utils";
-import { useLocalStorage } from "usehooks-ts";
 import TooltipsControl from "./TooltipsControl";
+import MyTextField from "./../CustomComponents/MyTextField";
+import { computePoints } from "./utils";
+import { useLocalStorage } from "usehooks-ts";
 
-function FeatureTable({ selectedTask }) {
-  const featureKeys = _.chain(selectedTask.activeFeatures)
-    .filter((f) => f.checked)
-    .map((f) => f.key)
-    .value();
-
-  const featureWeights = _.chain(selectedTask.activeFeatures)
-    .filter((f) => f.checked)
-    .map((f) => f.weight)
-    .value();
-
-  const activeFeatures = _.chain(features)
-    .filter((f) => featureKeys.includes(f.key))
-    .map(({ fail_examples, pass_examples, ...f }) => ({
-      ...f,
-      examples: [
-        _.map(fail_examples, (item) => ({ ...item, checked: false })),
-        _.map(pass_examples, (item) => ({ ...item, checked: false })),
-      ],
-    }))
-    .value();
-
-  const [featurePoints, setFeaturePoints] = useLocalStorage(
-    "rubric_featurePoints",
-    _.map(activeFeatures, (f) => 2)
-  );
-
-  const setPoints = (idx) => (value) => {
-    let newFeaturePoints = _.clone(featurePoints);
-    newFeaturePoints[idx] = value;
-    setFeaturePoints(newFeaturePoints);
-  };
-
-  const totalPointsCalculated = computeScore(featureWeights, featurePoints);
-
-  const [totalPoints, setTotalPoints] = useLocalStorage(
-    "rubric_totalPoints",
-    ""
-  );
-
-  console.log("activeFeatures:", activeFeatures);
+function FeatureTable({
+  featurePoints,
+  setPoints,
+  setTotalPoints,
+  totalPointsCalculated,
+  maxPoints,
+}) {
+  const [features, setFeatures] = useLocalStorage("rubric_features", []);
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -80,23 +47,80 @@ function FeatureTable({ selectedTask }) {
           </TableRow>
         </TableHead>
         <TableBody id="rubrics_table">
-          {_.map(activeFeatures, (feature, idx) => (
-            <FeatureTableItem
-              key={`${feature.key}-${idx}`}
-              defaultFeature={feature}
-              points={featurePoints[idx]}
-              setPoints={setPoints(idx)}
-            />
-          ))}
+          {_.map(features, (feature, idx) => {
+            const setFeature = (f) =>
+              setFeatures((oldFeatures) => {
+                var index = _.findIndex(
+                  oldFeatures,
+                  (f) => f.key === feature.key
+                );
+                if (index === -1) {
+                  return [...oldFeatures, f];
+                }
+                return [
+                  ...oldFeatures.slice(0, index),
+                  f,
+                  ...oldFeatures.slice(index + 1),
+                ];
+              });
+
+            console.log("Feature looks like", feature);
+
+            const onFeatureClick = (exampleIdx, featureKey, mutexKey) => {
+              const oppositeExampleIdx = (exampleIdx + 1) % 2;
+              let newFeatureState = _.cloneDeep(feature);
+              let oldItem;
+              newFeatureState.examples[exampleIdx] = _.map(
+                feature.examples[exampleIdx],
+                (item) => {
+                  if (item.key === featureKey) {
+                    oldItem = _.clone(item);
+                    return { ...item, checked: !item.checked };
+                  } else {
+                    return item;
+                  }
+                }
+              );
+              if (oldItem && !oldItem.checked) {
+                newFeatureState.examples[oppositeExampleIdx] = _.map(
+                  feature.examples[oppositeExampleIdx],
+                  (item) =>
+                    item.mutex_key === mutexKey
+                      ? { ...item, checked: false }
+                      : item
+                );
+              }
+
+              newFeatureState.points = Math.max(
+                Math.min(computePoints(feature), 4),
+                1
+              );
+
+              setFeature(newFeatureState);
+            };
+
+            if (!feature) {
+              return null;
+            }
+
+            return (
+              <FeatureTableItem
+                key={`${feature.key}-${idx}`}
+                points={featurePoints[idx]}
+                setPoints={setPoints(idx)}
+                feature={feature}
+                onFeatureClick={onFeatureClick}
+              />
+            );
+          })}
         </TableBody>
       </Table>
       <br />
       <Grid container spacing={2}>
         <Grid item xs={4}>
-          <TextField
+          <MyTextField
             label="Final points"
-            value={totalPoints}
-            onChange={(e) => setTotalPoints(e.target.value)}
+            storageKey={"rubric_finalPoints"}
             type="number"
             inputProps={{ min: "0,0" }}
           />
@@ -119,7 +143,7 @@ function FeatureTable({ selectedTask }) {
         <Grid item xs={4}>
           <Typography sx={{ mt: "revert" }}>
             {"Maximum Points: "}
-            <strong>{selectedTask.maxPoints}</strong>
+            <strong>{maxPoints}</strong>
           </Typography>
         </Grid>
       </Grid>

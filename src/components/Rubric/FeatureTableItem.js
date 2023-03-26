@@ -9,44 +9,12 @@ import {
 import { Box } from "@mui/system";
 import ConditonalTooltip from "./ConditionalTooltip";
 import _ from "lodash";
-import { computePoints } from "./utils";
 import IconContainer, { customIcons } from "./IconContainer";
-import { useLocalStorage, useReadLocalStorage } from "usehooks-ts";
+import { useReadLocalStorage } from "usehooks-ts";
 
-const FeatureTableItem = ({ defaultFeature, points, setPoints }) => {
-  const [feature, setFeature] = useLocalStorage(
-    `rubric_feature_${defaultFeature.key}`,
-    defaultFeature
-  );
-
+const FeatureTableItem = ({ points, setPoints, feature, onFeatureClick }) => {
   const showTooltips = useReadLocalStorage("rubric_showTooltips");
 
-  const onFeatureClick = (exampleIdx, featureKey, mutexKey) => {
-    const oppositeExampleIdx = (exampleIdx + 1) % 2;
-    let newFeatureState = _.cloneDeep(feature);
-    let oldItem;
-    newFeatureState.examples[exampleIdx] = _.map(
-      feature.examples[exampleIdx],
-      (item) => {
-        if (item.key === featureKey) {
-          oldItem = _.clone(item);
-          return { ...item, checked: !item.checked };
-        } else {
-          return item;
-        }
-      }
-    );
-    if (oldItem && !oldItem.checked) {
-      newFeatureState.examples[oppositeExampleIdx] = _.map(
-        feature.examples[oppositeExampleIdx],
-        (item) =>
-          item.mutex_key === mutexKey ? { ...item, checked: false } : item
-      );
-    }
-
-    setFeature(newFeatureState);
-    setPoints(Math.max(Math.min(computePoints(feature), 4), 1));
-  };
   return (
     <TableRow>
       <TableCell>{feature.name}</TableCell>
@@ -108,7 +76,14 @@ const FeatureTableItem = ({ defaultFeature, points, setPoints }) => {
                   onClick={() => onFeatureClick(1, f.key, f.mutex_key)}
                 />
               }
-              label={f.desc}
+              label={
+                <ConditonalTooltip
+                  show={showTooltips}
+                  tooltipText={f.desc_long}
+                >
+                  {f.desc}
+                </ConditonalTooltip>
+              }
               key={idx}
             />
           ))}
