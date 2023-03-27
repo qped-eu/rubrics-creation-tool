@@ -1,0 +1,77 @@
+import { createTheme } from '@mui/material/styles';
+
+
+const customTheme = createTheme({
+  palette: {
+    background:{
+     default: '#3a99f0'
+    },
+    primary: {
+      light:"#389cff",
+      main: "#066cd1",
+      dark: "#06519c",
+    },
+    secondary: {
+     // main: "#d45113",
+        main:"#ffffff",
+        dark:"#fefefe",
+    },
+    success: {
+      light: "#76e072",
+      main: "#50d14b",
+      dark: "#2bad4e",
+      contrastText: "#ffff",
+    },
+  },
+  typography:{
+    fontFamily: 'sans-serif',
+    fontWeightLight: 400,
+    fontWeightRegular: 500,
+    fontWeightMedium: 600,
+    fontWeightBold: 700,
+    
+  },
+
+  shape: {
+    borderRadius: 10,
+  },
+
+  
+
+  components:{
+
+    
+
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          //borderRadius: 10,
+          fontWeight: 'bold',
+          textTransform: 'upperCase',
+          padding: '10px 40px',
+          
+        },
+
+        outlined:{
+          '&:hover': {
+            backgroundColor: '#ffffff',
+            color: '#3a99f0',
+            boxShadow: 'initial',
+          }
+        },
+      },
+    },
+
+
+  }
+    
+  
+
+});
+
+
+
+
+
+
+export default customTheme;

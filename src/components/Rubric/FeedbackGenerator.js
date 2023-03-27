@@ -87,68 +87,22 @@ function FeedbackGenerator({
     return () => {};
   }
 
-  const pointerStyle = {
-    cursor: "pointer",
-  };
-
-  const clearPointerStyle = {
-    ...pointerStyle,
-    clear: "both",
-  };
-
   return (
     <>
-      <Grid item xs={12}>
-        <div
-          style={clearPointerStyle}
-          onClick={handleFeedbackButtonClick}
-          className="buttons"
-        >
-          Generate Feedback
-        </div>
-      </Grid>
-      <Grid item xs={6}>
-        <div
-          style={pointerStyle}
-          onClick={handleNextStudentButtonClick}
-          className="buttons"
-        >
-          Next Student
-        </div>
-      </Grid>
-      <Grid item xs={6}>
-        <div
-          style={pointerStyle}
-          onClick={handleExportButtonClick}
-          className="buttons"
-        >
-          Export all feedback for chosen task
-        </div>
-        Choose a format for exporting (default is JSON):
-        <br />
-        <select id="export_format">
-          <option value="json">JSON-Format</option>
-          <option value="csv">CSV-Format</option>
-        </select>
-      </Grid>
-      <Grid item xs={6}>
-        <h2>Additional Comment</h2>
-        <textarea
-          id="comment_text"
-          cols="80"
-          rows="10"
-          onChange={handleTextChange}
-        ></textarea>
-      </Grid>
-      <Grid item xs={6}>
-        <h2>Generated Feedback</h2>
-        <textarea
-          id="feedback_text"
-          cols="80"
-          rows="10"
-          onClick={handleTextAreaClick("feedback")}
-          readOnly=""
-        ></textarea>
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
+          <h2>Generated Feedback</h2>
+          <textarea
+            id="feedback_text"
+            cols="80"
+            rows="10"
+            readOnly=""
+          ></textarea>
+        </Grid>
+        <Grid item xs={6}>
+          <h2>Additional Comment</h2>
+          <textarea id="comment_text" cols="80" rows="10"></textarea>
+        </Grid>
       </Grid>
     </>
   );

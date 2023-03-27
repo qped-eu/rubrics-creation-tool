@@ -155,14 +155,23 @@ function Rubric() {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
-  const handleReassess = () => {
+  const handleBack = () => {
     setActiveStep(0);
   };
 
   console.log("Rerendering Rubric");
 
   return (
-    <Grid container spacing={2} style={{ margin: "8px" }}>
+    <Grid
+      container
+      spacing={2}
+      sx={{
+        m: "8px",
+        border: "1px solid #ddd",
+        borderRadius: "5px",
+        backgroundColor: "#f2f2f2",
+      }}
+    >
       <GradingInfo />
       <Grid item xs={12}>
         <Stepper activeStep={activeStep} orientation="vertical">
@@ -189,10 +198,10 @@ function Rubric() {
                 {activeStep === 1 && (
                   <Button
                     variant="outlined"
-                    onClick={handleReassess}
+                    onClick={handleBack}
                     sx={{ mt: 1, mr: 1 }}
                   >
-                    Reassess
+                    Back
                   </Button>
                 )}
               </StepContent>
