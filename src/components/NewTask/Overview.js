@@ -16,13 +16,18 @@ const { differentiationBackgrounds } = general_information;
 function Overview() {
   const [name, setName] = useLocalStorage("new_task_name", "");
   const allTasks = useReadLocalStorage("all_tasks");
-  const courseIdx = useReadLocalStorage("new_task_courseIdx");
-  const week = useReadLocalStorage("new_task_week");
-  const maxPoints = useReadLocalStorage("new_task_maxPoints");
-  const differentiationIdx = useReadLocalStorage("new_task_differentiationIdx");
-  const topic = useReadLocalStorage("new_task_topic");
+  const courseIdx =
+    useReadLocalStorage("new_task_courseIdx") ??
+    general_information.courses.defaultIndex;
+  const week = useReadLocalStorage("new_task_week") ?? 1;
+  const maxPoints = useReadLocalStorage("new_task_maxPoints") ?? 0;
+  const differentiationIdx =
+    useReadLocalStorage("new_task_differentiationIdx") ??
+    general_information.differentiationBackgrounds.defaultIndex;
+  const topic = useReadLocalStorage("new_task_topic") ?? "None";
   const deliverables = useReadLocalStorage("new_task_deliverables");
   const activeFeatures = useReadLocalStorage("new_task_features");
+  const description = useReadLocalStorage("new_task_description") ?? "";
 
   const nameIsDuplicate = _.map(allTasks, (t) => t.name).includes(name);
   const nameIsEmpty = name.trim() === "";
@@ -43,6 +48,18 @@ function Overview() {
     (feature) => getKeysForLevel(level.basic).includes(feature.key)
   );
 
+  let nameProps = {
+    error: false,
+    label: "",
+  };
+  if (name === "") {
+    nameProps.error = true;
+    nameProps.label = "Name is empty";
+  } else if (_.map(allTasks, (x) => x.name).includes(name)) {
+    nameProps.error = true;
+    nameProps.label = "Name is not unique";
+  }
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -53,14 +70,18 @@ function Overview() {
           <ParameterEditable
             title={"Name"}
             value={name}
+            caption={nameProps.label}
             sx={{ color: (nameIsDuplicate || nameIsEmpty) && "error.main" }}
             mode={(nameIsDuplicate || nameIsEmpty) && "edit"}
-            handleUpdateValue={(newValue) => () => setName(newValue)}
+            updateValue={(newValue) => setName(newValue)}
           />
         </Stack>
       </Grid>
       <Grid item xs={6}>
-        <Parameter title={"Course"} value={courseIdx} />
+        <Parameter
+          title={"Course"}
+          value={general_information.courses.options[courseIdx]}
+        />
       </Grid>
       <Grid item xs={6}>
         <Parameter title={"Week"} value={week} />
@@ -81,6 +102,9 @@ function Overview() {
       </Grid>
       <Grid item xs={6}>
         <Parameter title={"QPED deliverables"} value={deliverables} />
+      </Grid>
+      <Grid item xs={12}>
+        <Parameter title={"Description"} value={description} />
       </Grid>
       <Grid item xs={12}>
         <ParameterTable

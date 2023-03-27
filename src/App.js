@@ -1,16 +1,11 @@
 import logo from "./logo2.png";
 import "./App.css";
 
-
 import { Button, Stack, Typography, Snackbar, css } from "@mui/material";
 import { TaskSelector, TaskUpload } from "./components/TaskManager";
 import { useState } from "react";
-import { useLocalStorage, useReadLocalStorage } from "usehooks-ts";
 import { createTheme, ThemeProvider } from "@mui/material";
 import customTheme from "./CustomTheme";
-
-
-
 
 function App() {
   const [error, setError] = useState(null);
@@ -22,19 +17,17 @@ function App() {
 
           <Typography>QPED Rubric Creation Tool</Typography>
 
-          
           <Stack spacing={1}>
             <TaskUpload setError={setError} />
-            
+
             <Button
               variant="outlined"
-              href="new_task"
+              href="#/new_task"
               size="small"
               disableElevation
               color="secondary"
-               style={{border :'2px solid'}}
+              style={{ border: "2px solid" }}
               sx={{ height: 50 }}
-              
             >
               {" "}
               create new Task

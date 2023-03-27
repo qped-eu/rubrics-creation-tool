@@ -1,4 +1,11 @@
-import { Stepper, Step, StepLabel, Button, Paper, ThemeProvider } from "@mui/material";
+import {
+  Stepper,
+  Step,
+  StepLabel,
+  Button,
+  Paper,
+  ThemeProvider,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import { useState, useEffect } from "react";
 import Topic from "./Topic";
@@ -37,27 +44,27 @@ function NewTask() {
 
   return (
     <ThemeProvider theme={customTheme}>
-    <Box sx={{ p: 2 }}>
-      <Paper sx={{ p: 2 }}>
-        <Stepper activeStep={activeStep}>
-          {_.map(steps, (label) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-        <>
-          <Box sx={{ mt: 2 }}>
-            <StepperContent />
-          </Box>
-        </>
-        <ButtonsBox
-          activeStep={activeStep}
-          setActiveStep={setActiveStep}
-          steps={steps}
-        />
-      </Paper>
-    </Box>
+      <Box sx={{ p: 2 }}>
+        <Paper sx={{ p: 2 }}>
+          <Stepper activeStep={activeStep}>
+            {_.map(steps, (label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          <>
+            <Box sx={{ mt: 2 }}>
+              <StepperContent />
+            </Box>
+          </>
+          <ButtonsBox
+            activeStep={activeStep}
+            setActiveStep={setActiveStep}
+            steps={steps}
+          />
+        </Paper>
+      </Box>
     </ThemeProvider>
   );
 }
