@@ -1,10 +1,10 @@
 import logo from "./logo2.png";
 import "./App.css";
 
-import { Button, Stack, Typography, Snackbar, css } from "@mui/material";
+import { Button, Stack, Typography, Snackbar } from "@mui/material";
 import { TaskSelector, TaskUpload } from "./components/TaskManager";
 import { useState } from "react";
-import { createTheme, ThemeProvider } from "@mui/material";
+import { ThemeProvider } from "@mui/material";
 import customTheme from "./CustomTheme";
 
 function App() {

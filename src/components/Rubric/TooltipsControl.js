@@ -1,5 +1,4 @@
 import { FormControlLabel, FormGroup, Switch } from "@mui/material";
-import _ from "lodash";
 import { useLocalStorage } from "usehooks-ts";
 
 const TooltipsControl = () => {
