@@ -18,7 +18,6 @@ import { useLoaderData } from "react-router-dom";
 
 import features from "../../resources/features.json";
 import { computeScore } from "./utils";
-import { getFromLocalStorage } from "../../utils";
 
 const StepperContent = (props) => {
   const { activeStep, selectedTask, setError, setActiveStep } = props;
@@ -112,8 +111,9 @@ const StepperContent = (props) => {
       return <AssessmentFinal setActiveStep={setActiveStep} />;
     //   default:
     //     return <Overview sx={{ margin: "auto", width: "100%" }} />;
+    default:
+      return null;
   }
-  return null;
 };
 
 // 3 Steps:
