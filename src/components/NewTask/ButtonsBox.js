@@ -49,7 +49,7 @@ function ButtonsBox(props) {
     setName("");
     setCourseIdx(general_information.courses.defaultIndex);
     setWeek(1);
-    setMaxPoints(0);
+    setMaxPoints(1);
     setDifferentiationIdx(
       general_information.differentiationBackgrounds.defaultIndex
     );
@@ -140,6 +140,7 @@ function ButtonsBox(props) {
         onClick={
           activeStep === steps.length - 1 ? handleGenerateJSON : handleNext
         }
+        disabled = {name === "" || maxPoints === "" || maxPoints === "0" || week === "" || week === "0"}
       >
         {activeStep === steps.length - 1 ? "Generate JSON" : "Next"}
       </Button>
