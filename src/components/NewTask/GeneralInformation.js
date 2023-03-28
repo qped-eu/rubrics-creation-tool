@@ -3,7 +3,7 @@ import { Grid, Divider } from "@mui/material";
 import Course from "./Course";
 import Differentiation from "./Differentiation";
 import Deliverables from "./Deliverables";
-import MyTextField from "./MyTextField";
+import MyTextField from "../CustomComponents/MyTextField";
 import Title from "./Title";
 import TaskDescription from "./TaskDescription";
 import _ from "lodash";

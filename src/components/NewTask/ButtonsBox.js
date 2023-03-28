@@ -1,8 +1,49 @@
-import { Button } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import _ from "lodash";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 import general_information from "../../resources/general_information.json";
+
+const AddTaskButton = (props) => {
+  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  return (
+    <Box>
+      <Dialog open={open}>
+        <DialogTitle>Task Added</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            The task has been added. Choose whether you want to return to the
+            main page or remain here.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)}>Cancel</Button>
+          <Button onClick={() => navigate(-1)}>Return to home</Button>
+        </DialogActions>
+      </Dialog>
+      <Button
+        onClick={() => {
+          props.handleAddToList();
+          setOpen(true);
+        }}
+        sx={{ mr: 1 }}
+        disabled={props.nameIsDuplicate}
+      >
+        Add Task
+      </Button>
+    </Box>
+  );
+};
 
 function ButtonsBox(props) {
   //read data from localstorage
@@ -127,13 +168,10 @@ function ButtonsBox(props) {
 
       <Box sx={{ flex: "1 1 auto" }} />
       {activeStep === steps.length - 1 && (
-        <Button
-          onClick={handleAddToList}
-          sx={{ mr: 1 }}
-          disabled={nameIsDuplicate}
-        >
-          Add Task
-        </Button>
+        <AddTaskButton
+          handleAddToList={handleAddToList}
+          nameIsDuplicate={nameIsDuplicate}
+        />
       )}
 
       <Button
