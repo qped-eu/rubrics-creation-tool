@@ -7,8 +7,6 @@ const TooltipsControl = () => {
     false
   );
 
-  console.log("Rendering with tooltips = " + showTooltips);
-
   const handleClick = () => {
     setShowTooltips((checked) => !checked);
   };

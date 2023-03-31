@@ -6,7 +6,6 @@ function MyTextField(props) {
   const { storageKey, defaultValue, ...textFieldProps } = props;
   const [value, setValue] = useLocalStorage(storageKey, defaultValue ?? "");
   const handleChange = ({ target: { value } }) => {
-    console.log("Changing my textfield to", value);
     setValue(value);
   };
   return (

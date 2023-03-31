@@ -41,31 +41,31 @@ const StepperContent = (props) => {
         _.map(fail_examples, (item) => ({ ...item, checked: false })),
         _.map(pass_examples, (item) => ({ ...item, checked: false })),
       ],
-      points: 2,
     }))
     .value();
 
+  const [rubricPoints, setRubricPoints] = useLocalStorage(
+    "rubric_points",
+    _.map(featureKeys, (f) => 3)
+  );
   const [rubricFeatures, setRubricFeatures] = useLocalStorage(
     "rubric_features",
     activeFeatures
   );
 
-  const featurePoints = _.map(rubricFeatures, (f) => f.points ?? 2);
-
   const setPoints = (idx) => (value) => {
-    let newFeatures = _.clone(rubricFeatures);
-    newFeatures[idx] = { ...newFeatures[idx], points: value };
-    setRubricFeatures(newFeatures);
+    setRubricPoints((oldPoints) => {
+      return [...oldPoints.slice(0, idx), value, ...oldPoints.slice(idx + 1)];
+    });
   };
 
   const [score, totalPointsCalculated] = computeScore(
     featureWeights,
-    featurePoints
+    rubricPoints,
+    selectedTask.maxPoints
   );
 
   const [, setTotalPoints] = useLocalStorage("rubric_finalPoints", "");
-
-  console.log("activeFeatures:", activeFeatures);
 
   useEffect(() => {
     if (!rubricName) {
@@ -74,13 +74,16 @@ const StepperContent = (props) => {
     if (rubricName !== selectedTask.name) {
       setRubricFeatures(activeFeatures);
       setRubricName(selectedTask.name);
+      setRubricPoints(_.map(featureKeys, (f) => 3));
     }
   }, [
+    featureKeys,
     activeFeatures,
     rubricName,
     selectedTask.name,
     setRubricFeatures,
     setRubricName,
+    setRubricPoints,
   ]);
 
   switch (activeStep) {
@@ -88,7 +91,7 @@ const StepperContent = (props) => {
       return (
         <FeatureTable
           activeFeatures={rubricFeatures}
-          featurePoints={featurePoints}
+          featurePoints={rubricPoints}
           setPoints={setPoints}
           setTotalPoints={setTotalPoints}
           totalPointsCalculated={totalPointsCalculated}
@@ -101,7 +104,7 @@ const StepperContent = (props) => {
           selectedTask={selectedTask}
           activeFeatures={rubricFeatures}
           featureWeights={featureWeights}
-          featurePoints={featurePoints}
+          featurePoints={rubricPoints}
           score={score}
           totalPointsCalculated={totalPointsCalculated}
           setError={setError}
@@ -158,8 +161,6 @@ function Rubric() {
   const handleBack = () => {
     setActiveStep(0);
   };
-
-  console.log("Rerendering Rubric");
 
   return (
     <Grid

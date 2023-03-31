@@ -63,8 +63,6 @@ function FeatureTable({
                 ];
               });
 
-            console.log("Feature looks like", feature);
-
             const onFeatureClick = (exampleIdx, featureKey, mutexKey) => {
               const oppositeExampleIdx = (exampleIdx + 1) % 2;
               let newFeatureState = _.cloneDeep(feature);
@@ -90,11 +88,11 @@ function FeatureTable({
                 );
               }
 
-              newFeatureState.points = Math.max(
-                Math.min(computePoints(feature), 4),
-                1
+              const computedPoints = Math.min(
+                computePoints(newFeatureState),
+                4
               );
-
+              setPoints(idx)(computedPoints);
               setFeature(newFeatureState);
             };
 

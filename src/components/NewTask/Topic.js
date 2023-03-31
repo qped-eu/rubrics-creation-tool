@@ -20,7 +20,7 @@ const filterTopics = (text, o, nodeIds) => {
     if (o.id) {
       nodeIds.push(o.id);
     } else {
-      console.log("No id found:", o);
+      console.error("No id found:", o);
     }
     return o;
   }

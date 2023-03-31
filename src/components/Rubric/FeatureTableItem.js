@@ -64,7 +64,9 @@ const FeatureTableItem = ({ points, setPoints, feature, onFeatureClick }) => {
             }
           }}
         />
-        <Box>{customIcons[points].label}</Box>
+        <Box>
+          {customIcons[points]?.label ?? `Could not find label for ${points}`}
+        </Box>
       </TableCell>
       <TableCell sx={{ verticalAlign: "top" }}>
         <FormGroup>
