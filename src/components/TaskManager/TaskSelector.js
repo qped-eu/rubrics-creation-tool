@@ -12,6 +12,7 @@ function TaskSelector() {
     <Grid container>
       <Grid item xs={6}>
         <Select
+          data-testid="task-selector"
           variant="outlined"
           style={{ border: "2px solid" }}
           sx={{
@@ -41,6 +42,7 @@ function TaskSelector() {
         sx={{ textAlign: "right", alignSelf: "end", marginBottom: 1.5 }}
       >
         <Button
+          data-testid="fill-out-rubric-button"
           variant="outlined"
           color="secondary"
           href={`#/rubric/${allTasks?.[taskIndex]?.name}`}

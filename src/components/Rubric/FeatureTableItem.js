@@ -40,10 +40,6 @@ const FeatureTableItem = ({ points, setPoints, feature, onFeatureClick }) => {
             />
           ))}
         </FormGroup>
-        {/*<ExampleList
-          examples={feature.examples[0]}
-          onFeatureClick={onFeatureClick(0)}
-            />*/}
       </TableCell>
       <TableCell>
         <Rating
@@ -52,6 +48,7 @@ const FeatureTableItem = ({ points, setPoints, feature, onFeatureClick }) => {
               color: "disabled",
             },
           }}
+          data-testid={"feature-rating"}
           name="text-feedback"
           max={4}
           value={points}
