@@ -11,7 +11,7 @@ function computeExtrapolatedPoints(score, maxPoints) {
 // Compute the total weighted score
 // Warning: The score of each feature
 // could have been changed manually
-function computeWeightedScore(featureWeights, featurePoints) {
+export function computeWeightedScore(featureWeights, featurePoints) {
   let score = 0;
   let totalWeight = 0;
   for (let i = 0; i < featureWeights.length && i < featurePoints.length; i++) {
@@ -56,6 +56,25 @@ export function computePoints(feature) {
   }
 
   return Math.round((passRatio - failRatio + 1) * 2) + 1; // +1 Denn vorher war das die Berechnung des
+}
+
+const getClickedExamples = (i, feature) =>
+  _.chain(feature.examples[i])
+    .filter((x) => x.checked)
+    .map((x) => x.key)
+    .value();
+
+export const getFailedExamples = (feature) => getClickedExamples(0, feature);
+
+export const getPassedExamples = (feature) => getClickedExamples(1, feature);
+
+export function calculateFeatureWeights(selectedTask) {
+  const weights = _.chain(selectedTask.activeFeatures)
+    .filter((f) => f.checked)
+    .map((f) => f.weight)
+    .value();
+  const totalWeight = _.sum(weights);
+  return _.map(weights, (w) => (w / totalWeight) * 100);
 }
 
 export function generateFeedbackObject(selectedTask) {

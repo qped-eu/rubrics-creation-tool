@@ -17,7 +17,13 @@ import _ from "lodash";
 import { useLoaderData } from "react-router-dom";
 
 import features from "../../resources/features.json";
-import { computeScore } from "./utils";
+import {
+  calculateFeatureWeights,
+  computeScore,
+  computeWeightedScore,
+  getFailedExamples,
+  getPassedExamples,
+} from "./utils";
 
 const StepperContent = (props) => {
   const { activeStep, selectedTask, setError, setActiveStep } = props;
@@ -111,7 +117,12 @@ const StepperContent = (props) => {
         />
       );
     case 2:
-      return <AssessmentFinal setActiveStep={setActiveStep} />;
+      return (
+        <AssessmentFinal
+          setActiveStep={setActiveStep}
+          selectedTask={selectedTask}
+        />
+      );
     //   default:
     //     return <Overview sx={{ margin: "auto", width: "100%" }} />;
     default:
@@ -153,9 +164,67 @@ function Rubric() {
   const selectedTask = _.find(allTasks, (task) => task.name === taskName);
 
   const [activeStep, setActiveStep] = useState(0);
+  const [generatedFeedback, setGeneratedFeedback] = useLocalStorage(
+    "rubric_generatedFeedback",
+    null
+  );
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setActiveStep((prevActiveStep) => {
+      if (prevActiveStep === 0) {
+        const finalPoints = JSON.parse(
+          localStorage.getItem("rubric_finalPoints")
+        );
+        const features = JSON.parse(
+          localStorage.getItem("rubric_features") ?? "[]"
+        );
+        const featurePoints = JSON.parse(
+          localStorage.getItem("rubric_points") ??
+            JSON.stringify(_.map(features, (_) => 3))
+        );
+        const featureWeights = calculateFeatureWeights(selectedTask);
+        let feedback = {
+          weightedAverageScore: computeWeightedScore(
+            featureWeights,
+            featurePoints
+          ),
+          pointsForSolution: finalPoints,
+          feedbackFeature: [],
+          additionalComment: "",
+          grader: JSON.parse(localStorage.getItem("rubric_grader")),
+          courseRun: JSON.parse(localStorage.getItem("rubric_course_run")),
+          courseYear: JSON.parse(localStorage.getItem("rubric_course_year")),
+          timestamp: new Date().toISOString(),
+          reserved1: "",
+          reserved2: "",
+          reserved3: "",
+        };
+        for (
+          let i = 0;
+          i < features.length &&
+          i < featurePoints.length &&
+          i < featureWeights.length;
+          i++
+        ) {
+          console.log("feature", features[i]);
+          feedback.feedbackFeature.push({
+            key: features[i].key,
+            score: featurePoints[i],
+            scoreWeight: featureWeights[i],
+            improvementPoints: getFailedExamples(features[i]),
+            goodPoints: getPassedExamples(features[i]),
+          });
+        }
+        setGeneratedFeedback(feedback);
+      } else if (prevActiveStep === 1) {
+        let generatedFeedbackFinal = _.cloneDeep(generatedFeedback);
+        generatedFeedbackFinal.additionalComment = JSON.parse(
+          localStorage.getItem("rubric_additionalComment")
+        );
+        setGeneratedFeedback(generatedFeedbackFinal);
+      }
+      return prevActiveStep + 1;
+    });
   };
 
   const handleBack = () => {

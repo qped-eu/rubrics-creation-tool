@@ -1,6 +1,8 @@
 import React from "react";
 import Grid from "@mui/material/Unstable_Grid2";
-//import { useLocalStorage } from "usehooks-ts";
+import MyTextField from "../CustomComponents/MyTextField";
+import { TextField } from "@mui/material";
+import { useLocalStorage } from "usehooks-ts";
 
 function FeedbackGenerator({
   selectedTask,
@@ -10,26 +12,35 @@ function FeedbackGenerator({
   featureWeights,
   score,
 }) {
-  /*const [feedbackSet, setFeedbackSet] = useLocalStorage(
-    "rubric_feedbackSet",
-    []
-  );*/
-
+  const [value, setValue] = useLocalStorage("rubric_generatedFeedback", "");
+  const handleChange = ({ target: { value } }) => {
+    setValue(value);
+  };
   return (
     <>
       <Grid container spacing={2}>
         <Grid item xs={6}>
           <h2>Generated Feedback</h2>
-          <textarea
-            id="feedback_text"
+          <TextField
+            value={JSON.stringify(value, null, 2)}
+            onChange={handleChange}
+            multiline
+            id="additional_comments"
             cols="80"
             rows="10"
-            readOnly=""
-          ></textarea>
+            style={{ width: "100%" }}
+          />
         </Grid>
         <Grid item xs={6}>
           <h2>Additional Comment</h2>
-          <textarea id="comment_text" cols="80" rows="10"></textarea>
+          <MyTextField
+            storageKey={"rubric_additionalComment"}
+            multiline
+            id="additional_comments"
+            cols="80"
+            rows="10"
+            style={{ width: "100%" }}
+          />
         </Grid>
       </Grid>
     </>
