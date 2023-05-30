@@ -20,10 +20,7 @@ function AssessmentFinal({ setActiveStep, selectedTask }) {
   const [generatedFeedback, setGeneratedFeedback] = useLocalStorage(
     "rubric_generatedFeedback"
   );
-  const [feedbackSet, setFeedbackSet] = useLocalStorage(
-    "rubric_feedbackSet",
-    []
-  );
+  const [, setFeedbackSet] = useLocalStorage("rubric_feedbackSet", []);
 
   function checkCourseInfoComplete() {
     if (!grader || grader.length === 0) {
