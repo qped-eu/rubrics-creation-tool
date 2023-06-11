@@ -20,7 +20,7 @@ function AssessmentFinal({ setActiveStep, selectedTask }) {
   const [generatedFeedback, setGeneratedFeedback] = useLocalStorage(
     "rubric_generatedFeedback"
   );
-  const [, setFeedbackSet] = useLocalStorage("rubric_feedbackSet", []);
+  const [feedbackSet, setFeedbackSet] = useLocalStorage("rubric_feedbackSet", []);
 
   function checkCourseInfoComplete() {
     if (!grader || grader.length === 0) {
@@ -73,8 +73,9 @@ function AssessmentFinal({ setActiveStep, selectedTask }) {
     /*
       - download the JSON-object (list of all student assessments)
     */
-    const feedback = generateFeedbackObject(selectedTask);
-    downloadFile(feedback);
+    //append to the list of students with "handleAnotherStudentClicked()"
+    handleAnotherStudentClicked();
+    downloadFile(generateFeedbackObject(selectedTask));
     handleClose();
   };
 
