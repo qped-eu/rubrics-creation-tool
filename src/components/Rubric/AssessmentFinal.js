@@ -4,8 +4,10 @@ import {
   DialogContent,
   DialogTitle,
   Snackbar,
+  Typography,
 } from "@mui/material";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Dialog from "@mui/material/Dialog";
 import { useReadLocalStorage, useLocalStorage } from "usehooks-ts";
 import { generateFeedbackObject } from "./utils";
@@ -15,13 +17,15 @@ import _ from "lodash";
 function AssessmentFinal({ setActiveStep, selectedTask }) {
   const [error, setError] = useState(null);
   const [open, setOpen] = useState(false);
+  const [returnHome, setReturnHome] = useState(false);
   const grader = useReadLocalStorage("rubric_grader");
   const courseYear = useReadLocalStorage("rubric_course_year");
   const courseRun = useReadLocalStorage("rubric_course_run");
   const [generatedFeedback, setGeneratedFeedback] = useLocalStorage(
     "rubric_generatedFeedback"
   );
-  const [, setFeedbackSet] = useLocalStorage("rubric_feedbackSet", []);
+  const [feedbackSet, setFeedbackSet] = useLocalStorage("rubric_feedbackSet", []);
+  const navigate = useNavigate();
 
   function checkCourseInfoComplete() {
     if (!grader || grader.length === 0) {
@@ -148,7 +152,10 @@ function AssessmentFinal({ setActiveStep, selectedTask }) {
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setGeneratedFeedback(null)
+    setFeedbackSet([])
+    setOpen(false)
+    setReturnHome(true)
   };
 
   return (
@@ -167,6 +174,9 @@ function AssessmentFinal({ setActiveStep, selectedTask }) {
       >
         Finish Session
       </Button>
+      <Typography sx={{ mt: 1, mr: 1 }}>
+        {feedbackSet.length + 1} Students assessed in this session.
+      </Typography>
       <Snackbar
         open={!!error}
         autoHideDuration={6000}
@@ -188,6 +198,29 @@ function AssessmentFinal({ setActiveStep, selectedTask }) {
         <DialogActions>
           <Button onClick={handleExportJson}>JSON-Format</Button>
           <Button onClick={handleExportCsv}>CSV-Format</Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={returnHome}>
+        <DialogTitle>Task Added</DialogTitle>
+        <DialogContent>
+          The Session has been exported. Choose whether you want to return to the
+          main page or remain here.
+        </DialogContent>
+        <DialogActions>
+          <Button 
+            onClick={() => {setOpen(true);setReturnHome(false)}}>
+              Other Format
+          </Button>
+          <Button 
+            onClick={() => {setOpen(false);setReturnHome(false)}}
+            variant="outlined">
+              Stay here
+          </Button>
+          <Button 
+            onClick={() => navigate(-1)}
+            variant="contained">
+              Return to home
+          </Button>
         </DialogActions>
       </Dialog>
     </>
