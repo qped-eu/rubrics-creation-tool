@@ -10,8 +10,8 @@ import _ from "lodash";
 import { useReadLocalStorage } from "usehooks-ts";
 
 function GeneralInformation(props) {
-  const max_points = useReadLocalStorage("new_task_maxPoints") ?? "";
-  const week = useReadLocalStorage("new_task_week") ?? "";
+  const max_points = useReadLocalStorage("new_task_maxPoints") ?? "0";
+  const week = useReadLocalStorage("new_task_week") ?? "1";
   const name = useReadLocalStorage("new_task_name") ?? "";
   const allTasks = useReadLocalStorage("all_tasks") ?? [];
   let nameProps = {

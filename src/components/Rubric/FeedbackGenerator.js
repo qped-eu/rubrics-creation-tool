@@ -29,6 +29,7 @@ function FeedbackGenerator({
             cols="80"
             rows="10"
             style={{ width: "100%" }}
+            disabled
           />
         </Grid>
         <Grid item xs={6}>
