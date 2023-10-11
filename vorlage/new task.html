@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>QPED O4 - Create Task</title>
+		<link rel="stylesheet" href="style.css">	
+		<script language="javascript" type="text/javascript" src="javascript/features.js"></script>
+		<script language="javascript" type="text/javascript" src="javascript/general.js"></script>	
+		<script language="javascript" type="text/javascript" src="javascript/new_task.js"></script>	
+
+		    <!-- ... -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+ 
+    <!-- DevExtreme theme -->
+    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/21.2.6/css/dx.light.css">
+ 
+    <!-- DevExtreme library -->
+    <script type="text/javascript" src="https://cdn3.devexpress.com/jslib/21.2.6/js/dx.all.js"></script>
+    <!-- <script type="text/javascript" src="https://cdn3.devexpress.com/jslib/21.2.6/js/dx.web.js"></script> -->
+    <!-- <script type="text/javascript" src="https://cdn3.devexpress.com/jslib/21.2.6/js/dx.viz.js"></script> -->
+
+		<script language="javascript" type="text/javascript" src="javascript/blueprint.js"></script>
+	</head>
+	<body>
+		<div class="minipageLeft">
+			<div class="minipageTaskLeft">
+				<h2>Course</h2>
+				<select id="course_text">
+  					<option value="nhl_java1">NHL - Java 1</option>
+  					<option value="nhl_python">NHL - Python</option>
+  					<option value="ounl_ib0902">OUNL - IB0902</option>
+  					<option value="ounl_ib1502">OUNL – IB1502</option>
+  					<option value="umr_oop">UMR - OOP</option>
+  					<option value="uoc_ds">UOC - DS</option>
+  					<option value="tue_2ip09">TU/e - 2IP90</option>
+  					<option value="tue_2ipc0">TU/e - 2IPC0</option>
+				</select>
+			</div>
+			<div class="minipageTaskLeft">
+				<h2>Name of the task</h2>
+				<input type="text" id='task_name_text'/>
+				<p><i>must be unique</i></p>
+			</div>
+			<div class="minipageTaskRight">
+				<h2>Week of task</h2>
+				<input type="number" id='week_of_task_text'/>
+			</div>
+			<div class="minipageTaskLeft">
+				<h2>Max Points</h2>
+				<input type="number" id='task_points_text'/>
+			</div>
+			<div class="minipageTaskLeft">
+				<h2>Differentiation of background (TU/e)</h2>
+				<select id="differentiation_of_background_text">
+  					<option value="extra_support">Extra support</option>
+  					<option value="regular" selected>Regular</option>
+  					<option value="challenging">Challenging</option>
+				</select>
+			</div>
+			<div class="minipageTaskRight">
+				<h2>QPED deliverables</h2>
+				<select id="deliverables_text" multiple>
+  					<option value="io1_slides">IO1 – TILEd slides</option>
+  					<option value="io1_assignment">IO1 - TILEd assignment</option>
+  					<option value="io2_api">IO2 – PG API</option>
+  					<option value="io2_ipi">IO2 – PG IPI</option>
+  					<option value="io2_implementaiton">O2 – PG Implementation</option>
+  					<option value="io3_syntax_semantics">IO3 – syntax, semantics</option>
+  					<option value="io3_style">IO3 – style</option>
+  					<option value="io3_testing">IO3 – testing</option>
+  					<option value="io3_class_design">IO3 – class design</option>
+				</select>
+				<p><i>press Control or Command<br/>for multiple selection</i></p>
+			</div>
+			<div style="float:left; clear:both;">
+				<h2>Main Topic (IO-1 Blueprint)</h2> <input type="text" id='task_blueprint_text' style='display:none'/>
+				<div class="dx-viewport demo-container">
+				      <div id="treeview"></div>
+				      <!--<div-- class="options">
+				        <!--<div class="caption">Options</div>
+				          <div class="option">
+				          <span>Search mode</span>
+				          <div id="searchMode"></div>
+				        </div>
+				      </div-->
+				    </div>
+				<p>
+				Scroll to view all concepts. You can browse throuugh the sub concepts hierarchically.
+				</p>
+				<p>
+				Start typing in the search field to search the concepts. This will only show tags containing the search term incluing all super concepts.
+				</p>
+  			</div>
+			<div style="float:left; clear:both;">
+				<h2>Additional Comments</h2>
+				<textarea id="additional_comments" cols="80" rows="20" style="width:100%"></textarea>
+			</div>
+		</div>
+		<div class="minipageRight">
+			<h2>Include Features</h2>
+			<button style="button" onClick="handleToggleAll();">Toggle All</button>
+			<button style="button" onClick="handleToggleBasic();">Toggle Basic</button>
+			<button style="button" onClick="handleToggleAdvanced();">Toggle Advanced</button>
+			<button style="button" onClick="handleTogglePG();">Toggle PG</button>
+			<table style="table-layout: auto; width:1px;">
+				<thead>
+					<tr>
+						<th scope="col">Include</th>
+						<th scope="col">Feature</th>
+						<th scope="col">Weight</th>
+					</tr>
+				</thead>
+				<tbody id='rubrics_table'>
+    
+				</tbody>
+			</table>
+		</div>
+		<div  style=" clear:both;"><br></div>
+		<div style="cursor:pointer;" onClick="handleGenerationClick();" class="buttons">Generate task</div>
+		<div id="snackbar"> </div>
+	</body>
+</html>

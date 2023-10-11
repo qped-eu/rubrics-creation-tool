@@ -1,0 +1,14 @@
+Using the \textit{Rubric Tool} involves two jobs:
+
+\begin{enumerate}
+  \item \textbf{Creating Tasks} \\
+    For each task (i.e., an assignment, project, or any other gradeable task), a new task should be created by clicking \textit{Create New Task} on the \textit{Home Screen}. Meta-information concerning this task can be entered here and then saved to your personal task list, or exported and downloaded as a JSON-File.
+  \item \textbf{Assess Solutions} \\
+    The people who assess the tasks (i.e. tutors) can use the JSON-File created in the previous step to do so. They can select a task from the list in their \textit{Home Menu} and press \textit{Fill out Rubric} to assess the solutions according to the task structure defined in \textbf{Creating Tasks}. Within the assessment step they can work on different students solutions consecutively and export the results of their assessment as a \textit{CSV}- or \textit{JSON}-File.
+\end{enumerate}
+
+\begin{attention}
+  The current progress of an \textit{assessment session} or a \textit{task creation session} is only persisted in the \textit{local storage} of the web page. This storage instance is wiped when the browser history is cleared or the local storage is wiped specifically. Further details on persistence are discussed in the chapters \nameref{sec:taskcreation} and \nameref{sec:assessment}.
+\end{attention}
+
+The full implementation of the tool can be found on \href{https://github.com/0nlineSam/rubrics-creation-tool}{https://github.com/0nlineSam/rubrics-creation-tool}.

@@ -1,0 +1,32 @@
+{
+  "courses": {
+    "options": [
+      "NHL - Java 1",
+      "NHL - Python",
+      "OUNL - IB0902",
+      "OUNL – IB1502",
+      "UMR - OOP",
+      "UOC - DS",
+      "TU/e - 2IP90",
+      "TU/e - 2IPC0"
+    ],
+    "defaultIndex": 0
+  },
+  "differentiationBackgrounds": {
+    "options": ["Extra support", "Regular", "Challenging"],
+    "defaultIndex": 1
+  },
+  "deliverables": {
+    "options": [
+      "IO1 – TILEd slides",
+      "IO1 - TILEd assignment",
+      "IO2 – PG API",
+      "IO2 – PG IPI",
+      "O2 – PG Implementation",
+      "IO3 – syntax, semantics",
+      "IO3 – style",
+      "IO3 – testing",
+      "IO3 – class design"
+    ]
+  }
+}

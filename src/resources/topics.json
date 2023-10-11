@@ -1,0 +1,766 @@
+{
+  "id": "O1 Blueprint (combined, restructured)",
+  "name": "O1 Blueprint (combined, restructured)",
+  "children": [
+    {
+      "id": "expressions",
+      "name": "expressions",
+      "children": [
+        {
+          "id": "operators",
+          "name": "operators",
+          "children": [
+            {
+              "id": "relational operators",
+              "name": "relational operators"
+            },
+            {
+              "id": "logical operators",
+              "name": "logical operators"
+            },
+            {
+              "id": "arithmetic operators",
+              "name": "arithmetic operators"
+            },
+            {
+              "id": "bit operators",
+              "name": "bit operators"
+            }
+          ]
+        },
+        {
+          "id": "evaluation",
+          "name": "evaluation",
+          "children": [
+            {
+              "id": "precedence",
+              "name": "precedence"
+            },
+            {
+              "id": "lazy evaluation",
+              "name": "lazy evaluation"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "control flow",
+      "name": "control flow",
+      "children": [
+        {
+          "id": "conditionals",
+          "name": "conditionals",
+          "children": [
+            {
+              "id": "switch",
+              "name": "switch"
+            },
+            {
+              "id": "if",
+              "name": "if"
+            }
+          ]
+        },
+        {
+          "id": "loops",
+          "name": "loops",
+          "children": [
+            {
+              "id": "for",
+              "name": "for"
+            },
+            {
+              "id": "while",
+              "name": "while"
+            },
+            {
+              "id": "foreach",
+              "name": "foreach"
+            }
+          ]
+        },
+        {
+          "id": "exceptions",
+          "name": "exceptions"
+        },
+        {
+          "id": "jumping",
+          "name": "jumping",
+          "children": [
+            {
+              "id": "break",
+              "name": "break"
+            },
+            {
+              "id": "continue",
+              "name": "continue"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "data",
+      "name": "data",
+      "children": [
+        {
+          "id": "user-defined structures",
+          "name": "user-defined structures",
+          "children": [
+            {
+              "id": "trees",
+              "name": "trees"
+            },
+            {
+              "id": "stacks",
+              "name": "stacks"
+            },
+            {
+              "id": "queues",
+              "name": "queues"
+            },
+            {
+              "id": "graphs",
+              "name": "graphs"
+            }
+          ]
+        },
+        {
+          "id": "type conversion",
+          "name": "type conversion",
+          "children": [
+            {
+              "id": "coercion",
+              "name": "coercion"
+            },
+            {
+              "id": "casting",
+              "name": "casting"
+            }
+          ]
+        },
+        {
+          "id": "types (built-in)",
+          "name": "types (built-in)",
+          "children": [
+            {
+              "id": "primitive",
+              "name": "primitive",
+              "children": [
+                {
+                  "id": "char",
+                  "name": "char"
+                },
+                {
+                  "id": "boolean",
+                  "name": "boolean"
+                },
+                {
+                  "id": "numeric",
+                  "name": "numeric",
+                  "children": [
+                    {
+                      "id": "int",
+                      "name": "int"
+                    },
+                    {
+                      "id": "float",
+                      "name": "float"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "composite",
+              "name": "composite",
+              "children": [
+                {
+                  "id": "dictionaries",
+                  "name": "dictionaries",
+                  "children": [
+                    {
+                      "id": "map",
+                      "name": "map"
+                    }
+                  ]
+                },
+                {
+                  "id": "sets",
+                  "name": "sets"
+                },
+                {
+                  "id": "sequences",
+                  "name": "sequences",
+                  "children": [
+                    {
+                      "id": "lists",
+                      "name": "lists"
+                    },
+                    {
+                      "id": "strings",
+                      "name": "strings"
+                    },
+                    {
+                      "id": "tuples",
+                      "name": "tuples"
+                    }
+                  ]
+                },
+                {
+                  "id": "array",
+                  "name": "array"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "imperative programming",
+      "name": "imperative programming",
+      "children": [
+        {
+          "id": "functions",
+          "name": "functions",
+          "children": [
+            {
+              "id": "signature",
+              "name": "signature",
+              "children": [
+                {
+                  "id": "arguments/parameters",
+                  "name": "arguments/parameters",
+                  "children": [
+                    {
+                      "id": "positional",
+                      "name": "positional"
+                    },
+                    {
+                      "id": "keyword (kwargs)",
+                      "name": "keyword (kwargs)"
+                    },
+                    {
+                      "id": "default values",
+                      "name": "default values"
+                    },
+                    {
+                      "id": "arbitrary number of arguments",
+                      "name": "arbitrary number of arguments",
+                      "children": [
+                        {
+                          "id": "*args",
+                          "name": "*args"
+                        },
+                        {
+                          "id": "**kwargs",
+                          "name": "**kwargs"
+                        },
+                        {
+                          "id": "...",
+                          "name": "..."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "return type",
+                  "name": "return type"
+                }
+              ]
+            },
+            {
+              "id": "calling functions",
+              "name": "calling functions"
+            },
+            {
+              "id": "return",
+              "name": "return"
+            },
+            {
+              "id": "anonymous function",
+              "name": "anonymous function",
+              "children": [
+                {
+                  "id": "lambda",
+                  "name": "lambda",
+                  "children": [
+                    {
+                      "id": "functional interfaces",
+                      "name": "functional interfaces"
+                    },
+                    {
+                      "id": "method references",
+                      "name": "method references"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "algorithms",
+              "name": "algorithms",
+              "children": [
+                {
+                  "id": "algorithm specifications",
+                  "name": "algorithm specifications"
+                },
+                {
+                  "id": "correctness",
+                  "name": "correctness"
+                },
+                {
+                  "id": "recursion",
+                  "name": "recursion"
+                },
+                {
+                  "id": "non-functional properties",
+                  "name": "non-functional properties",
+                  "children": [
+                    {
+                      "id": "computational complexity",
+                      "name": "computational complexity"
+                    },
+                    {
+                      "id": "termination",
+                      "name": "termination"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "creating/defining",
+              "name": "creating/defining"
+            }
+          ]
+        },
+        {
+          "id": "variables",
+          "name": "variables",
+          "children": [
+            {
+              "id": "constants",
+              "name": "constants"
+            },
+            {
+              "id": "scope",
+              "name": "scope",
+              "children": [
+                {
+                  "id": "global variables",
+                  "name": "global variables"
+                },
+                {
+                  "id": "local variables",
+                  "name": "local variables"
+                }
+              ]
+            },
+            {
+              "id": "assignment",
+              "name": "assignment"
+            },
+            {
+              "id": "variable declaration",
+              "name": "variable declaration"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "multi-threading",
+      "name": "multi-threading",
+      "children": [
+        {
+          "id": "synchronization",
+          "name": "synchronization"
+        }
+      ]
+    },
+    {
+      "id": "Design principles",
+      "name": "Design principles",
+      "children": [
+        {
+          "id": "top-down",
+          "name": "top-down"
+        },
+        {
+          "id": "bottom-up",
+          "name": "bottom-up"
+        }
+      ]
+    },
+    {
+      "id": "IO",
+      "name": "IO",
+      "children": [
+        {
+          "id": "files",
+          "name": "files",
+          "children": [
+            {
+              "id": "text",
+              "name": "text",
+              "children": [
+                {
+                  "id": "plain",
+                  "name": "plain"
+                },
+                {
+                  "id": "JSON",
+                  "name": "JSON"
+                }
+              ]
+            },
+            {
+              "id": "binary",
+              "name": "binary",
+              "children": [
+                {
+                  "id": "excel",
+                  "name": "excel"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "standard",
+          "name": "standard",
+          "children": [
+            {
+              "id": "input",
+              "name": "input"
+            },
+            {
+              "id": "print",
+              "name": "print"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "object orientation (OO)",
+      "name": "object orientation (OO)",
+      "children": [
+        {
+          "id": "objects",
+          "name": "objects",
+          "children": [
+            {
+              "id": "instantiation",
+              "name": "instantiation",
+              "children": [
+                {
+                  "id": "cloning",
+                  "name": "cloning"
+                }
+              ]
+            },
+            {
+              "id": "garbage collection",
+              "name": "garbage collection"
+            },
+            {
+              "id": "referencing",
+              "name": "referencing"
+            }
+          ]
+        },
+        {
+          "id": "Access modifiers",
+          "name": "Access modifiers",
+          "children": [
+            {
+              "id": "public",
+              "name": "public"
+            },
+            {
+              "id": "protected",
+              "name": "protected"
+            },
+            {
+              "id": "private",
+              "name": "private"
+            },
+            {
+              "id": "package private",
+              "name": "package private"
+            }
+          ]
+        },
+        {
+          "id": "Inheritance",
+          "name": "Inheritance",
+          "children": [
+            {
+              "id": "overriding",
+              "name": "overriding"
+            },
+            {
+              "id": "duck typing (polymorphism)",
+              "name": "duck typing (polymorphism)"
+            },
+            {
+              "id": "extension",
+              "name": "extension"
+            },
+            {
+              "id": "class inheritance",
+              "name": "class inheritance"
+            },
+            {
+              "id": "interface inheritance",
+              "name": "interface inheritance"
+            },
+            {
+              "id": "abstract classes",
+              "name": "abstract classes",
+              "children": [
+                {
+                  "id": "abstract methods",
+                  "name": "abstract methods"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Interfaces",
+          "name": "Interfaces",
+          "children": [
+            {
+              "id": "interface methods",
+              "name": "interface methods"
+            },
+            {
+              "id": "default methods",
+              "name": "default methods"
+            },
+            {
+              "id": "interface constants",
+              "name": "interface constants"
+            }
+          ]
+        },
+        {
+          "id": "Classes",
+          "name": "Classes",
+          "children": [
+            {
+              "id": "methods",
+              "name": "methods",
+              "children": [
+                {
+                  "id": "static methods",
+                  "name": "static methods"
+                },
+                {
+                  "id": "instance methods",
+                  "name": "instance methods"
+                },
+                {
+                  "id": "final methods",
+                  "name": "final methods"
+                },
+                {
+                  "id": "overloading",
+                  "name": "overloading"
+                }
+              ]
+            },
+            {
+              "id": "fields",
+              "name": "fields",
+              "children": [
+                {
+                  "id": "final fields",
+                  "name": "final fields"
+                }
+              ]
+            },
+            {
+              "id": "final class",
+              "name": "final class"
+            },
+            {
+              "id": "constructors",
+              "name": "constructors"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "testing",
+      "name": "testing",
+      "children": [
+        {
+          "id": "unit tests",
+          "name": "unit tests",
+          "children": [
+            {
+              "id": "unit tests manual",
+              "name": "unit tests manual"
+            },
+            {
+              "id": "unit tests automated",
+              "name": "unit tests automated"
+            }
+          ]
+        },
+        {
+          "id": "integration tests",
+          "name": "integration tests"
+        }
+      ]
+    },
+    {
+      "id": "coding conventions",
+      "name": "coding conventions",
+      "children": [
+        {
+          "id": "naming conventions",
+          "name": "naming conventions",
+          "children": [
+            {
+              "id": "PEP 8",
+              "name": "PEP 8"
+            },
+            {
+              "id": "Java Code Conventions",
+              "name": "Java Code Conventions"
+            }
+          ]
+        },
+        {
+          "id": "comments",
+          "name": "comments"
+        },
+        {
+          "id": "documentation",
+          "name": "documentation",
+          "children": [
+            {
+              "id": "JavaDoc",
+              "name": "JavaDoc"
+            },
+            {
+              "id": "Docstring",
+              "name": "Docstring"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "environment",
+      "name": "environment",
+      "children": [
+        {
+          "id": "IDE",
+          "name": "IDE",
+          "children": [
+            {
+              "id": "debugging",
+              "name": "debugging"
+            },
+            {
+              "id": "editor",
+              "name": "editor"
+            },
+            {
+              "id": "compiler",
+              "name": "compiler"
+            }
+          ]
+        },
+        {
+          "id": "version control",
+          "name": "version control",
+          "children": [
+            {
+              "id": "git",
+              "name": "git"
+            }
+          ]
+        },
+        {
+          "id": "build management tools",
+          "name": "build management tools",
+          "children": [
+            {
+              "id": "maven",
+              "name": "maven"
+            },
+            {
+              "id": "pip",
+              "name": "pip"
+            },
+            {
+              "id": "gradle",
+              "name": "gradle"
+            }
+          ]
+        },
+        {
+          "id": "libraries",
+          "name": "libraries",
+          "children": [
+            {
+              "id": "guizero",
+              "name": "guizero"
+            },
+            {
+              "id": "numpy",
+              "name": "numpy"
+            },
+            {
+              "id": "random",
+              "name": "random"
+            },
+            {
+              "id": "pandas",
+              "name": "pandas"
+            },
+            {
+              "id": "java.util.stream",
+              "name": "java.util.stream"
+            }
+          ]
+        },
+        {
+          "id": "testing frameworks",
+          "name": "testing frameworks",
+          "children": [
+            {
+              "id": "JUnit",
+              "name": "JUnit"
+            },
+            {
+              "id": "pytest",
+              "name": "pytest"
+            }
+          ]
+        },
+        {
+          "id": "packaging",
+          "name": "packaging",
+          "children": [
+            {
+              "id": "JAR-files",
+              "name": "JAR-files"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

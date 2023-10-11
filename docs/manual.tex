@@ -1,0 +1,70 @@
+\documentclass[10.5pt]{article}
+\usepackage[shortlabels]{enumitem}
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+% multicolumn text
+\usepackage{multicol}
+% wrapfigures
+\usepackage{wrapfig}
+% hyperlinks
+\usepackage{hyperref}
+% frames around texts
+\usepackage[framemethod=tikz, xcolor=true]{mdframed}
+% filler text
+\usepackage{blindtext}
+% code einbetten und konfigurieren
+\usepackage{listings}
+% referencing with names
+\usepackage{nameref}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{stmaryrd}
+\usepackage{titling}
+% zitieren
+\usepackage{cite}
+% Graphics
+\usepackage{graphicx}
+\graphicspath{ {./figures/} }
+
+%rote Frames für Hinweise
+\newenvironment{attention}{\begin{mdframed}[tikzsetting={draw=red, thick}]\textbf{Attention:} \\}{\end{mdframed}}
+%blaue Frames für Formeln
+% \newenvironment{blueframe}{\begin{mdframed}[tikzsetting={draw=blue, thick}]}{\end{mdframed}}
+
+\author{Luik Fischer}
+\title{Rubrics Tool Benutzeranleitung und Hinweise}
+
+% fancyhdr setup
+\pagestyle{fancy}
+\lhead{}
+\cfoot{}
+\rfoot{Seite \thepage}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.5pt}
+
+\begin{document}
+
+% \maketitle
+% \tableofcontents
+% \newpage
+
+\section{General}
+\label{sec:general}
+\input{chapters/1general.tex}
+\section{Home Screen}
+\label{sec:home}
+\input{chapters/2home.tex}
+\section{Creating Tasks}
+\label{sec:taskcreation}
+\input{chapters/3taskcreation.tex}
+\section{Assessment of solutions}
+\label{sec:assessment}
+\input{chapters/4assessment.tex}
+\section{Personal Settings}
+\label{sec:settings}
+\input{chapters/5settings.tex}
+
+\newpage
+
+\end{document}
